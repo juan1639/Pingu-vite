@@ -44,7 +44,7 @@ export class Game extends Scene
 
   create()
   {
-    this.add.image(0, 0, 'fondo').setOrigin(0, 0);
+    this.add.image(0, 0, 'fondo').setDepth(Settings.depth.fondo).setOrigin(0, 0);
     
     // this.set_sonidos();
     // this.set_cameras();
@@ -60,8 +60,9 @@ export class Game extends Scene
     // this.marcadorNivel.create();
     // this.marcadorHi.create();
     // this.botonfullscreen.create();
-    
-    // var joyStick = scene.plugins.get('rexVirtualJoystick').addPlayer(scene, config);
+
+    this.rexVirtualJoystick();
+    this.hideMobileControls();
 
     // this.cameras.main.startFollow(this.jugador.get());
     // this.cameras.main.followOffset.set(0, 0);
@@ -151,18 +152,34 @@ export class Game extends Scene
     // this.physics.add.overlap(this.jugador.get(), this.fantasmas.get(), overlapJugadorFantasmas, exceptoNotVisible, this);
   }
 
-  mobile_controls()
+  rexVirtualJoystick()
   {
-    if (!Settings.isBotonesYcruceta() && this.iconogamepad.isDown)
-    {
-      Settings.setBotonesYcruceta(true);
-      this.iconogamepad.get().setVisible(false);
+      this.joyStick = this.plugins.get('rexvirtualjoystickplugin').add(this, {
+          x: 90,
+          y: this.sys.game.config.height - 50,
+          radius: 60,
+          base: this.add.circle(0, 0, 60, 0x888888, 0.4),
+          // base: this.add.image(0, 0, 'boton-fire-joystick').setScale(1),
+          thumb: this.add.circle(0, 0, 30, 0xcccccc, 0.7),
+          // thumb: this.add.image(0, 0, 'base-joystick').setScale(1)
+          dir: '4dir',
+          // forceMin: 16,
+          fixed: true,
+          enable: true
+      });
+      
+      console.log(this.joyStick);
+      this.joystickCursors = this.joyStick.createCursorKeys();
+  }
 
-      this.crucetaleft.get().setVisible(true);
-      this.crucetaright.get().setVisible(true);
-      this.crucetaup.get().setVisible(true);
-      this.crucetadown.get().setVisible(true);
-    }
+  hideMobileControls()
+  {
+      console.log(Settings.controlElegido);
+      
+      if (!Settings.controlElegido.mobile)
+      {
+        this.joyStick.setVisible(false);
+      }
   }
 
   set_cameras()

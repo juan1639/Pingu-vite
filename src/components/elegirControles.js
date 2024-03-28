@@ -14,7 +14,7 @@ export class ElegirControles
     const {left, top, frame, scale, texto, id} = this.args;
 
     this.radiobutton = this.relatedScene.add.sprite(left, top, 'radio-buttons').setInteractive();
-    this.radiobutton.setOrigin(0, 0.5).setScale(scale).setDepth(100).setFrame(frame);
+    this.radiobutton.setOrigin(0, 0.5).setScale(scale).setDepth(Settings.depth.textos).setFrame(frame);
     this.radiobutton.setData('id', id);
 
     this.txt = new Textos(this.relatedScene, {

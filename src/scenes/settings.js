@@ -47,15 +47,15 @@ export class Settings
     };
 
     static depth = {
-        fondo: 0,
-        bloques: 10,
-        limites: 20,
-        jugador: 40,
-        enemigo: 50,
-        explosiones: 60,
-        marcadores: 110,
-        textos: 120,
-        mobileControls: 150
+        fondo: -200,
+        bloques: -180,
+        limites: -160,
+        jugador: -140,
+        enemigo: -120,
+        explosiones: -100,
+        marcadores: -50,
+        textos: -40,
+        mobileControls: -30
     };
 
     static tileXY =

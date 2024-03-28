@@ -21,7 +21,7 @@ export class Jugador
     {
         this.jugador = this.relatedScene.physics.add.sprite(x, y, 'pengo-ssheet');
 
-        this.jugador.setAngle(0).setScale(1.28).setCircle(
+        this.jugador.setAngle(0).setDepth(Settings.depth.jugador).setScale(1.28).setCircle(
             Math.floor(Settings.tileXY.y / 3),
             Math.floor(Settings.tileXY.x / 6),
             Math.floor(Settings.tileXY.y / 6)
@@ -74,27 +74,7 @@ export class Jugador
 
         Object.keys(Jugador.INFO_DIRECCION).forEach(tecla =>
         {
-            if (this.controles[tecla].isDown) this.intentoGiro = tecla;
-
-            /* if (Settings.isBotonesYcruceta())
-            {
-                if (this.relatedScene.crucetaup.isDown)
-                {
-                    this.intentoGiro = 'up';
-
-                } else if (this.relatedScene.crucetadown.isDown)
-                {
-                    this.intentoGiro = 'down';
-
-                } else if (this.relatedScene.crucetaleft.isDown)
-                {
-                    this.intentoGiro = 'left';
-
-                } else if (this.relatedScene.crucetaright.isDown)
-                {
-                    this.intentoGiro = 'right';
-                }
-            } */
+            if (this.controles[tecla].isDown || this.relatedScene.joystickCursors[tecla].isDown) this.intentoGiro = tecla;
         });
 
         if (this.jugador.x % Settings.tileXY.x === 0 && this.jugador.y % Settings.tileXY.y === 0)

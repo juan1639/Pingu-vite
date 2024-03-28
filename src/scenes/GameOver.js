@@ -37,7 +37,7 @@ export class PreGame extends Scene
 
     create ()
     {
-        this.add.image(0, 0, 'fondo').setOrigin(0, 0);
+        this.add.image(0, 0, 'fondo').setDepth(Settings.depth.fondo).setOrigin(0, 0);
         
         this.radiobuttons.forEach(radiobutton => radiobutton.create());
         this.botoninicio.create('Game', false);
