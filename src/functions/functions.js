@@ -371,15 +371,5 @@ function play_sonidos(id, loop, volumen)
 }
 
 export {
-  inicia_disparo,
-  inicia_disparo_enemigos,
-  colisionJugadorVsEnemigo,
-  excepcionJugadorVsEnemigo,
-  colisionDisparoVsEnemigo,
-  colisionDisparoEnemigoVsJugador,
-  excepcionDisparoEnemigoVsJugador,
-  colisionDisparoVsNodriza,
-  colisionDisparoEnemigoVsDefensas,
-  colisionDisparoVsDefensas,
   play_sonidos
 };

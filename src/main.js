@@ -4,6 +4,7 @@ import { MainMenu } from './scenes/MainMenu';
 import { Game } from './scenes/Game';
 import { PreGame } from './scenes/GameOver';
 import { Congratulations } from './scenes/congratulations.js';
+import VirtualJoystickPlugin from 'phaser3-rex-plugins/plugins/virtualjoystick-plugin.js';
 
 //  Find out more information about the Game Config at:
 //  https://newdocs.phaser.io/docs/3.70.0/Phaser.Types.Core.GameConfig
@@ -22,6 +23,15 @@ const config = {
         arcade: {
           debug: false
         }
+    },
+    plugins: {
+        global: [{
+            key: 'rexVirtualJoystick',
+            plugin: VirtualJoystickPlugin,
+            start: true
+        },
+        // ...
+        ]
     },
     // pixelArt: true,
     scene: [

@@ -11,7 +11,6 @@ export class Settings
         height: 550
     };
 
-    static nivelSuperado = false;
     static gameOver = false;
 
     static puntos = 0;
@@ -37,6 +36,10 @@ export class Settings
         revivir: 4000,
         invisible: 3000,
         showBonus: 3500,
+        nivelSuperado: {
+            superado: false,
+            duracion: 3200
+        },
         duracionExplosion: {
             jugador: 1000,
             enemigo: 400
@@ -55,10 +58,43 @@ export class Settings
         mobileControls: 150
     };
 
+    static tileXY =
+    {
+        x: 64,
+        y: 64
+    };
+
+    static array_laberinto = [
+        [9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9],
+        [9,1,1,1,1,1,1,1,1,9,1,1,1,1,1,1,1,1,9],
+        [9,1,9,9,1,9,9,9,1,9,1,9,9,9,1,9,9,1,9],
+    
+        [9,1,9,9,1,9,9,9,1,9,1,9,9,9,1,9,9,1,9],
+        [9,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,9],
+        [9,1,9,9,1,9,1,9,9,9,9,9,1,9,1,9,9,1,9],
+    
+        [9,1,1,1,1,9,1,1,1,9,1,1,1,9,1,1,1,1,9],
+        [9,9,9,9,1,9,9,9,1,9,1,9,9,9,1,9,9,9,9],
+        [9,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,9],
+    
+        [9,1,9,9,1,9,1,9,1,9,1,9,1,9,1,9,9,1,9],
+        [9,1,9,9,1,9,1,9,1,9,1,9,1,9,1,9,9,1,9],
+        [9,1,1,1,1,9,1,1,1,1,1,1,1,9,1,1,1,1,9],
+    
+        [9,1,9,9,1,9,1,9,9,9,9,9,1,9,1,9,9,1,9],
+        [9,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,9],
+        [9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9],
+    ];
+
     // --- Getters ---
     static isNivelSuperado()
     {
-        return Settings.nivelSuperado;
+        return Settings.pausas.nivelSuperado.superado;
+    }
+
+    static getPausaNivelSuperado()
+    {
+        return Settings.pausas.nivelSuperado.duracion;
     }
 
     static isGameOver()
@@ -94,7 +130,7 @@ export class Settings
     // --- Setters ---
     static setNivelSuperado(bool)
     {
-        Settings.nivelSuperado = bool;
+        Settings.pausas.nivelSuperado.superado = bool;
     }
 
     static setGameOver(bool)
