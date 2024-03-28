@@ -1,46 +1,75 @@
 import { Scene } from 'phaser';
+import { Textos } from '../components/textos.js';
 
 export class Preloader extends Scene
 {
-    constructor ()
+    constructor()
     {
         super('Preloader');
     }
 
-    init ()
+    init()
     {
-        //  We loaded this image in our Boot Scene, so we can display it here
-        this.add.image(512, 384, 'background');
+        const widthScreen = this.sys.game.config.width;
+        const heightScreen = this.sys.game.config.height;
 
-        //  A simple progress bar. This is the outline of the bar.
-        this.add.rectangle(512, 384, 468, 32).setStrokeStyle(1, 0xffffff);
+        this.load.image('fondo', 'assets/img/bg.png');
+        this.add.image(0, 0, 'fondo').setOrigin(0, 0);
 
-        //  This is the progress bar itself. It will increase in size from the left based on the % of progress.
-        const bar = this.add.rectangle(512-230, 384, 4, 28, 0xffffff);
-
-        //  Use the 'progress' event emitted by the LoaderPlugin to update the loading bar
-        this.load.on('progress', (progress) => {
-
-            //  Update the progress bar (our bar is 464px wide, so 100% = 464px)
-            bar.width = 4 + (460 * progress);
-
+        this.txt = new Textos(this, {
+            x: Math.floor(widthScreen / 2),
+            y: Math.floor(heightScreen / 3.5),
+            txt: ' Loading...',
+            size: 55, color: '#ffa', style: 'bold',
+            stroke: '#f91', sizeStroke: 16,
+            shadowOsx: 2, shadowOsy: 2, shadowColor: '#111',
+            bool1: false, bool2: true, origin: [0.5, 0.5],
+            elastic: false, dura: 0
         });
-    }
 
-    preload ()
+        this.txt.create();
+
+        this.add.rectangle(
+            Math.floor(widthScreen / 2), Math.floor(heightScreen / 2),
+            Math.floor(widthScreen / 1.5), Math.floor(heightScreen / 12)
+        ).setStrokeStyle(1, 0xffee88);
+
+        const bar = this.add.rectangle(
+            Math.floor(widthScreen / 2) - Math.floor(widthScreen / 3) + 4,
+            Math.floor(heightScreen / 2),
+            4,
+            Math.floor(heightScreen / 14),
+            0xff9911
+        );
+
+        this.load.on('progress', (progress) => {
+            bar.width = (Math.floor(widthScreen / 1.52) * progress);
+        });
+    } 
+    
+    preload()
     {
-        //  Load the assets for the game - Replace with your own assets
         this.load.setPath('assets');
 
-        this.load.image('logo', 'logo.png');
+        this.load.image('fondo', './img/bg.png');
+
+        this.load.image('boton-nueva-partida', './img/boton-start.png');
+        this.load.image('boton-fire-joystick', './img/boton-fire-joystick.png');
+        this.load.spritesheet('radio-buttons', './img/radio-buttons-ssheet.png', {frameWidth: 50, frameHeight: 50});
+        this.load.spritesheet('boton-fullscreen', './img/boton-fullscreen.png', {frameWidth: 64, frameHeight: 64});
+
+        this.load.spritesheet('pengo-ssheet', './img/pengo-ssheet.png', {frameWidth: 50, frameHeight: 50});
+
+        // Pluggin VirtualJoystick
+        let url = 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexvirtualjoystickplugin.min.js';
+        this.load.plugin('rexvirtualjoystickplugin', url, true);
+
+        //  Archivos de audio
+        // this.load.audio('gameover-retro', './game-over-arcade-retro.mp3');
     }
 
-    create ()
+    create()
     {
-        //  When all the assets have loaded, it's often worth creating global objects here that the rest of the game can use.
-        //  For example, you can define global animations here, so we can use them in other scenes.
-
-        //  Move to the MainMenu. You could also swap this for a Scene Transition, such as a camera fade.
         this.scene.start('MainMenu');
     }
 }
