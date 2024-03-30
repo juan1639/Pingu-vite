@@ -21,7 +21,7 @@ export class Jugador
     {
         this.jugador = this.relatedScene.physics.add.sprite(x, y, 'pengo-ssheet');
 
-        this.jugador.setAngle(0).setDepth(Settings.depth.jugador).setScale(1.28).setCircle(
+        this.jugador.setAngle(0).setDepth(Settings.depth.jugador).setScale(1).setCircle(
             Math.floor(Settings.tileXY.y / 3),
             Math.floor(Settings.tileXY.x / 6),
             Math.floor(Settings.tileXY.y / 6)

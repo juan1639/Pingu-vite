@@ -8,7 +8,15 @@ export class Settings
 
     static screen = {
         width: 800,
-        height: 550
+        height: 550,
+        escBoundsX: 1.10,
+        escBoundsY: 1.25
+    };
+
+    static tileXY =
+    {
+        x: 48,
+        y: 48
     };
 
     static gameOver = false;
@@ -56,12 +64,6 @@ export class Settings
         marcadores: -50,
         textos: -40,
         mobileControls: -30
-    };
-
-    static tileXY =
-    {
-        x: 64,
-        y: 64
     };
 
     static array_laberinto = [

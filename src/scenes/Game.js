@@ -44,10 +44,10 @@ export class Game extends Scene
 
   create()
   {
-    this.add.image(0, 0, 'fondo').setDepth(Settings.depth.fondo).setOrigin(0, 0);
+    this.add.image(0, 0, 'fondo').setScale(1.48, 1.68).setDepth(Settings.depth.fondo).setOrigin(0, 0);
     
     // this.set_sonidos();
-    // this.set_cameras();
+    this.set_cameras();
     // this.set_cameras_controles();
     // this.set_cameras_marcadores();
 
@@ -64,7 +64,7 @@ export class Game extends Scene
     this.rexVirtualJoystick();
     this.hideMobileControls();
 
-    // this.cameras.main.startFollow(this.jugador.get());
+    this.cameras.main.startFollow(this.jugador.get());
     // this.cameras.main.followOffset.set(0, 0);
 
     this.crear_colliders();
@@ -185,13 +185,13 @@ export class Game extends Scene
   set_cameras()
   {
     this.cameras.main.setBounds(
-      0, 0, Math.floor(this.sys.game.config.width * Settings.getScreen().escBoundsX),
-      Math.floor(this.sys.game.config.height * Settings.getScreen().escBoundsY)
+      0, 0, Math.floor(this.sys.game.config.width * Settings.screen.escBoundsX),
+      Math.floor(this.sys.game.config.height * Settings.screen.escBoundsY)
     );
 
     this.physics.world.setBounds(
-      0, 0, Math.floor(this.sys.game.config.width * Settings.getScreen().escBoundsX),
-      Math.floor(this.sys.game.config.height * Settings.getScreen().escBoundsY)
+      0, 0, Math.floor(this.sys.game.config.width * Settings.screen.escBoundsX),
+      Math.floor(this.sys.game.config.height * Settings.screen.escBoundsY)
     );
   }
 
