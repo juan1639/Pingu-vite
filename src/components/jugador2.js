@@ -2,16 +2,6 @@ import { Settings } from '../scenes/settings.js';
 
 export class Jugador
 {
-    static VEL = 4;
-
-    // [velX, velY, addWidth, addHeight, angle, anima]
-    static INFO_DIRECCION = {
-        left: [-1, 0, 0, 0, 0, 'le'],
-        right: [1, 0, 1, 0, 0, 'ri'],
-        up: [0, -1, 0, 0, 0, 'up'],
-        down: [0, 1, 0, 1, 0, 'do']
-    };
-
     constructor(scene)
     {
         this.relatedScene = scene;
@@ -21,15 +11,14 @@ export class Jugador
     {
         this.jugador = this.relatedScene.physics.add.sprite(x, y, 'pengo-ssheet');
 
-        this.jugador.setAngle(0).setDepth(Settings.depth.jugador).setScale(1).setCircle(
-            Math.floor(Settings.tileXY.y / 3),
-            Math.floor(Settings.tileXY.x / 6),
-            Math.floor(Settings.tileXY.y / 6)
-        );
+        this.jugador.setAngle(0).setDepth(Settings.depth.jugador).setScale(0.9);
 
-        this.intentoGiro = 'right';
-        this.direccion = this.intentoGiro;
-        this.anima = this.direccion.slice(0, 2);
+        this.jugador.setCircle(Math.floor(Settings.tileXY.y / 2));
+
+        this.jugador.setData('direccion', 'ri');// por defecto
+        this.jugador.setData('anima', this.jugador.getData('direccion'));
+
+        // this.set_velocity();
 
         // this.relatedScene.anims.remove('le-ri-up-do');
 
@@ -61,7 +50,7 @@ export class Jugador
             frameRate: 20,
         });
         
-        this.jugador.anims.play(this.anima, true);
+        this.jugador.anims.play(this.jugador.getData('anima'), true);
 
         this.controles = this.relatedScene.input.keyboard.createCursorKeys();
 
@@ -70,46 +59,52 @@ export class Jugador
 
     update()
     {
-        const direcc = Jugador.INFO_DIRECCION;
-
-        Object.keys(Jugador.INFO_DIRECCION).forEach(tecla =>
-        {
-            if (this.controles[tecla].isDown || this.relatedScene.joystickCursors[tecla].isDown) this.intentoGiro = tecla;
-        });
-
         if (this.jugador.x % Settings.tileXY.x === 0 && this.jugador.y % Settings.tileXY.y === 0)
         {
-            const x = Math.floor(this.jugador.x / Settings.tileXY.x) + direcc[this.intentoGiro][0];
-            const y = Math.floor(this.jugador.y / Settings.tileXY.y) + direcc[this.intentoGiro][1];
-            
-            if (Settings.array_laberinto[y][x] !== 9)
-            {
-                this.direccion = this.intentoGiro;
-                this.anima = this.direccion.slice(0, 2);
-                this.jugador.anims.play(this.anima, true);
-                this.jugador.setAngle(direcc[this.direccion][4]);
-            }
+            Settings.setJugadorMoving(false);
+            this.viejaX = this.jugador.x;
+            this.viejaY = this.jugador.y;
         }
 
-        const ancho = direcc[this.direccion][2] * (Settings.tileXY.x - Jugador.VEL);
-        const alto = direcc[this.direccion][3] * (Settings.tileXY.y - Jugador.VEL);
-        const offsetX = direcc[this.direccion][0] * Jugador.VEL;
-        const offsetY = direcc[this.direccion][1] * Jugador.VEL;
-        
-        const x = Math.floor((this.jugador.x + offsetX + ancho) / Settings.tileXY.x);
-        const y = Math.floor((this.jugador.y + offsetY + alto) / Settings.tileXY.y);
+        const direcc = Settings.jugador.direccion;
 
-        if (Settings.array_laberinto[y][x] !== 9)
+        if (!Settings.isJugadorMoving())
         {
-            this.jugador.x += direcc[this.direccion][0] * Jugador.VEL;
-            this.jugador.y += direcc[this.direccion][1] * Jugador.VEL;
-
-            // Escapatorias
-            if (this.jugador.x > Settings.array_laberinto[0].length * Settings.tileXY.x && direcc[this.direccion][0] > 0) this.jugador.x = -Settings.tileXY.x;
-            if (this.jugador.x < -Settings.tileXY.x && direcc[this.direccion][0] < 0) this.jugador.x = (Settings.array_laberinto[0].length - 1) * Settings.tileXY.x;
+            Object.keys(Settings.jugador.direccion).forEach(direcc =>
+            {
+                const tecla = Settings.jugador.teclas[direcc];
+    
+                if (this.controles[tecla].isDown || this.relatedScene.joystickCursors[tecla].isDown)
+                {
+                    Settings.setJugadorMoving(true);
+                    this.jugador.setData('direccion', direcc);
+                    this.jugador.setData('anima', this.jugador.getData('direccion'));
+                    this.jugador.anims.play(this.jugador.getData('anima'), true);
+                    this.jugador.setAngle(Settings.jugador.direccion[this.jugador.getData('direccion')][2]);
+                    this.set_velocity();
+                }
+            });
+    
+            if (this.controles.space.isDown)
+            {
+                console.log('empujar');
+            }
+        }
+        else
+        {
+            this.set_velocity();
         }
 
         // console.log(this.jugador.x, this.jugador.y);
+    }
+
+    set_velocity()
+    {
+        const dirX = Settings.jugador.direccion[this.jugador.getData('direccion')][0];
+        const dirY = Settings.jugador.direccion[this.jugador.getData('direccion')][1];
+
+        this.jugador.x += dirX * Settings.jugador.velX;
+        this.jugador.y += dirY * Settings.jugador.velY;
     }
 
     get()

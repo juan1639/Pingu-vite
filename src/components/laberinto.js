@@ -38,7 +38,7 @@ export class Laberinto
                 ii * Settings.tileXY.x,
                 i * Settings.tileXY.y,
                 `tile${valor}`
-            ).setScale(0.75).setDepth(Settings.depth.bloques).refreshBody();
+            ).setScale(0.75).setDepth(Settings.depth.bloques).setImmovable(true).refreshBody();
         }
         // Scale 0.75 = 48 / 64 --> (tileXY) / (img.png width or height)
     }

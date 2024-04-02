@@ -97,6 +97,15 @@ function enemigo_gira(ene, scene)
   });
 }
 
+function colliderJugadorBloques(jugador, bloques)
+{
+  console.log('colision');
+  // console.log(jugador);
+  // console.log(bloques);
+  this.jugador.get().setX(this.jugador.viejaX);
+  this.jugador.get().setY(this.jugador.viejaY);
+}
+
 function colisionJugadorVsEnemigo(enemigo, jugador)
 {
   console.log('colision...jugador-enemigo');
@@ -371,5 +380,6 @@ function play_sonidos(id, loop, volumen)
 }
 
 export {
+  colliderJugadorBloques,
   play_sonidos
 };

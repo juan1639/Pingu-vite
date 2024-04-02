@@ -6,7 +6,7 @@
 // ------------------------------------------------------------
 import { Scene } from 'phaser';
 import { Laberinto } from '../components/laberinto.js';
-import { Jugador, JugadorDies, JugadorShowVidas } from '../components/jugador.js';
+import { Jugador, JugadorDies, JugadorShowVidas } from '../components/jugador2.js';
 import { Textos } from '../components/textos.js';
 import { Marcador } from './../components/marcador.js';
 import { Settings } from './settings.js';
@@ -14,6 +14,7 @@ import { BotonFullScreen, BotonNuevaPartida } from '../components/boton-nuevapar
 
 import {
   // overlapJugadorFantasmas,
+  colliderJugadorBloques,
   play_sonidos
 } from '../functions/functions.js';
 
@@ -30,7 +31,7 @@ export class Game extends Scene
 
     this.set_pausaInicial(4300);
 
-    this.laberinto = new Laberinto(this);
+    this.bloques = new Laberinto(this);
     this.jugador = new Jugador(this);
     // this.jugadordies = new JugadorDies(this);
 
@@ -51,7 +52,7 @@ export class Game extends Scene
     // this.set_cameras_controles();
     // this.set_cameras_marcadores();
 
-    this.laberinto.create();
+    this.bloques.create();
     this.jugador.create(Settings.tileXY.x * 2, Settings.tileXY.y * 1);
 
     // this.jugadorshowvidas.create();
@@ -67,7 +68,7 @@ export class Game extends Scene
     this.cameras.main.startFollow(this.jugador.get());
     // this.cameras.main.followOffset.set(0, 0);
 
-    this.crear_colliders();
+    this.set_colliders();
   }
 
   update() {
@@ -146,10 +147,13 @@ export class Game extends Scene
     this.txtcongrats.get().setDepth(Settings.getDepth().textos);
   }
 
-  crear_colliders()
+  set_colliders()
   {
-    //Overlap Jugador-Fantasmas
+    // Overlap Jugador-Fantasmas
     // this.physics.add.overlap(this.jugador.get(), this.fantasmas.get(), overlapJugadorFantasmas, exceptoNotVisible, this);
+    
+    // Collide Jugador-Fantasmas
+    this.physics.add.collider(this.jugador.get(), this.bloques.get(), colliderJugadorBloques, null, this);
   }
 
   rexVirtualJoystick()

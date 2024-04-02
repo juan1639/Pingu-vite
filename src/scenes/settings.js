@@ -26,12 +26,28 @@ export class Settings
     static hi = 12000;
     static vidas = 3;
 
+    static velJugador = 4;
+
     static jugador =
     {
         posIniX: 0,
         posIniY: 0,
-        velX: 500,
-        velY: 500
+        velX: Settings.velJugador,
+        velY: Settings.velJugador,
+        moving: false,
+        // [velX, velY, angle, anima]
+        direccion: {
+            le: [-1, 0, 0, 'le'],
+            ri: [1, 0, 0, 'ri'],
+            up: [0, -1, 0, 'up'],
+            do: [0, 1, 0, 'do']
+        },
+        teclas: {
+            le: 'left',
+            ri: 'right',
+            up: 'up',
+            do: 'down'
+        }
     };
 
     static incGodownInvaders =
@@ -124,9 +140,14 @@ export class Settings
         return Settings.vidas;
     }
 
-    static getIncGodownInvaders()
+    static getVelJugador()
     {
-        return Settings.incGodownInvaders;
+        return Settings.velJugador;
+    }
+
+    static isJugadorMoving()
+    {
+        return Settings.jugador.moving;
     }
 
     // --- Setters ---
@@ -158,5 +179,10 @@ export class Settings
     static setVidas(lifes)
     {
         Settings.vidas = lifes;
+    }
+
+    static setJugadorMoving(bool)
+    {
+        Settings.jugador.moving = bool;
     }
 }
