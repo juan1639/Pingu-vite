@@ -35,9 +35,7 @@ export class Game extends Scene
     this.jugador = new Jugador(this);
     // this.jugadordies = new JugadorDies(this);
 
-    // this.instanciar_marcadores();
-    // this.instanciar_mobileControls();
-
+    this.instanciar_marcadores();
     this.botonrejugar = new BotonNuevaPartida(this);
   }
 
@@ -45,22 +43,23 @@ export class Game extends Scene
 
   create()
   {
+    // 1.48 1.68 ajustar size fondo al scroll
     this.add.image(0, 0, 'fondo').setScale(1.48, 1.68).setDepth(Settings.depth.fondo).setOrigin(0, 0);
     
     // this.set_sonidos();
     this.set_cameras();
     // this.set_cameras_controles();
-    // this.set_cameras_marcadores();
+    this.set_cameras_marcadores();
 
     this.bloques.create();
     this.jugador.create(Settings.tileXY.x * 2, Settings.tileXY.y * 1);
 
     // this.jugadorshowvidas.create();
     
-    // this.marcadorPtos.create();
-    // this.marcadorNivel.create();
-    // this.marcadorHi.create();
-    // this.botonfullscreen.create();
+    this.marcadorPtos.create();
+    this.marcadorNivel.create();
+    this.marcadorHi.create();
+    this.botonfullscreen.create();
 
     this.rexVirtualJoystick();
     this.hideMobileControls();
@@ -152,7 +151,7 @@ export class Game extends Scene
     // Overlap Jugador-Fantasmas
     // this.physics.add.overlap(this.jugador.get(), this.fantasmas.get(), overlapJugadorFantasmas, exceptoNotVisible, this);
     
-    // Collide Jugador-Fantasmas
+    // Collide Jugador-Bloques
     this.physics.add.collider(this.jugador.get(), this.bloques.get(), colliderJugadorBloques, null, this);
   }
 
@@ -189,13 +188,15 @@ export class Game extends Scene
   set_cameras()
   {
     this.cameras.main.setBounds(
-      0, 0, Math.floor(this.sys.game.config.width * Settings.screen.escBoundsX),
-      Math.floor(this.sys.game.config.height * Settings.screen.escBoundsY)
+      0, -Math.floor(Settings.tileXY.y / 2),
+      Math.floor(this.sys.game.config.width * Settings.screen.escBoundsX),
+      Math.floor(this.sys.game.config.height * Settings.screen.escBoundsY + Math.floor(Settings.tileXY.y / 2))
     );
 
     this.physics.world.setBounds(
-      0, 0, Math.floor(this.sys.game.config.width * Settings.screen.escBoundsX),
-      Math.floor(this.sys.game.config.height * Settings.screen.escBoundsY)
+      0, -Math.floor(Settings.tileXY.y / 2),
+      Math.floor(this.sys.game.config.width * Settings.screen.escBoundsX),
+      Math.floor(this.sys.game.config.height * Settings.screen.escBoundsY + Math.floor(Settings.tileXY.y / 2))
     );
   }
 
@@ -229,61 +230,19 @@ export class Game extends Scene
     this.jugadorshowvidas = new JugadorShowVidas(this, {left: Math.floor(ancho * 1.4), top: marcadoresPosY + 9});
 
     this.marcadorPtos = new Marcador(this, {
-      x: 10, y: marcadoresPosY, size: 40, txt: Settings.getTxtScore(), color: '#fff', id: 0
+      x: 10, y: marcadoresPosY, size: 40, txt: Settings.getTxtScore(), color: '#fff', strokeColor: '#af1', id: 0
     });
 
     this.marcadorNivel = new Marcador(this, {
-      x: Math.floor(ancho / 2), y: marcadoresPosY, size: 40, txt: ' Level: ', color: '#ff5', id: 1
+      x: Math.floor(ancho / 2), y: marcadoresPosY, size: 40, txt: ' Level: ', color: '#ff5', strokeColor: '#16d', id: 1
     });
 
     this.marcadorHi = new Marcador(this, {
-      x: Math.floor(ancho / 1.2), y: marcadoresPosY, size: 40, txt: ' Record: ', color: '#fff', id: 2
+      x: Math.floor(ancho / 1.2), y: marcadoresPosY, size: 40, txt: ' Record: ', color: '#fff', strokeColor: '#af1',id: 2
     });
 
-    this.botonfullscreen = new BotonFullScreen(this, {x: Math.floor(ancho * 1.33), y: marcadoresPosY + 9});
-  }
-
-  instanciar_mobileControls()
-  {
-    var { xx, yy, sizeX, sizeY } = Settings.getCoorCruceta();
-    
-    this.crucetaleft = new CrucetaDireccion(this, {
-      id: 'cruceta-left',
-      press: 'left',
-      x: xx, y: yy + 55,
-      ang: 0,
-      scX: sizeX, scY: sizeY
-    });
-    
-    this.crucetaright = new CrucetaDireccion(this, {
-      id: 'cruceta-right',
-      press: 'right',
-      x: xx + 350, y: yy + 55,
-      ang: 0,
-      scX: sizeX, scY: sizeY
-    });
-    
-    this.crucetaup = new CrucetaDireccion(this, {
-      id: 'cruceta-left',
-      press: 'up',
-      x: xx + 175, y: yy - 80,
-      ang: 90,
-      scX: sizeX - 0.7, scY: sizeY + 0.1
-    });
-    
-    this.crucetadown = new CrucetaDireccion(this, {
-      id: 'cruceta-left',
-      press: 'down',
-      x: xx + 175, y: yy + 80,
-      ang: 270,
-      scX: sizeX - 0.5, scY: sizeY + 0.1
-    });
-
-    this.iconogamepad = new IconoGamePad(this, {
-      id: 'icono-gamepad',
-      x: xx + 90, y: yy,
-      ang: 0,
-      scX: 2, scY: 2
+    this.botonfullscreen = new BotonFullScreen(this, {
+      x: Math.floor(ancho * 1.5), y: marcadoresPosY + 7, id: 'boton-fullscreen', scX: 1.2, scY: 0.8, ang: 0
     });
   }
 

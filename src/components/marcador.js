@@ -1,53 +1,43 @@
-import { Settings } from "../scenes/settings.js";
+import { Settings } from '../scenes/settings.js';
 
 export class Marcador
 {
-    constructor(scene)
+    constructor(scene, datos)
     {
         this.relatedScene = scene;
+        this.datos = datos;
     }
 
     create()
     {
-        this.marcadores = this.relatedScene.add.group();
+        const { x, y, size, txt, color, strokeColor, id } = this.datos;
 
-        const ancho = this.relatedScene.sys.game.config.width;
-        const alto = this.relatedScene.sys.game.config.height;
+        let texto = '';
 
-        this.args = [
-            [ ' Score: ', 24, '#fff', '#2ef', 7, 0, 0, Settings.getPuntos() ],
-            [ ' Level: ', 24, '#ff7', '#2ef', 7, Math.floor(ancho / 2.2), 0, Settings.getNivel() ],
-            [ ' Hi: ', 24, '#fff', '#2ef', 7, Math.floor(ancho / 1.5), 0, Settings.getRecord() ]
-        ];
+        if (id === 0) texto = `${txt}${Settings.getPuntos()}`;
+        if (id === 1) texto = `${txt}${Settings.getNivel()}`;
+        if (id === 2) texto = `${txt}${Settings.getRecord()}`;
 
-        this.args.forEach((arg, index) =>
-        {
-            let cadaMarcador = this.relatedScene.add.text(arg[5], arg[6], arg[0] + arg[7], {
-                fontSize: arg[1] + 'px',
-                fill: arg[2],
-                fontFamily: 'verdana, arial, sans-serif',
-                shadow: {
-                    offsetX: 1,
-                    offsetY: 1,
-                    color: arg[3],
-                    blur: arg[4],
-                    fill: true
-                }
-            });
-
-            this.marcadores.add(cadaMarcador);
+        this.marcador = this.relatedScene.add.text(x, y, texto, {
+            fontSize: size + 'px',
+            fill: color,
+            fontFamily: 'verdana, arial, sans-serif',
+            fontStyle: 'bold'
         });
 
-        console.log(this.marcadores);
+        this.marcador.setStroke(strokeColor, 16).setShadow(2, 2, '#111111', 2, false, true);
+        //#de77ae #ee9011 #af1
+
+        console.log(this.marcador);
     }
 
-    update(id, valor)
+    update(txt, valor)
     {
-        this.marcadores.getChildren()[id].setText(this.args[id][0] + valor);
+        this.marcador.setText(`${txt}${valor}`);
     }
 
     get()
     {
-        return this.marcadores;
+        return this.marcador;
     }
 }

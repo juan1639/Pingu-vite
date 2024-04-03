@@ -25,6 +25,7 @@ export class Settings
     static nivel = 1;
     static hi = 12000;
     static vidas = 3;
+    static txtScore = ' Score: ';
 
     static velJugador = 4;
 
@@ -82,6 +83,15 @@ export class Settings
         mobileControls: -30
     };
 
+    static cameraScores = {
+        x: 0,
+        y: 0,
+        ancho: 800,
+        alto: 34,
+        scrollX: 0,
+        scrollY: -90
+    };
+
     static array_laberinto = [
         [9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9],
         [9,1,1,1,1,1,1,1,1,9,1,1,1,1,1,1,1,1,9],
@@ -105,6 +115,11 @@ export class Settings
     ];
 
     // --- Getters ---
+    static getTxtScore()
+    {
+        return Settings.txtScore;
+    }
+
     static isNivelSuperado()
     {
         return Settings.pausas.nivelSuperado.superado;
@@ -148,6 +163,11 @@ export class Settings
     static isJugadorMoving()
     {
         return Settings.jugador.moving;
+    }
+
+    static getCameraScores()
+    {
+        return Settings.cameraScores;
     }
 
     // --- Setters ---
