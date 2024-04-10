@@ -58,6 +58,7 @@ export class Settings
 
     static pausas =
     {
+        inicial: false,
         revivir: 4000,
         invisible: 3000,
         showBonus: 3500,
@@ -128,6 +129,11 @@ export class Settings
     static isNivelSuperado()
     {
         return Settings.pausas.nivelSuperado.superado;
+    }
+
+    static isPausaInicial()
+    {
+        return Settings.pausas.inicial;
     }
 
     static getPausaNivelSuperado()
@@ -209,5 +215,10 @@ export class Settings
     static setJugadorMoving(bool)
     {
         Settings.jugador.moving = bool;
+    }
+
+    static setPausaInicial(bool)
+    {
+        Settings.pausas.inicial = bool;
     }
 }

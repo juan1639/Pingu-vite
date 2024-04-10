@@ -29,7 +29,7 @@ export class Game extends Scene
   {
     Settings.setGameOver(false);
 
-    this.set_pausaInicial(4300);
+    this.set_pausaInicial(3800);
 
     this.bloques = new Laberinto(this);
     this.jugador = new Jugador(this);
@@ -70,9 +70,9 @@ export class Game extends Scene
     this.set_colliders();
   }
 
-  update() {
-
-    if (!this.pausa_inicial.activa && !Settings.isGameOver())
+  update()
+  {
+    if (!Settings.pausas.inicial && !Settings.isGameOver())
     {
       this.jugador.update();
     }
@@ -95,38 +95,34 @@ export class Game extends Scene
 
   set_pausaInicial(tiempo)
   {
-    this.pausa_inicial = {
-      duracion: tiempo,
-      activa: false
-    };
-
-    return;
+    Settings.setPausaInicial(true);
 
     this.txtpreparado = new Textos(this, {
       x: 400,
       y: 0,
       txt: ' Ready! ',
       size: 78, color: '#ffa', style: 'bold',
-      stroke: '#ea1', sizeStroke: 16,
+      stroke: '#af1', sizeStroke: 16,
       shadowOsx: 2, shadowOsy: 2, shadowColor: '#111111',
       bool1: false, bool2: true, origin: [0.5, 0],
-      elastic: (Settings.pacman.iniY + 1) * Settings.tileXY.y, dura: 3000
+      elastic: Math.floor(this.sys.game.config.height / 2), dura: 2800
     });
     
     this.txtpreparado.create();
-    this.txtpreparado.get().setDepth(Settings.getDepth().textos);
-
-    this.timeline = this.add.timeline([
+    this.txtpreparado.get().setDepth(Settings.depth.textos);
+    
+    const timeline = this.add.timeline([
       {
-        at: this.pausa_inicial.duracion,
-        run: () => {
-          this.pausa_inicial.activa = false,
+        at: tiempo,
+        run: () =>
+        {
+          Settings.setPausaInicial(false),
           this.txtpreparado.get().setVisible(false);
         }
       }
     ]);
 
-    this.timeline.play();
+    timeline.play();
     console.log(this.txtpreparado);
   }
 
