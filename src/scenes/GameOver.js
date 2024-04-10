@@ -1,6 +1,7 @@
 import { Scene } from 'phaser';
 import { Settings } from './settings.js';
-import { ElegirControles, BotonNuevaPartida } from '../components/boton-nuevapartida';
+import { BotonNuevaPartida } from '../components/boton-nuevapartida';
+import { ElegirControles } from '../components/elegirControles.js';
 
 export class PreGame extends Scene
 {
@@ -18,8 +19,15 @@ export class PreGame extends Scene
         Settings.setNivelSuperado(false);
         Settings.controlElegido.mobile = false;
         Settings.controlElegido.teclado = true;
-        
-        this.botoninicio = new BotonNuevaPartida(this);
+
+        this.botoninicio = new BotonNuevaPartida(this, {
+            left: Math.floor(this.sys.game.config.width / 2),
+            top: Math.floor(this.sys.game.config.height / 1.3),
+            id: 'boton-nueva-partida',
+            scX: 0.7, scY: 0.7, angle: 1, originX: 0.5, originY: 0.5,
+            texto: ' Start ', nextScene: 'Game'
+        });
+
         this.radiobuttons = [];
 
         this.radiobuttons.push(new ElegirControles(this, {

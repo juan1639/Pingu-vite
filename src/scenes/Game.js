@@ -1,7 +1,7 @@
 // ============================================================
-//      P a c  C l o n  -  Phaser  |  By Juan Eguia
+//      P i n g u  -  Phaser  |  By Juan Eguia
 //   
-//      https://juan1639.github.io/PacClon-vite-phaser
+//      https://juan1639.github.io/Pingu-vite
 // 
 // ------------------------------------------------------------
 import { Scene } from 'phaser';
@@ -46,7 +46,7 @@ export class Game extends Scene
     // 1.48 1.68 ajustar size fondo al scroll
     this.add.image(0, 0, 'fondo').setScale(1.48, 1.68).setDepth(Settings.depth.fondo).setOrigin(0, 0);
     
-    // this.set_sonidos();
+    this.set_sonidos();
     this.set_cameras();
     // this.set_cameras_controles();
     this.set_cameras_marcadores();
@@ -242,20 +242,16 @@ export class Game extends Scene
     });
 
     this.botonfullscreen = new BotonFullScreen(this, {
-      x: Math.floor(ancho * 1.5), y: marcadoresPosY + 7, id: 'boton-fullscreen', scX: 1.2, scY: 0.8, ang: 0
+      x: Math.floor(ancho * 1.5), y: marcadoresPosY + 7, id: 'boton-fullscreen',
+      orX: 0, orY: 0, scX: 1.2, scY: 0.8, ang: 0
     });
   }
 
   set_sonidos()
   {
-    this.sonido_preparado = this.sound.add('sonidoPacmanInicioNivel');
-    play_sonidos(this.sonido_preparado, false, 0.8);
+    // this.sonido_preparado = this.sound.add('sonidoPacmanInicioNivel');
+    // play_sonidos(this.sonido_preparado, false, 0.8);
 
-    this.sonido_waka = this.sound.add('sonidoWakaWaka');
-    this.sonido_jugadorDies = this.sound.add('sonidoPacmanDies');
-    this.sonido_eatingGhost = this.sound.add('sonidoPacmanEatingGhost');
-    this.sonido_eatingCherry = this.sound.add('sonidoPacmanEatingCherry');
-    this.sonido_fantasmasScary = this.sound.add('sonidoPacmanAzules');
-    this.sonido_sirena = this.sound.add('sonidoPacmanSirena');
+    this.sonido_ziuuu = this.sound.add('ziuuu');
   }
 }

@@ -114,6 +114,11 @@ export class Settings
         [9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9],
     ];
 
+    static audio =
+    {
+        monedaMario: null
+    };
+
     // --- Getters ---
     static getTxtScore()
     {

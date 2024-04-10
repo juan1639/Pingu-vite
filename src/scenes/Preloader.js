@@ -55,7 +55,7 @@ export class Preloader extends Scene
 
         this.load.image('boton-nueva-partida', './img/boton-start.png');
         this.load.image('boton-fire-joystick', './img/boton-fire-joystick.png');
-        this.load.spritesheet('radio-buttons', './img/radio-buttons-ssheet.png', {frameWidth: 50, frameHeight: 50});
+        this.load.spritesheet('radio-buttons', './img/radio-buttons-lightblue.png', {frameWidth: 50, frameHeight: 50});
         this.load.spritesheet('boton-fullscreen', './img/boton-fullscreen.png', {frameWidth: 64, frameHeight: 64});
 
         for (let i = 7; i < 10; i ++)
@@ -70,7 +70,10 @@ export class Preloader extends Scene
         this.load.plugin('rexvirtualjoystickplugin', url, true);
 
         //  Archivos de audio
-        // this.load.audio('gameover-retro', './game-over-arcade-retro.mp3');
+        this.load.audio('gameover-retro', './audio/gameoveretro.ogg');
+        this.load.audio('get-ready', './audio/get-ready.mp3');
+        this.load.audio('ziuuu', './audio/jumpbros.ogg');
+        this.load.audio('moneda-mario', './audio/p-ping.mp3');
     }
 
     create()

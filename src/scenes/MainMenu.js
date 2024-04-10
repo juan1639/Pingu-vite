@@ -12,7 +12,13 @@ export class MainMenu extends Scene
 
     init()
     {
-        this.botoninicio = new BotonNuevaPartida(this);
+        this.botoninicio = new BotonNuevaPartida(this, {
+            left: Math.floor(this.sys.game.config.width / 2),
+            top: Math.floor(this.sys.game.config.height / 1.3),
+            id: 'boton-nueva-partida',
+            scX: 0.7, scY: 0.7, angle: 1, originX: 0.5, originY: 0.5,
+            texto: ' New Game ', nextScene: 'PreGame'
+        });
 
         this.txt = new Textos(this, {
             x: Math.floor(this.sys.game.config.width / 2),
@@ -40,17 +46,20 @@ export class MainMenu extends Scene
             Math.floor(this.sys.game.config.width / 4),
             Math.floor(this.sys.game.config.height / 1.04),
             'Based on classic arcade game Pengo of Sega 1982',
-            {fontSize: '16px', color: '#ff1', align: 'justify', fontFamily: 'Arial'}
+            {fontSize: '16px', color: '#9ff', align: 'justify', fontFamily: 'Arial'}
         );
 
-        this.add.timeline([
+        const timeline = this.add.timeline([
             {
                 at: aparecerBoton,
-                run: () => {
+                run: () =>
+                {
                     this.botoninicio.create('PreGame', false);
                 }
             }
-        ]).play();
+        ]);
+
+        timeline.play();
         
         console.log(this.txt);
     }  

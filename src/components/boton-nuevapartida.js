@@ -1,49 +1,66 @@
 import { Settings } from "../scenes/settings";
 import { Textos } from "./textos";
+import { play_sonidos } from '../functions/functions.js';
 
 export class BotonNuevaPartida
 {
-  constructor(scene)
+  constructor(scene, args)
   {
     this.relatedScene = scene;
+    this.args = args;
   }
 
-  create(siguienteScene, gameover)
+  create()
   {
-    // this.sonidoMenuSelect = this.relatedScene.sound.add('moneda-mario');
+    Settings.audio.monedaMario = this.relatedScene.sound.add('moneda-mario');
 
-    const ancho = this.relatedScene.sys.game.config.width;
-    const alto = this.relatedScene.sys.game.config.height;
-    const botonCondicional = 'boton-nueva-partida';
-    
-    this.boton = this.relatedScene.add.sprite(Math.floor(ancho / 2), Math.floor(alto / 1.6), botonCondicional).setInteractive();
-    this.boton.setScale(0.6).setAngle(1).setDepth(30);
+    const {left, top, id, scX, scY, angle, originX, originY, texto, nextScene} = this.args;
 
-    this.boton.on('pointerover', () => {
+    this.boton = this.relatedScene.add.sprite(left, top, id).setInteractive();
+    this.boton.setScale(scX, scY).setAngle(1).setDepth(Settings.depth.botones);
+
+    this.txt = new Textos(this.relatedScene, {
+      x: left,
+      y: top,
+      txt: texto,
+      size: 30, color: '#ff1', style: 'bold',
+      stroke: '#1bd', sizeStroke: 16,
+      shadowOsx: 2, shadowOsy: 2, shadowColor: '#111111',
+      bool1: false, bool2: true, origin: [0.5, 0.5],
+      elastic: false, dura: 0
+    });
+
+    this.txt.create();
+    this.txt.get().setDepth(Settings.depth.textos).setAlpha(1).setScale(1);
+
+    this.boton.on('pointerover', () =>
+    {
       // this.boton.setFrame(1);
-      this.boton.setScale(0.7);
+      this.boton.setScale(scX + 0.1, scY + 0.1);
     });
 
-    this.boton.on('pointerout', () => {
+    this.boton.on('pointerout', () =>
+    {
       // this.boton.setFrame(0);
-      this.boton.setScale(0.6);
+      this.boton.setScale(scX, scY);
     });
 
-    this.boton.on('pointerdown', (e) => {
+    this.boton.on('pointerdown', (e) =>
+    {
+      // console.log(e);
+      play_sonidos(Settings.audio.monedaMario, false, 0.7);
 
-      // play_sonidos(this.sonidoMenuSelect, false, 0.9);
-      this.relatedScene.scene.start(siguienteScene);
-      console.log(e);
+      this.relatedScene.scene.start(nextScene);
     });
 
     this.relatedScene.tweens.add(
     {
-      targets: this.boton,
+      targets: [this.boton, this.txt.get()],
       angle: 359,
       ease: 'Elastic',
       yoyo: true,
-      hold: 2000,
-      duration: 3000,
+      hold: 3000,
+      duration: 2000,
       repeat: -1
     });
   }
@@ -65,12 +82,12 @@ export class BotonFullScreen
 
   create()
   {
-    const {x, y, id, scX, scY, ang} = this.args;
+    const {x, y, id, orX, orY, scX, scY, ang} = this.args;
 
     this.boton = this.relatedScene.add.image(x, y, id).setInteractive();
-    this.boton.setScale(scX, scY);
-    this.boton.setAngle(ang).setFrame(0).setDepth(50);
-    this.boton.setX(x).setY(y + Math.floor(this.boton.height / 2));
+    this.boton.setOrigin(orX, orY).setScale(scX, scY);
+    this.boton.setAngle(ang).setFrame(0).setDepth(Settings.depth.botones);
+    this.boton.setX(x).setY(y);
 
     this.boton.on('pointerover', () =>
     {
@@ -98,8 +115,8 @@ export class BotonFullScreen
   }
 }
 
-// =============================================================================
-export class ElegirControles
+// ==================================================================
+export class BotonEsc
 {
   constructor(scene, args)
   {
@@ -109,55 +126,82 @@ export class ElegirControles
 
   create()
   {
-    const {left, top, frame, scale, texto, id} = this.args;
+    const sonido_abucheos = this.relatedScene.sound.add('abucheos');
 
-    this.radiobutton = this.relatedScene.add.sprite(left, top, 'radio-buttons').setInteractive();
-    this.radiobutton.setOrigin(0, 0.5).setScale(scale).setDepth(Settings.depth.textos).setFrame(frame);
-    this.radiobutton.setData('id', id);
+    const {left, top, id, scX, scY, angle, originX, originY, texto, nextScene} = this.args;
+
+    this.boton = this.relatedScene.add.sprite(left, top, id).setInteractive();
+    this.boton.setOrigin(originX, originY).setScale(scX, scY).setAngle(angle).setDepth(Settings.depth.botones);
 
     this.txt = new Textos(this.relatedScene, {
-      x: left + 60,
+      x: left,
       y: top,
       txt: texto,
-      size: 45, color: '#ffa', style: 'bold',
-      stroke: '#f71', sizeStroke: 16,
-      shadowOsx: 2, shadowOsy: 2, shadowColor: '#111',
-      bool1: false, bool2: true, origin: [0, 0.5],
+      size: 25, color: '#fb1', style: 'bold',
+      stroke: '#f61', sizeStroke: 8,
+      shadowOsx: 2, shadowOsy: 2, shadowColor: '#111111',
+      bool1: false, bool2: true, origin: [0.5, 0.5],
       elastic: false, dura: 0
     });
 
     this.txt.create();
+    this.txt.get().setDepth(Settings.depth.botones).setAlpha(1).setScale(1);
 
-    this.radiobutton.on('pointerover', () =>
+    this.boton.on('pointerover', () =>
     {
-      this.txt.get().setScale(scale + 0.1);
-      this.radiobutton.setScale(scale + 0.1);
-    });
-    
-    this.radiobutton.on('pointerout', () =>
-    {
-      this.txt.get().setScale(scale);
-      this.radiobutton.setScale(scale);
+      // this.boton.setFrame(1);
+      this.boton.setScale(scX + 0.1, scY + 0.1);
     });
 
-    this.radiobutton.on('pointerdown', (e) =>
+    this.boton.on('pointerout', () =>
     {
-      // play_sonidos(this.sonidoMenuSelect, false, 0.9);
-      this.relatedScene.radiobuttons.forEach(radio => radio.get().setFrame(0));
-      this.radiobutton.setFrame(1);
+      // this.boton.setFrame(0);
+      this.boton.setScale(scX, scY);
+    });
 
-      Object.keys(Settings.controlElegido).forEach(control => {
-        Settings.controlElegido[control] = false;
-      });
+    this.boton.on('pointerdown', (e) =>
+    {
+      // console.log(e);
+      if (texto.includes('Esc'))
+      {
+        if (Settings.getAudio().music) Settings.getAudio().music.volume = 0;
+        play_sonidos(sonido_abucheos, false, 0.8);
+      }
 
-      Settings.controlElegido[this.radiobutton.getData('id')] = true;
+      if (texto.includes('Music'))
+      {
+        if (Settings.getAudio().music.volume > 0)
+        {
+          Settings.getAudio().music.volume = 0;
+          this.txt.get().setAlpha(0.3);
+        }
+        else
+        {
+          Settings.getAudio().music.volume = 0.6;
+          this.txt.get().setAlpha(1);
+        }
+      }
+      
+      if (texto.includes('?'))
+      {
+        if (!this.relatedScene.bg.visible)
+        {
+          this.relatedScene.bg.setVisible(true);
+          this.relatedScene.txthowtoplay.get().setVisible(true);
+        }
+        else
+        {
+          this.relatedScene.bg.setVisible(false);
+          this.relatedScene.txthowtoplay.get().setVisible(false);
+        }
+      }
 
-      console.log(Settings.controlElegido.mobile, Settings.controlElegido.teclado);
+      if (nextScene !== '') this.relatedScene.scene.start(nextScene);
     });
   }
 
   get()
   {
-    return this.radiobutton;
+    return this.boton;
   }
 }
