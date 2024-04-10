@@ -29,7 +29,7 @@ export class Game extends Scene
   {
     Settings.setGameOver(false);
 
-    this.set_pausaInicial(3800);
+    this.set_pausaInicial(2800);
 
     this.bloques = new Laberinto(this);
     this.jugador = new Jugador(this);
@@ -98,13 +98,13 @@ export class Game extends Scene
     Settings.setPausaInicial(true);
 
     this.txtpreparado = new Textos(this, {
-      x: 400,
+      x: Math.floor(this.sys.game.config.width / 2),
       y: 0,
       txt: ' Ready! ',
       size: 78, color: '#ffa', style: 'bold',
       stroke: '#af1', sizeStroke: 16,
       shadowOsx: 2, shadowOsy: 2, shadowColor: '#111111',
-      bool1: false, bool2: true, origin: [0.5, 0],
+      bool1: false, bool2: true, origin: [0.5, 0.5],
       elastic: Math.floor(this.sys.game.config.height / 2), dura: 2800
     });
     
@@ -118,12 +118,34 @@ export class Game extends Scene
         {
           Settings.setPausaInicial(false),
           this.txtpreparado.get().setVisible(false);
+          this.set_txtGo();
         }
       }
     ]);
 
     timeline.play();
     console.log(this.txtpreparado);
+  }
+
+  set_txtGo()
+  {
+    const txtgo = new Textos(this, {
+      x: Math.floor(this.sys.game.config.width / 2),
+      y: Math.floor(this.sys.game.config.height / 2),
+      txt: ' Go! ',
+      size: 90, color: '#ffa', style: 'bold',
+      stroke: '#4f1', sizeStroke: 16,
+      shadowOsx: 2, shadowOsy: 2, shadowColor: '#111111',
+      bool1: false, bool2: true, origin: [0.5, 0.5],
+      elastic: false, dura: 0
+    });
+    
+    txtgo.create();
+    txtgo.get().setDepth(Settings.depth.textos);
+
+    this.tweens.add({
+      targets: txtgo.get(), alpha: 0, duration: 2200
+    });
   }
 
   texto_enhorabuena()
@@ -153,22 +175,22 @@ export class Game extends Scene
 
   rexVirtualJoystick()
   {
-      this.joyStick = this.plugins.get('rexvirtualjoystickplugin').add(this, {
-          x: 90,
-          y: this.sys.game.config.height - 50,
-          radius: 60,
-          base: this.add.circle(0, 0, 60, 0x888888, 0.4),
-          // base: this.add.image(0, 0, 'boton-fire-joystick').setScale(1),
-          thumb: this.add.circle(0, 0, 30, 0xcccccc, 0.7),
-          // thumb: this.add.image(0, 0, 'base-joystick').setScale(1)
-          dir: '4dir',
-          // forceMin: 16,
-          fixed: true,
-          enable: true
-      });
-      
-      console.log(this.joyStick);
-      this.joystickCursors = this.joyStick.createCursorKeys();
+    this.joyStick = this.plugins.get('rexvirtualjoystickplugin').add(this, {
+      x: 90,
+      y: this.sys.game.config.height - 50,
+      radius: 60,
+      base: this.add.circle(0, 0, 60, 0x888888, 0.4),
+      // base: this.add.image(0, 0, 'boton-fire-joystick').setScale(1),
+      thumb: this.add.circle(0, 0, 30, 0xcccccc, 0.7),
+      // thumb: this.add.image(0, 0, 'base-joystick').setScale(1)
+      dir: '4dir',
+      // forceMin: 16,
+      fixed: true,
+      enable: true
+    });
+    
+    console.log(this.joyStick);
+    this.joystickCursors = this.joyStick.createCursorKeys();
   }
 
   hideMobileControls()
@@ -245,9 +267,8 @@ export class Game extends Scene
 
   set_sonidos()
   {
-    // this.sonido_preparado = this.sound.add('sonidoPacmanInicioNivel');
-    // play_sonidos(this.sonido_preparado, false, 0.8);
-
+    this.sonido_getReady = this.sound.add('get-ready');
+    play_sonidos(this.sonido_getReady, false, 0.9);
     this.sonido_ziuuu = this.sound.add('ziuuu');
   }
 }
