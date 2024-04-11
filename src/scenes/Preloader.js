@@ -63,6 +63,9 @@ export class Preloader extends Scene
             this.load.image(`tile${i}`, `./img/tile${i}.png`);
         }
 
+        this.load.tilemapTiledJSON('map1', './json/tiles-pingu.json');
+        this.load.image('tiles1', './img/tiles-pingu.png');
+
         this.load.spritesheet('pengo-ssheet', './img/pengo-ssheet.png', {frameWidth: 50, frameHeight: 50});
 
         // Pluggin VirtualJoystick

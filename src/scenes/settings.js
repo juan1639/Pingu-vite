@@ -19,6 +19,12 @@ export class Settings
         y: 48
     };
 
+    static layer1 =
+    {
+        scaleX: 1,
+        scaleY: 1
+    };
+
     static gameOver = false;
 
     static puntos = 0;
@@ -31,8 +37,10 @@ export class Settings
 
     static jugador =
     {
-        posIniX: 0,
-        posIniY: 0,
+        posIniX: 1,
+        posIniY: 1,
+        oriX: 0,
+        oriY: 0,
         velX: Settings.velJugador,
         velY: Settings.velJugador,
         moving: false,
@@ -121,6 +129,11 @@ export class Settings
     };
 
     // --- Getters ---
+    static getLayer1()
+    {
+        return Settings.layer1;
+    }
+
     static getTxtScore()
     {
         return Settings.txtScore;
@@ -182,6 +195,16 @@ export class Settings
     }
 
     // --- Setters ---
+    static setLaye1ScaleX(valor)
+    {
+        Settings.layer1.scaleX = valor;
+    };
+
+    static setLaye1ScaleY(valor)
+    {
+        Settings.layer1.scaleY = valor;
+    };
+
     static setNivelSuperado(bool)
     {
         Settings.pausas.nivelSuperado.superado = bool;

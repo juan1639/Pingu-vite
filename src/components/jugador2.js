@@ -2,15 +2,19 @@ import { Settings } from '../scenes/settings.js';
 
 export class Jugador
 {
-    constructor(scene)
+    constructor(scene, args)
     {
         this.relatedScene = scene;
+        this.args = args;
     }
 
-    create(x, y)
+    create()
     {
+        const {x, y, oriX, oriY} = this.args;
+
         this.jugador = this.relatedScene.physics.add.sprite(x, y, 'pengo-ssheet');
 
+        this.jugador.setOrigin(oriX, oriY);
         this.jugador.setAngle(0).setDepth(Settings.depth.jugador).setScale(0.9);
 
         this.jugador.setCircle(Math.floor(Settings.tileXY.y / 2));
