@@ -58,14 +58,11 @@ export class Preloader extends Scene
         this.load.spritesheet('radio-buttons', './img/radio-buttons-lightblue.png', {frameWidth: 50, frameHeight: 50});
         this.load.spritesheet('boton-fullscreen', './img/boton-fullscreen.png', {frameWidth: 64, frameHeight: 64});
 
-        for (let i = 7; i < 10; i ++)
+        for (let i = 1; i < 5; i ++)
         {
             this.load.image(`tile${i}`, `./img/tile${i}.png`);
         }
-
-        this.load.tilemapTiledJSON('map1', './json/tiles-pingu.json');
-        this.load.image('tiles1', './img/tiles-pingu.png');
-
+        
         this.load.spritesheet('pengo-ssheet', './img/pengo-ssheet.png', {frameWidth: 50, frameHeight: 50});
 
         // Pluggin VirtualJoystick

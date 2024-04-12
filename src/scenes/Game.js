@@ -53,17 +53,12 @@ export class Game extends Scene
     // 1.48 1.68 ajustar size fondo al scroll
     this.add.image(0, 0, 'fondo').setScale(1.48, 1.68).setDepth(Settings.depth.fondo).setOrigin(0, 0);
 
-    this.map1 = this.make.tilemap({ key: 'map1' }); //json file
-    this.tileset1 = this.map1.addTilesetImage('tiles-ejemplo1', 'tiles1'); //image file.png
-    this.layer1 = this.map1.createLayer('pantalla-ejemplo1', this.tileset1, 0, 0);
-    this.layer1.setScale(Settings.getLayer1().scaleX, Settings.getLayer1().scaleY);
-    
     this.set_sonidos();
-    this.set_cameras2();
+    this.set_cameras();
     // this.set_cameras_controles();
     this.set_cameras_marcadores();
 
-    // this.bloques.create();
+    this.bloques.create();
     this.jugador.create();
 
     // this.jugadorshowvidas.create();
@@ -182,12 +177,7 @@ export class Game extends Scene
     // this.physics.add.overlap(this.jugador.get(), this.fantasmas.get(), overlapJugadorFantasmas, exceptoNotVisible, this);
     
     // Collide Jugador-Bloques
-    // this.physics.add.collider(this.jugador.get(), this.bloques.get(), colliderJugadorBloques, null, this);
-
-    this.map1.setCollision(1);
-    // this.map1.setCollisionByExclusion([4, 6]);
-    // this.map1.setCollisionBetween(1, 4);
-    this.physics.add.collider(this.jugador.get(), this.layer1, colliderJugadorBloques, null, this);
+    this.physics.add.collider(this.jugador.get(), this.bloques.get(), colliderJugadorBloques, null, this);
   }
 
   rexVirtualJoystick()
@@ -220,7 +210,7 @@ export class Game extends Scene
       }
   }
 
-  /* set_cameras()
+  set_cameras()
   {
     this.cameras.main.setBounds(
       0, -Math.floor(Settings.tileXY.y / 2),
@@ -232,21 +222,6 @@ export class Game extends Scene
       0, -Math.floor(Settings.tileXY.y / 2),
       Math.floor(this.sys.game.config.width * Settings.screen.escBoundsX),
       Math.floor(this.sys.game.config.height * Settings.screen.escBoundsY + Math.floor(Settings.tileXY.y / 2))
-    );
-  } */
-
-  set_cameras2()
-  {
-    this.cameras.main.setBounds(
-      0, 0,
-      this.layer1.x + this.layer1.width * Settings.getLayer1().scaleX,
-      this.layer1.height * Settings.getLayer1().scaleY
-    );
-
-    this.physics.world.setBounds(
-      this.sys.game.config.width / 4, 0,
-      this.layer1.x + (this.layer1.width * Settings.getLayer1().scaleX),// - this.sys.game.config.width,
-      this.layer1.height * Settings.getLayer1().scaleY
     );
   }
 
