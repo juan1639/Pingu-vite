@@ -1,3 +1,4 @@
+import { matrixLevels } from '../scenes/matrixLevels.js';
 import { Settings } from '../scenes/settings.js';
 
 export class Jugador
@@ -91,7 +92,7 @@ export class Jugador
     
             if (this.controles.space.isDown)
             {
-                console.log('empujar');
+                this.handlePushBlock();
             }
         }
         else
@@ -109,6 +110,30 @@ export class Jugador
 
         this.jugador.x += dirX * Settings.jugador.velX;
         this.jugador.y += dirY * Settings.jugador.velY;
+    }
+
+    handlePushBlock()
+    {
+        // Push Block...
+        const x = Math.floor(this.jugador.x / Settings.tileXY.x) + Settings.jugador.direccion[this.jugador.getData('direccion')][0];
+        const y = Math.floor(this.jugador.y / Settings.tileXY.y) + Settings.jugador.direccion[this.jugador.getData('direccion')][1];
+
+        const nivel = Settings.getNivel();
+        const checkBlock = matrixLevels.array_levels[nivel][y][x];
+
+        if (checkBlock !== 6) console.log('empujar');
+
+        // Push Jewel...
+        const contiguaX = this.jugador.x + Settings.jugador.direccion[this.jugador.getData('direccion')][0] * Settings.tileXY.x;
+        const contiguaY = this.jugador.y + Settings.jugador.direccion[this.jugador.getData('direccion')][1] * Settings.tileXY.y;
+
+        this.relatedScene.jewels.get().children.iterate((gem, index) =>
+        {
+            if (contiguaX === gem.x && contiguaY === gem.y)
+            {
+                console.log('empujarJewel' + index);
+            }
+        });
     }
 
     get()

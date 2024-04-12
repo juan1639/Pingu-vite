@@ -37,8 +37,8 @@ export class Settings
 
     static jugador =
     {
-        posIniX: 1,
-        posIniY: 1,
+        posIniX: 9,
+        posIniY: 7,
         oriX: 0.5,
         oriY: 0.5,
         velX: Settings.velJugador,

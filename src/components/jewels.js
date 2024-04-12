@@ -38,7 +38,7 @@ export class Jewels
                 x = Phaser.Math.Between(1, matrix[0].length - 2);
                 y = Phaser.Math.Between(1, matrix.length - 2);
 
-            } while (matrix[y][x] !== 6);
+            } while (matrix[y][x] !== 6 || (y === Settings.jugador.posIniY && x === Settings.jugador.posIniX));
 
             this.jewels.create(x * Settings.tileXY.x, y * Settings.tileXY.y).setScale(0.75); // Scale 48/64
         }
