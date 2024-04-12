@@ -6,6 +6,7 @@
 // ------------------------------------------------------------
 import { Scene } from 'phaser';
 import { Laberinto } from '../components/laberinto.js';
+import { Jewels } from '../components/jewels.js';
 import { Jugador, JugadorDies, JugadorShowVidas } from '../components/jugador2.js';
 import { Textos } from '../components/textos.js';
 import { Marcador } from './../components/marcador.js';
@@ -32,6 +33,7 @@ export class Game extends Scene
     this.set_pausaInicial(2800);
 
     this.bloques = new Laberinto(this);
+    this.jewels = new Jewels(this);
 
     this.jugador = new Jugador(this, {
       x: Settings.jugador.posIniX * Settings.tileXY.x,
@@ -59,6 +61,7 @@ export class Game extends Scene
     this.set_cameras_marcadores();
 
     this.bloques.create();
+    this.jewels.create();
     this.jugador.create();
 
     // this.jugadorshowvidas.create();
@@ -178,6 +181,9 @@ export class Game extends Scene
     
     // Collide Jugador-Bloques
     this.physics.add.collider(this.jugador.get(), this.bloques.get(), colliderJugadorBloques, null, this);
+
+    // Collide Jugador-Jewels
+    this.physics.add.collider(this.jugador.get(), this.jewels.get(), colliderJugadorBloques, null, this);
   }
 
   rexVirtualJoystick()
