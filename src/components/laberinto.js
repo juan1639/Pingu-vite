@@ -27,11 +27,25 @@ export class Laberinto
         this.tile.children.iterate((block, index) =>
         {
             block.setScale(0.75).setImmovable(true).refreshBody().setDepth(Settings.depth.bloques);
+            // block.setCollideWorldBounds(true);
             block.setData('id', index);
+            block.setData('vel-x', 0).setData('vel-y', 0);
             // console.log(block.getData('id'));
         });
 
         console.log(this.tile);
+    }
+
+    update()
+    {
+        this.tile.children.iterate((block, index) =>
+        {
+            if (block.getData('vel-x') !== 0 || block.getData('vel-y') !== 0)
+            {
+                block.setX(block.x + block.getData('vel-x'));
+                block.setY(block.y + block.getData('vel-y'));
+            }
+        });
     }
 
     static check_colision(x, y)

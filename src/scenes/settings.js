@@ -59,6 +59,12 @@ export class Settings
         }
     };
 
+    static bloques =
+    {
+        vel: 200,
+        velPxl: 4
+    };
+
     static incGodownInvaders =
     [
         2, 2, 4, 5, 8, 10, 12, 15, 18, 20, 22, 25, 28, 30, 30, 30, 30, 30, 30, 30, 30

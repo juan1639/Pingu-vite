@@ -17,6 +17,7 @@ import {
   // overlapJugadorFantasmas,
   colliderJugadorBloques,
   colliderJugadorJewels,
+  colliderBloquesBloques,
   play_sonidos
 } from '../functions/functions.js';
 
@@ -86,6 +87,7 @@ export class Game extends Scene
   {
     if (!Settings.pausas.inicial && !Settings.isGameOver())
     {
+      this.bloques.update();
       this.jugador.update();
     }
 
@@ -193,6 +195,9 @@ export class Game extends Scene
 
     // Collide Jugador-Jewels
     this.physics.add.collider(this.jugador.get(), this.jewels.get(), colliderJugadorJewels, null, this);
+
+    // Collide Bloques-Bloques
+    this.physics.add.collider(this.bloques.get(), this.bloques.get(), colliderBloquesBloques, null, this);
   }
 
   rexVirtualJoystick()

@@ -103,7 +103,26 @@ function colliderJugadorBloques(jugador, bloques)
   // console.log(bloques);
 
   if (!this.jugador.controles.space.isDown) console.log('colision:' + bloques.getData('id'));
-  if (this.jugador.controles.space.isDown) console.log('empujando:' + bloques.getData('id'));
+
+  if (this.jugador.controles.space.isDown)
+  {
+    let indexTecla = 99; // No direction-key pressed
+
+    Object.values(Settings.jugador.teclas).forEach((tecla, index) =>
+    {
+      if (this.jugador.controles[tecla].isDown) indexTecla = index; 
+    });
+
+    console.log('empujando:' + bloques.getData('id'), indexTecla);
+
+    const array_vel = [[-1, 0], [1, 0], [0, -1], [0, 1]];
+
+    if (indexTecla >= 0 && indexTecla < 4)
+    {
+      bloques.setData('vel-x', array_vel[indexTecla][0] * Settings.bloques.velPxl);
+      bloques.setData('vel-y', array_vel[indexTecla][1] * Settings.bloques.velPxl);
+    }
+  }
   
   this.jugador.get().setX(this.jugador.viejaX);
   this.jugador.get().setY(this.jugador.viejaY);
@@ -119,6 +138,19 @@ function colliderJugadorJewels(jugador, jewels)
   
   this.jugador.get().setX(this.jugador.viejaX);
   this.jugador.get().setY(this.jugador.viejaY);
+}
+
+function colliderBloquesBloques(bloques1, bloques2)
+{
+  // console.log(bloques1);
+  // console.log(bloques2);
+  // console.log('.....');
+
+  // Decrease to 'exact pos'
+  bloques1.setX(bloques1.x + -(bloques1.getData('vel-x')));
+  bloques1.setY(bloques1.y + -(bloques1.getData('vel-y')));
+
+  bloques1.setData('vel-x', 0).setData('vel-y', 0);
 }
 
 function colisionJugadorVsEnemigo(enemigo, jugador)
@@ -397,5 +429,6 @@ function play_sonidos(id, loop, volumen)
 export {
   colliderJugadorBloques,
   colliderJugadorJewels,
+  colliderBloquesBloques,
   play_sonidos
 };
