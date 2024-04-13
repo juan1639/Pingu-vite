@@ -92,7 +92,7 @@ export class Jugador
     
             if (this.controles.space.isDown)
             {
-                this.handlePushBlock();
+                // this.handlePushBlock();
             }
         }
         else
@@ -121,7 +121,7 @@ export class Jugador
         const nivel = Settings.getNivel();
         const checkBlock = matrixLevels.array_levels[nivel][y][x];
 
-        if (checkBlock !== 6) console.log('empujar');
+        if (checkBlock !== 6) console.log(`empujar:${y}${x}`);
 
         // Push Jewel...
         const contiguaX = this.jugador.x + Settings.jugador.direccion[this.jugador.getData('direccion')][0] * Settings.tileXY.x;

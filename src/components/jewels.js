@@ -43,9 +43,10 @@ export class Jewels
             this.jewels.create(x * Settings.tileXY.x, y * Settings.tileXY.y).setScale(0.75); // Scale 48/64
         }
 
-        this.jewels.children.iterate(gem =>
+        this.jewels.children.iterate((gem, index) =>
         {
             gem.play('jewels-anim', true);
+            gem.setData('id', index);
         });
 
         console.log(this.jewels);

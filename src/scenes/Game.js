@@ -16,6 +16,7 @@ import { BotonFullScreen, BotonNuevaPartida, BotonEsc } from '../components/boto
 import {
   // overlapJugadorFantasmas,
   colliderJugadorBloques,
+  colliderJugadorJewels,
   play_sonidos
 } from '../functions/functions.js';
 
@@ -191,7 +192,7 @@ export class Game extends Scene
     this.physics.add.collider(this.jugador.get(), this.bloques.get(), colliderJugadorBloques, null, this);
 
     // Collide Jugador-Jewels
-    this.physics.add.collider(this.jugador.get(), this.jewels.get(), colliderJugadorBloques, null, this);
+    this.physics.add.collider(this.jugador.get(), this.jewels.get(), colliderJugadorJewels, null, this);
   }
 
   rexVirtualJoystick()
@@ -286,7 +287,7 @@ export class Game extends Scene
     });
 
     this.botonesc = new BotonEsc(this, {
-      left: Math.floor(ancho * 1.42), top: marcadoresPosY + 24, id: 'boton-nueva-partida',
+      left: Math.floor(ancho * 1.42), top: marcadoresPosY + 26, id: 'boton-nueva-partida',
       scX: 0.4, scY: 0.4, angle: 0, originX: 0.5, originY: 0.5, texto: 'Music', nextScene: ''
     });
   }

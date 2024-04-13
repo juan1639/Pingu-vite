@@ -99,9 +99,24 @@ function enemigo_gira(ene, scene)
 
 function colliderJugadorBloques(jugador, bloques)
 {
-  console.log('colision');
   // console.log(jugador);
   // console.log(bloques);
+
+  if (!this.jugador.controles.space.isDown) console.log('colision:' + bloques.getData('id'));
+  if (this.jugador.controles.space.isDown) console.log('empujando:' + bloques.getData('id'));
+  
+  this.jugador.get().setX(this.jugador.viejaX);
+  this.jugador.get().setY(this.jugador.viejaY);
+}
+
+function colliderJugadorJewels(jugador, jewels)
+{
+  // console.log(jugador);
+  // console.log(jewels);
+
+  if (!this.jugador.controles.space.isDown) console.log('colision:' + jewels.getData('id'));
+  if (this.jugador.controles.space.isDown) console.log('empujando:' + jewels.getData('id'));
+  
   this.jugador.get().setX(this.jugador.viejaX);
   this.jugador.get().setY(this.jugador.viejaY);
 }
@@ -381,5 +396,6 @@ function play_sonidos(id, loop, volumen)
 
 export {
   colliderJugadorBloques,
+  colliderJugadorJewels,
   play_sonidos
 };

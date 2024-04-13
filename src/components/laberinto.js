@@ -24,6 +24,13 @@ export class Laberinto
             }
         }
 
+        this.tile.children.iterate((block, index) =>
+        {
+            block.setScale(0.75).setImmovable(true).refreshBody().setDepth(Settings.depth.bloques);
+            block.setData('id', index);
+            // console.log(block.getData('id'));
+        });
+
         console.log(this.tile);
     }
 
@@ -41,12 +48,20 @@ export class Laberinto
         if (valor !== 6)
         {
             this.tile.create(
-                ii * Settings.tileXY.x,
-                i * Settings.tileXY.y,
-                `tile${valor}`
-            ).setScale(0.75).setDepth(Settings.depth.bloques).setImmovable(true).refreshBody();
+                ii * Settings.tileXY.x, i * Settings.tileXY.y, `tile${valor}`
+            );
         }
         // Scale 0.75 = 48 / 64 --> (tileXY) / (img.png width or height)
+    }
+
+    set_idFormat(index)
+    {
+        const nivel = Settings.getNivel();
+
+        const y = Math.floor(index / Settings.matrixLevels.array_levels[nivel][0].length);
+        const x = index - y * Settings.matrixLevels.array_levels[nivel][0].length;
+
+        return [y, x];
     }
 
     get()

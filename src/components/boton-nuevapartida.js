@@ -136,7 +136,7 @@ export class BotonEsc
       y: top,
       txt: texto,
       size: 25, color: '#fb1', style: 'bold',
-      stroke: '#f61', sizeStroke: 8,
+      stroke: '#18c', sizeStroke: 8,
       shadowOsx: 2, shadowOsy: 2, shadowColor: '#111111',
       bool1: false, bool2: true, origin: [0.5, 0.5],
       elastic: false, dura: 0
