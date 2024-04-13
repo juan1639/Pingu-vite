@@ -148,7 +148,7 @@ export class BotonEsc
     this.boton.on('pointerover', () =>
     {
       // this.boton.setFrame(1);
-      this.boton.setScale(scX + 0.1, scY + 0.1);
+      this.boton.setScale(scX + 0.03, scY + 0.03);
     });
 
     this.boton.on('pointerout', () =>
@@ -161,14 +161,14 @@ export class BotonEsc
     {
       if (texto.includes('Music'))
       {
-        if (Settings.audio.music.volume > 0)
+        if (Settings.audio.musicaFondo.volume > 0)
         {
-          Settings.audio.music.volume = 0;
+          Settings.audio.musicaFondo.volume = 0;
           this.txt.get().setAlpha(0.3);
         }
         else
         {
-          Settings.audio.music.volume = 0.6;
+          Settings.audio.musicaFondo.volume = 0.6;
           this.txt.get().setAlpha(1);
         }
       }

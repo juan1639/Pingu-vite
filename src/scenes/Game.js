@@ -281,13 +281,13 @@ export class Game extends Scene
     });
 
     this.botonfullscreen = new BotonFullScreen(this, {
-      x: Math.floor(ancho * 1.6), y: marcadoresPosY + 7, id: 'boton-fullscreen',
+      x: Math.floor(ancho * 1.55), y: marcadoresPosY + 7, id: 'boton-fullscreen',
       orX: 0, orY: 0, scX: 1.2, scY: 0.8, ang: 0
     });
 
     this.botonesc = new BotonEsc(this, {
-      left: Math.floor(ancho * 1.4), top: marcadoresPosY + 7, id: 'boton-fullscreen',
-      scX: 1, scY: 1, angle: 0, originX: 0, originY: 0, texto: 'Music', nextScene: ''
+      left: Math.floor(ancho * 1.42), top: marcadoresPosY + 24, id: 'boton-nueva-partida',
+      scX: 0.4, scY: 0.4, angle: 0, originX: 0.5, originY: 0.5, texto: 'Music', nextScene: ''
     });
   }
 
