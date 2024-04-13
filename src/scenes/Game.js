@@ -11,7 +11,7 @@ import { Jugador, JugadorDies, JugadorShowVidas } from '../components/jugador2.j
 import { Textos } from '../components/textos.js';
 import { Marcador } from './../components/marcador.js';
 import { Settings } from './settings.js';
-import { BotonFullScreen, BotonNuevaPartida } from '../components/boton-nuevapartida.js';
+import { BotonFullScreen, BotonNuevaPartida, BotonEsc } from '../components/boton-nuevapartida.js';
 
 import {
   // overlapJugadorFantasmas,
@@ -70,6 +70,7 @@ export class Game extends Scene
     this.marcadorNivel.create();
     this.marcadorHi.create();
     this.botonfullscreen.create();
+    this.botonesc.create();
 
     this.rexVirtualJoystick();
     this.hideMobileControls();
@@ -122,6 +123,13 @@ export class Game extends Scene
     this.txtpreparado.get().setDepth(Settings.depth.textos);
     
     const timeline = this.add.timeline([
+      {
+        at: tiempo - 300,
+        run: () =>
+        {
+          play_sonidos(Settings.audio.musicaFondo, true, 0.6);
+        }
+      },
       {
         at: tiempo,
         run: () =>
@@ -273,8 +281,13 @@ export class Game extends Scene
     });
 
     this.botonfullscreen = new BotonFullScreen(this, {
-      x: Math.floor(ancho * 1.5), y: marcadoresPosY + 7, id: 'boton-fullscreen',
+      x: Math.floor(ancho * 1.6), y: marcadoresPosY + 7, id: 'boton-fullscreen',
       orX: 0, orY: 0, scX: 1.2, scY: 0.8, ang: 0
+    });
+
+    this.botonesc = new BotonEsc(this, {
+      left: Math.floor(ancho * 1.4), top: marcadoresPosY + 7, id: 'boton-fullscreen',
+      scX: 1, scY: 1, angle: 0, originX: 0, originY: 0, texto: 'Music', nextScene: ''
     });
   }
 
@@ -282,6 +295,8 @@ export class Game extends Scene
   {
     this.sonido_getReady = this.sound.add('get-ready');
     play_sonidos(this.sonido_getReady, false, 0.9);
+
     this.sonido_ziuuu = this.sound.add('ziuuu');
+    Settings.audio.musicaFondo = this.sound.add('musica-fondo');
   }
 }

@@ -81,15 +81,17 @@ export class Settings
     };
 
     static depth = {
-        fondo: -200,
-        bloques: -180,
-        limites: -160,
-        jugador: -140,
-        enemigo: -120,
-        explosiones: -100,
-        marcadores: -50,
-        textos: -40,
-        mobileControls: -30
+        fondo: -900,
+        bloques: -800,
+        limites: -700,
+        jugador: -600,
+        enemigo: -500,
+        explosiones: -400,
+        marcadores: -300,
+        botones: -200,
+        botonesTxt: -150,
+        textos: -100,
+        mobileControls: -50
     };
 
     static cameraScores = {
@@ -103,7 +105,8 @@ export class Settings
 
     static audio =
     {
-        monedaMario: null
+        monedaMario: null,
+        musicaFondo: null
     };
 
     // --- Getters ---

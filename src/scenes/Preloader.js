@@ -53,7 +53,7 @@ export class Preloader extends Scene
 
         this.load.image('fondo', './img/bg.png');
 
-        this.load.image('boton-nueva-partida', './img/boton-start.png');
+        this.load.image('boton-nueva-partida', './img/ui-newgame.png');
         this.load.image('boton-fire-joystick', './img/boton-fire-joystick.png');
         this.load.spritesheet('radio-buttons', './img/radio-buttons-lightblue.png', {frameWidth: 50, frameHeight: 50});
         this.load.spritesheet('boton-fullscreen', './img/boton-fullscreen.png', {frameWidth: 64, frameHeight: 64});
@@ -78,6 +78,7 @@ export class Preloader extends Scene
         this.load.audio('moneda-mario', './audio/p-ping.mp3');
         this.load.audio('ziuuu1', './audio/slide-whistle-1.mp3');
         this.load.audio('ziuuu2', './audio/slide-whistle-2.mp3');
+        this.load.audio('musica-fondo', './audio/musica-fondo.mp3');
     }
 
     create()

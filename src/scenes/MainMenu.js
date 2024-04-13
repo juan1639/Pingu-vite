@@ -2,6 +2,7 @@ import { Scene } from 'phaser';
 import { Textos } from '../components/textos.js';
 import { play_sonidos } from '../functions/functions.js';
 import { BotonNuevaPartida } from '../components/boton-nuevapartida.js';
+import { Settings } from './settings.js';
 
 export class MainMenu extends Scene
 {
@@ -38,7 +39,7 @@ export class MainMenu extends Scene
     {
         const aparecerBoton = 1800; // 1800
 
-        this.add.image(0, 0, 'fondo').setOrigin(0, 0);
+        this.add.image(0, 0, 'fondo').setOrigin(0, 0).setDepth(Settings.depth.fondo);
 
         this.txt.create();
 

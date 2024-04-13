@@ -31,7 +31,7 @@ export class BotonNuevaPartida
     });
 
     this.txt.create();
-    this.txt.get().setDepth(Settings.depth.textos).setAlpha(1).setScale(1);
+    this.txt.get().setDepth(Settings.depth.botonesTxt).setAlpha(1).setScale(1);
 
     this.boton.on('pointerover', () =>
     {
@@ -126,8 +126,6 @@ export class BotonEsc
 
   create()
   {
-    const sonido_abucheos = this.relatedScene.sound.add('abucheos');
-
     const {left, top, id, scX, scY, angle, originX, originY, texto, nextScene} = this.args;
 
     this.boton = this.relatedScene.add.sprite(left, top, id).setInteractive();
@@ -145,7 +143,7 @@ export class BotonEsc
     });
 
     this.txt.create();
-    this.txt.get().setDepth(Settings.depth.botones).setAlpha(1).setScale(1);
+    this.txt.get().setDepth(Settings.depth.botonesTxt).setAlpha(1).setScale(1);
 
     this.boton.on('pointerover', () =>
     {
@@ -161,28 +159,21 @@ export class BotonEsc
 
     this.boton.on('pointerdown', (e) =>
     {
-      // console.log(e);
-      if (texto.includes('Esc'))
-      {
-        if (Settings.getAudio().music) Settings.getAudio().music.volume = 0;
-        play_sonidos(sonido_abucheos, false, 0.8);
-      }
-
       if (texto.includes('Music'))
       {
-        if (Settings.getAudio().music.volume > 0)
+        if (Settings.audio.music.volume > 0)
         {
-          Settings.getAudio().music.volume = 0;
+          Settings.audio.music.volume = 0;
           this.txt.get().setAlpha(0.3);
         }
         else
         {
-          Settings.getAudio().music.volume = 0.6;
+          Settings.audio.music.volume = 0.6;
           this.txt.get().setAlpha(1);
         }
       }
       
-      if (texto.includes('?'))
+      /* if (texto.includes('?'))
       {
         if (!this.relatedScene.bg.visible)
         {
@@ -194,7 +185,7 @@ export class BotonEsc
           this.relatedScene.bg.setVisible(false);
           this.relatedScene.txthowtoplay.get().setVisible(false);
         }
-      }
+      } */
 
       if (nextScene !== '') this.relatedScene.scene.start(nextScene);
     });
