@@ -230,12 +230,14 @@ export class Game extends Scene
 
   hideMobileControls()
   {
-      console.log(Settings.controlElegido);
-      
-      if (!Settings.controlElegido.mobile)
-      {
-        this.joyStick.setVisible(false);
-      }
+    console.log(Settings.controlElegido);
+    
+    if (!Settings.controlElegido.mobile)
+    {
+      this.joyStick.setVisible(false);
+      this.botonfire.get().setVisible(false);
+      this.botonfire.txt.get().setVisible(false);
+    }
   }
 
   set_cameras()
