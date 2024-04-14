@@ -155,7 +155,11 @@ function colliderBloquesBloques(bloques1, bloques2)
   Settings.mideTiempo[1] = this.time.now;
   const checkRomper = Settings.mideTiempo[2];
 
-  if (Settings.mideTiempo[1] - Settings.mideTiempo[0] < checkRomper) console.log('romper!!');
+  if (Settings.mideTiempo[1] - Settings.mideTiempo[0] < checkRomper)
+  {
+    console.log('romper!!');
+    play_sonidos(this.sonido_crash, false, 0.6);
+  }
 
   // Decrease to 'exact pos'
   bloques1.setX(bloques1.x + -(bloques1.getData('vel-x')));

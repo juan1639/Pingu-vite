@@ -313,6 +313,7 @@ export class Game extends Scene
     play_sonidos(this.sonido_getReady, false, 0.9);
 
     this.sonido_ziuuu = this.sound.add('ziuuu1');
+    this.sonido_crash = this.sound.add('crash');
     Settings.audio.musicaFondo = this.sound.add('musica-fondo');
   }
 }
