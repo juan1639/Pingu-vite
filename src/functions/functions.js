@@ -108,7 +108,8 @@ function colliderJugadorBloques(jugador, bloques)
     (this.jugador.controles.space.isDown && Settings.controlElegido.teclado) ||
     (this.botonfire.isDown && Settings.controlElegido.mobile))
   {
-    let indexTecla = 99; // No direction-key pressed
+    let indexTecla = 99; // No direction-key pressed (default)
+    play_sonidos(this.sonido_ziuuu, false, 0.2);
 
     Object.values(Settings.jugador.teclas).forEach((tecla, index) =>
     {

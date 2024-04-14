@@ -312,7 +312,7 @@ export class Game extends Scene
     this.sonido_getReady = this.sound.add('get-ready');
     play_sonidos(this.sonido_getReady, false, 0.9);
 
-    this.sonido_ziuuu = this.sound.add('ziuuu');
+    this.sonido_ziuuu = this.sound.add('ziuuu1');
     Settings.audio.musicaFondo = this.sound.add('musica-fondo');
   }
 }
