@@ -79,6 +79,7 @@ export class Preloader extends Scene
         this.load.audio('ziuuu1', './audio/slide-whistle-1.mp3');
         this.load.audio('ziuuu2', './audio/slide-whistle-2.mp3');
         this.load.audio('musica-fondo', './audio/musica-fondo.mp3');
+        this.load.audio('crash', './audio/crash.mp3');
     }
 
     create()

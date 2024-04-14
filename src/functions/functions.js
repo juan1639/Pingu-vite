@@ -111,6 +111,8 @@ function colliderJugadorBloques(jugador, bloques)
     let indexTecla = 99; // No direction-key pressed (default)
     play_sonidos(this.sonido_ziuuu, false, 0.2);
 
+    Settings.mideTiempo[0] = this.time.now;
+
     Object.values(Settings.jugador.teclas).forEach((tecla, index) =>
     {
       if (this.jugador.controles[tecla].isDown) indexTecla = index; 
@@ -148,6 +150,12 @@ function colliderBloquesBloques(bloques1, bloques2)
   // console.log(bloques1);
   // console.log(bloques2);
   // console.log('.....');
+
+  // Check --> if 'shortTime collision' --> destroy block
+  Settings.mideTiempo[1] = this.time.now;
+  const checkRomper = Settings.mideTiempo[2];
+
+  if (Settings.mideTiempo[1] - Settings.mideTiempo[0] < checkRomper) console.log('romper!!');
 
   // Decrease to 'exact pos'
   bloques1.setX(bloques1.x + -(bloques1.getData('vel-x')));
