@@ -5,7 +5,7 @@ This is a recreation of sega arcade classic Pengo of 1982.
 To play:
 https://juan1639.github.io/Pingu-vite
 
-<img src="miniatura-pingu" alt="img of this game"/>
+<img src="miniatura-pingu.png" alt="img of this game"/>
 
 # Phaser Vite Template
 
