@@ -12,6 +12,7 @@ export class BotonFire
     create()
     {
         const {left, top, id, scX, scY, angle, originX, originY, alpha, texto} = this.args;
+        this.isDown = false;
 
         this.boton = this.relatedScene.add.sprite(left, top, id).setInteractive();
         this.boton.setOrigin(originX, originY).setScale(scX, scY).setAngle(angle).setAlpha(alpha);
@@ -46,7 +47,8 @@ export class BotonFire
             this.isDown = true;
         });
 
-        this.boton.on('pointerup', () => {
+        this.boton.on('pointerup', () =>
+        {
             this.isDown = false;
         });
     }

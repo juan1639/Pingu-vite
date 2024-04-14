@@ -49,9 +49,9 @@ export class Game extends Scene
 
     this.botonfire = new BotonFire(this, {
       left: Math.floor(this.sys.game.config.width / 1.1),
-      top: 500,
+      top: -500,
       id: 'boton-fire-joystick',
-      scX: 0.6, scY: 1, angle: 0, originX: 0.5, originY: 0.5, alpha: 0.6, texto: 'Push'
+      scX: 0.6, scY: 1.1, angle: 0, originX: 0.5, originY: 0.5, alpha: 0.6, texto: 'Push'
     });
 
     this.instanciar_marcadores();
@@ -66,7 +66,7 @@ export class Game extends Scene
 
     this.set_sonidos();
     this.set_cameras();
-    // this.set_cameras_controles();
+    this.set_cameras_controles();
     this.set_cameras_marcadores();
 
     this.bloques.create();
@@ -257,7 +257,7 @@ export class Game extends Scene
   {
     var { x, y, ancho, alto, scrollX, scrollY } = Settings.getCameraControles();
     
-    this.mapa_controles = this.cameras.add(x, y, ancho, alto).setZoom(0.9).setName('view-controls').setAlpha(0.7).setOrigin(0, 0);
+    this.mapa_controles = this.cameras.add(x, y, ancho, alto).setZoom(0.9).setName('view-controls').setAlpha(1).setOrigin(0, 0);
     this.mapa_controles.scrollX = scrollX;
     this.mapa_controles.scrollY = scrollY;
     // console.log(this.mapa_controles);
@@ -269,7 +269,7 @@ export class Game extends Scene
     
     this.mapa_scores = this.cameras.add(x, y, ancho, alto).setZoom(0.6).setName('view-scores').setAlpha(1).setOrigin(0, 0);
     this.mapa_scores.scrollX = scrollX;
-    this.mapa_scores.scrollY =scrollY;
+    this.mapa_scores.scrollY = scrollY;
     // console.log(this.mapa_scores);
   }
 
@@ -300,8 +300,8 @@ export class Game extends Scene
     });
 
     this.botonesc = new BotonEsc(this, {
-      left: Math.floor(ancho * 1.42), top: marcadoresPosY + 26, id: 'boton-nueva-partida',
-      scX: 0.4, scY: 0.4, angle: 0, originX: 0.5, originY: 0.5, texto: 'Music', nextScene: ''
+      left: Math.floor(ancho * 1.42), top: marcadoresPosY + 26, id: 'boton-fire-joystick',
+      scX: 0.5, scY: 0.5, angle: 0, originX: 0.5, originY: 0.5, texto: 'Music', nextScene: ''
     });
   }
 

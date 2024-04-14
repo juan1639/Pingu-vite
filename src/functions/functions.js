@@ -104,7 +104,9 @@ function colliderJugadorBloques(jugador, bloques)
 
   if (!this.jugador.controles.space.isDown) console.log('colision:' + bloques.getData('id'));
 
-  if (this.jugador.controles.space.isDown || this.joystickCursors[tecla].isDown)
+  if (
+    (this.jugador.controles.space.isDown && Settings.controlElegido.teclado) ||
+    (this.botonfire.isDown && Settings.controlElegido.mobile))
   {
     let indexTecla = 99; // No direction-key pressed
 
