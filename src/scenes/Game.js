@@ -11,7 +11,8 @@ import { Jugador, JugadorDies, JugadorShowVidas } from '../components/jugador2.j
 import { Textos } from '../components/textos.js';
 import { Marcador } from './../components/marcador.js';
 import { Settings } from './settings.js';
-import { BotonFullScreen, BotonNuevaPartida, BotonEsc } from '../components/boton-nuevapartida.js';
+import { BotonFire } from '../components/botonfire.js';
+import { BotonFullScreen, BotonEsc } from '../components/boton-nuevapartida.js';
 
 import {
   // overlapJugadorFantasmas,
@@ -46,8 +47,14 @@ export class Game extends Scene
 
     // this.jugadordies = new JugadorDies(this);
 
+    this.botonfire = new BotonFire(this, {
+      left: Math.floor(this.sys.game.config.width / 1.1),
+      top: 500,
+      id: 'boton-fire-joystick',
+      scX: 0.6, scY: 1, angle: 0, originX: 0.5, originY: 0.5, alpha: 0.6, texto: 'Push'
+    });
+
     this.instanciar_marcadores();
-    this.botonrejugar = new BotonNuevaPartida(this);
   }
 
   preload() {}
@@ -75,6 +82,7 @@ export class Game extends Scene
     this.botonesc.create();
 
     this.rexVirtualJoystick();
+    this.botonfire.create();
     this.hideMobileControls();
 
     this.cameras.main.startFollow(this.jugador.get());
