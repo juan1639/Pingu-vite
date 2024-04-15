@@ -1,4 +1,5 @@
 import { Scene } from 'phaser';
+import { JugadorPreGame } from '../components/jugador2.js';
 import { Textos } from '../components/textos.js';
 import { play_sonidos } from '../functions/functions.js';
 import { BotonNuevaPartida } from '../components/boton-nuevapartida.js';
@@ -13,11 +14,21 @@ export class MainMenu extends Scene
 
     init()
     {
+        this.marioTuberias = this.sound.add('mario-tuberias');
+
+        this.jugador = new JugadorPreGame(this, {
+            // x: Math.floor(this.sys.game.config.width / 2),
+            x: 0,
+            y: Math.floor(this.sys.game.config.height / 2),
+            oriX: Settings.jugador.oriX,
+            oriY: Settings.jugador.oriY,
+        });
+
         this.botoninicio = new BotonNuevaPartida(this, {
             left: Math.floor(this.sys.game.config.width / 2),
             top: Math.floor(this.sys.game.config.height / 1.3),
             id: 'boton-nueva-partida',
-            scX: 0.7, scY: 0.7, angle: 1, originX: 0.5, originY: 0.5,
+            scX: 0.6, scY: 0.5, angle: 1, originX: 0.5, originY: 0.5,
             texto: ' New Game ', nextScene: 'PreGame'
         });
 
@@ -41,6 +52,8 @@ export class MainMenu extends Scene
 
         this.add.image(0, 0, 'fondo').setOrigin(0, 0).setDepth(Settings.depth.fondo);
 
+        this.jugador.create();
+
         this.txt.create();
 
         const basedOn = this.add.text(
@@ -61,7 +74,14 @@ export class MainMenu extends Scene
         ]);
 
         timeline.play();
+
+        play_sonidos(this.marioTuberias, false, 0.6);
         
         console.log(this.txt);
-    }  
+    }
+
+    update()
+    {
+        this.jugador.update();
+    }
 }

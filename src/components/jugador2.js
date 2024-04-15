@@ -215,41 +215,103 @@ export class JugadorShowVidas
 // ================================================================================
 export class JugadorPreGame
 {
-    constructor(scene)
+    constructor(scene, args)
     {
         this.relatedScene = scene;
+        this.args = args;
     }
 
-    create(x, y)
+    create()
     {
-        this.jugadorpregame = this.relatedScene.physics.add.sprite(x, y, 'pacman');
+        const {x, y, oriX, oriY} = this.args;
 
-        this.jugadorpregame.setAngle(0);
+        this.jugadorpregame = this.relatedScene.physics.add.sprite(x, y, 'pengo-ssheet');
+
+        this.jugadorpregame.setOrigin(oriX, oriY);
+        this.jugadorpregame.setAngle(0).setDepth(Settings.depth.jugador).setScale(1.2);
+
+        this.jugadorpregame.setData('direccion', 'ri');// por defecto
+        this.jugadorpregame.setData('anima', this.jugadorpregame.getData('direccion'));
+
+        this.jugadorpregame.setVelocityX(90);
+        this.currentAnima = 0;
+
+        // this.relatedScene.anims.remove('le-ri-up-do');
+
+        const animas = [
+            ['le', 2, 3],
+            ['ri', 6, 7],
+            ['up', 4, 5],
+            ['do', 0, 1]
+        ];
+
+        for (let i = 0; i < animas.length; i ++)
+        {
+            this.relatedScene.anims.create(
+            {
+                key: animas[i][0], 
+                frames: this.relatedScene.anims.generateFrameNumbers(
+                    'pengo-ssheet', {start: animas[i][1], end: animas[i][2]}
+                ),
+                frameRate: 5,
+                yoyo: true,
+                repeat: -1
+            });
+        }
 
         this.relatedScene.anims.create(
         {
-            key: 'le-ri-up-do', 
-            frames: this.relatedScene.anims.generateFrameNumbers('pacman', {start: 0, end: 6}),
-            frameRate: 30,
+            key: 'culete', 
+            frames: this.relatedScene.anims.generateFrameNumbers(
+                'pengo-ssheet', {frames: [20, 21]}
+            ),
+            frameRate: 5,
             yoyo: true,
-            repeat: -1
+            repeat: 2
         });
 
-        this.jugadorpregame.anims.play('le-ri-up-do', true);
+        this.relatedScene.anims.create(
+            {
+                key: 'sentadilla', 
+                frames: this.relatedScene.anims.generateFrameNumbers(
+                    'pengo-ssheet', {frames: [22, 23]}
+                ),
+                frameRate: 5,
+                yoyo: true,
+                repeat: 2
+            });
 
-        const duracionTotal = 8000;
-
-        this.relatedScene.tweens.add(
-        {
-            targets: this.jugadorpregame,
-            x: this.relatedScene.sys.game.config.width + Settings.tileXY.x * 2,
-            yoyo: true,
-            duration: duracionTotal,
-            repeat: -1
-        });
-
-        setInterval(() => {this.jugadorpregame.setFlipX(!this.jugadorpregame.flipX)}, duracionTotal);
+        this.jugadorpregame.anims.play(this.jugadorpregame.getData('anima'), true);
 
         console.log(this.jugadorpregame);
+    }
+
+    update()
+    {
+        if (this.jugadorpregame.x >= 400 && this.currentAnima === 0)
+        {
+            this.currentAnima = 1;
+            this.jugadorpregame.anims.play('culete', true);
+            this.jugadorpregame.setVelocityX(0);
+        }
+
+        if (this.currentAnima === 1 && !this.jugadorpregame.anims.isPlaying)
+        {
+            this.currentAnima = 2;
+            this.jugadorpregame.anims.play('sentadilla', true);
+            this.jugadorpregame.setVelocityX(0);
+        }
+
+        if (this.currentAnima === 2 && !this.jugadorpregame.anims.isPlaying)
+        {
+            this.currentAnima = 3;
+            this.jugadorpregame.anims.play('ri', true);
+            this.jugadorpregame.setVelocityX(0);
+        }
+    }
+
+    get()
+    {
+        return this.jugadorpregame;
     }
 }

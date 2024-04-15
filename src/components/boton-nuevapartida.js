@@ -23,7 +23,7 @@ export class BotonNuevaPartida
       x: left,
       y: top,
       txt: texto,
-      size: 30, color: '#ff1', style: 'bold',
+      size: 24, color: '#ff1', style: 'bold',
       stroke: '#1bd', sizeStroke: 16,
       shadowOsx: 2, shadowOsy: 2, shadowColor: '#111111',
       bool1: false, bool2: true, origin: [0.5, 0.5],
@@ -36,7 +36,7 @@ export class BotonNuevaPartida
     this.boton.on('pointerover', () =>
     {
       // this.boton.setFrame(1);
-      this.boton.setScale(scX + 0.1, scY + 0.1);
+      this.boton.setScale(scX + 0.04, scY + 0.04);
     });
 
     this.boton.on('pointerout', () =>
