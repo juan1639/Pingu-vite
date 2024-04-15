@@ -64,6 +64,7 @@ export class Preloader extends Scene
         }
 
         this.load.atlas('tiles-jewels', './img/jewels.png', './img/jewels.json');
+        this.load.spritesheet('tile-broken', './img/tile-broken-ssheet.png', {frameWidth: 64, frameHeight: 64});
         
         this.load.spritesheet('pengo-ssheet', './img/pengo-ssheet.png', {frameWidth: 50, frameHeight: 50});
 

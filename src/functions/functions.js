@@ -151,6 +151,12 @@ function colliderBloquesBloques(bloques1, bloques2)
   // console.log(bloques2);
   // console.log('.....');
 
+  // Decrease to 'exact pos'
+  bloques1.setX(bloques1.x + -(bloques1.getData('vel-x')));
+  bloques1.setY(bloques1.y + -(bloques1.getData('vel-y')));
+  
+  bloques1.setData('vel-x', 0).setData('vel-y', 0);
+  
   // Check --> if 'shortTime collision' --> destroy block
   Settings.mideTiempo[1] = this.time.now;
   const checkRomper = Settings.mideTiempo[2];
@@ -158,14 +164,21 @@ function colliderBloquesBloques(bloques1, bloques2)
   if (Settings.mideTiempo[1] - Settings.mideTiempo[0] < checkRomper)
   {
     console.log('romper!!');
+
+    // Shortest-Distance = 44 (tile 48px - 4)
+    const shortestBlock = Settings.tileXY.x - Settings.bloques.velPxl;
+    if (calcDistance_playerBlock(bloques1, this) === shortestBlock) bloques1.disableBody(true, true);
+
     play_sonidos(this.sonido_crash, false, 0.6);
   }
+}
 
-  // Decrease to 'exact pos'
-  bloques1.setX(bloques1.x + -(bloques1.getData('vel-x')));
-  bloques1.setY(bloques1.y + -(bloques1.getData('vel-y')));
-
-  bloques1.setData('vel-x', 0).setData('vel-y', 0);
+function calcDistance_playerBlock(block, scene)
+{
+  const distX = Math.abs(scene.jugador.get().x - block.x);
+  const distY = Math.abs(scene.jugador.get().y - block.y);
+  // console.log(distX + distY);
+  return distX + distY;
 }
 
 function colisionJugadorVsEnemigo(enemigo, jugador)
