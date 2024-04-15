@@ -5,7 +5,7 @@
 // 
 // ------------------------------------------------------------
 import { Scene } from 'phaser';
-import { Laberinto } from '../components/laberinto.js';
+import { Laberinto, BrokenBlock } from '../components/laberinto.js';
 import { Jewels } from '../components/jewels.js';
 import { Jugador, JugadorDies, JugadorShowVidas } from '../components/jugador2.js';
 import { Textos } from '../components/textos.js';
@@ -36,6 +36,7 @@ export class Game extends Scene
     this.set_pausaInicial(2800);
 
     this.bloques = new Laberinto(this);
+    this.brokenblock = new BrokenBlock(this);
     this.jewels = new Jewels(this);
 
     this.jugador = new Jugador(this, {
@@ -70,6 +71,7 @@ export class Game extends Scene
     this.set_cameras_marcadores();
 
     this.bloques.create();
+    this.brokenblock.create(0, 0, true);
     this.jewels.create();
     this.jugador.create();
 

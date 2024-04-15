@@ -30,7 +30,6 @@ export class Laberinto
             // block.setCollideWorldBounds(true);
             block.setData('id', index);
             block.setData('vel-x', 0).setData('vel-y', 0);
-            block.setData('recorrido', 0);
             // console.log(block.getData('id'));
         });
 
@@ -83,5 +82,42 @@ export class Laberinto
     get()
     {
         return this.tile;
+    }
+}
+
+// =============================================================================
+export class BrokenBlock
+{
+    constructor(scene)
+    {
+        this.relatedScene = scene;
+    }
+
+    create(x, y, firstTime)
+    {
+        this.broken = this.relatedScene.physics.add.sprite(x, y, 'tile-broken', 0);
+        this.broken.setScale(0.75).setImmovable(true);
+        this.broken.setDepth(Settings.depth.bloques).setVisible(true);
+
+        if (firstTime)
+        {
+            this.relatedScene.anims.create(
+            {
+                key: 'broken-block-anim',
+                frames: this.relatedScene.anims.generateFrameNumbers('tile-broken', {frames: [0, 1, 2, 3, 4, 5]}),
+                // msPerFrame: 140,
+                frameRate: 5,
+                hideOnComplete: true
+            });
+        }
+
+        this.broken.play('broken-block-anim', true);
+
+        console.log(this.broken);
+    }
+
+    get()
+    {
+        return this.broken;
     }
 }

@@ -167,7 +167,11 @@ function colliderBloquesBloques(bloques1, bloques2)
 
     // Shortest-Distance = 44 (tile 48px - 4)
     const shortestBlock = Settings.tileXY.x - Settings.bloques.velPxl;
-    if (calcDistance_playerBlock(bloques1, this) === shortestBlock) bloques1.disableBody(true, true);
+    if (calcDistance_playerBlock(bloques1, this) === shortestBlock)
+    {
+      this.brokenblock.create(bloques1.x, bloques1.y, false);
+      bloques1.disableBody(true, true);
+    }
 
     play_sonidos(this.sonido_crash, false, 0.6);
   }

@@ -62,7 +62,8 @@ export class Settings
     static bloques =
     {
         vel: 200,
-        velPxl: 4
+        velPxl: 4,
+        breakDuration: 900
     };
 
     static mideTiempo = [null, null, 200];
