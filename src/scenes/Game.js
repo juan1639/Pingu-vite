@@ -84,7 +84,6 @@ export class Game extends Scene
     this.botonesc.create();
 
     this.rexVirtualJoystick();
-    this.rexPushButton();
     // this.botonfire.create();
     this.hideMobileControls();
 
@@ -231,26 +230,6 @@ export class Game extends Scene
     this.joystickCursors = this.joyStick.createCursorKeys();
   }
 
-  rexPushButton()
-  {
-    this.pushButton = this.plugins.get('rexvirtualjoystickplugin').add(this, {
-      x: Math.floor(this.sys.game.config.width / 1.2),
-      y: this.sys.game.config.height - 50,
-      radius: 60,
-      base: this.add.circle(0, 0, 60, 0x888888, 0.4),
-      // base: this.add.image(0, 0, 'boton-fire-joystick').setScale(1),
-      thumb: this.add.circle(0, 0, 30, 0xcccccc, 0.7),
-      // thumb: this.add.image(0, 0, 'base-joystick').setScale(1)
-      dir: '4dir',
-      // forceMin: 16,
-      fixed: true,
-      enable: true
-    });
-    
-    console.log(this.pushButton);
-    this.joystickPushButton = this.pushButton.createCursorKeys();
-  }
-
   hideMobileControls()
   {
     console.log(Settings.controlElegido);
@@ -258,7 +237,6 @@ export class Game extends Scene
     if (!Settings.controlElegido.mobile)
     {
       this.joyStick.setVisible(false);
-      this.pushButton.setVisible(false);
       // this.botonfire.get().setVisible(false);
       // this.botonfire.txt.get().setVisible(false);
     }

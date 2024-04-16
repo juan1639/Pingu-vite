@@ -104,12 +104,7 @@ function colliderJugadorBloques(jugador, bloques)
 
   if (!this.jugador.controles.space.isDown) console.log('colision:' + bloques.getData('id'));
 
-  if (
-    (this.jugador.controles.space.isDown && Settings.controlElegido.teclado) ||
-    ((this.joystickPushButton.up.isDown ||
-      this.joystickPushButton.down.isDown ||
-      this.joystickPushButton.left.isDown ||
-      this.joystickPushButton.right.isDown) && Settings.controlElegido.mobile))
+  if ((this.jugador.controles.space.isDown && Settings.controlElegido.teclado) || Settings.controlElegido.mobile)
   {
     let indexTecla = 99; // No direction-key pressed (default)
     play_sonidos(this.sonido_ziuuu, false, 0.2);
