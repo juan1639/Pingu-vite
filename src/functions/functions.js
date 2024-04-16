@@ -118,7 +118,7 @@ function colliderJugadorBloques(jugador, bloques)
 
     Object.values(Settings.jugador.teclas).forEach((tecla, index) =>
     {
-      if (this.jugador.controles[tecla].isDown) indexTecla = index; 
+      if (this.jugador.controles[tecla].isDown || this.joystickCursors[tecla].isDown) indexTecla = index; 
     });
 
     console.log('empujando:' + bloques.getData('id'), indexTecla);
