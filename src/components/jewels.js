@@ -40,13 +40,16 @@ export class Jewels
 
             } while (matrix[y][x] !== 6 || (y === Settings.jugador.posIniY && x === Settings.jugador.posIniX));
 
-            this.jewels.create(x * Settings.tileXY.x, y * Settings.tileXY.y).setScale(0.75); // Scale 48/64
+            this.jewels.create(
+                x * Settings.tileXY.x, y * Settings.tileXY.y, 'tiles-jewels', 'square_0000'
+            ).setImmovable(true).refreshBody().setDepth(Settings.depth.bloques).setScale(0.75); // Scale 48/64
         }
 
         this.jewels.children.iterate((gem, index) =>
         {
-            gem.play('jewels-anim', true);
+            // gem.play('jewels-anim', true);
             gem.setData('id', index);
+            gem.setData('vel-x', 0).setData('vel-y', 0);
         });
 
         console.log(this.jewels);
@@ -54,7 +57,14 @@ export class Jewels
 
     update()
     {
-
+        this.jewels.children.iterate((block, index) =>
+        {
+            if (block.getData('vel-x') !== 0 || block.getData('vel-y') !== 0)
+            {
+                block.setX(block.x + block.getData('vel-x'));
+                block.setY(block.y + block.getData('vel-y'));
+            }
+        });
     }
 
     get()

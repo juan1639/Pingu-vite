@@ -44,7 +44,6 @@ export class Laberinto
             {
                 block.setX(block.x + block.getData('vel-x'));
                 block.setY(block.y + block.getData('vel-y'));
-                block.setData('recorrido', block.getData('recorrido') + 1);
             }
         });
     }

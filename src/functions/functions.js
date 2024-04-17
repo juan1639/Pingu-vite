@@ -1,102 +1,6 @@
 import { Settings } from "../scenes/settings";
 import { Textos } from "../components/textos";
 
-function inicia_disparo(jugador, scene, botonfire, time, disparo, sonidoDisparo)
-{
-  if (jugador.controles.shift.isDown) scene.start('gameover');
-
-  if (jugador.controles.space.isDown || botonfire.isDown)
-  {
-    if (time.now > disparo.cadencia.flag)
-    {
-      console.log('disparo');
-      let buscar = false;
-
-      disparo.get().getChildren().forEach(disp => {
-
-        console.log(disp.active);
-
-        if (!disp.active && !disp.visible && !buscar)
-        {
-          buscar = true;
-          disp.setActive(true).setVisible(true);
-          disp.enableBody(true, jugador.get().x, jugador.get().y - Math.floor(jugador.get().body.height / 2), true, true);
-          disp.setVelocityY(Settings.disparo.VelY);
-          play_sonidos(sonidoDisparo, false, 0.8);
-        }
-      });
-
-      disparo.cadencia.flag = time.now + disparo.cadencia.allowNext;
-    }
-  }
-}
-
-function inicia_disparo_enemigos(scene)
-{
-  if (scene.enemigo.invisibleInvaders) return;
-  
-  let buscar = false;
-
-  scene.enemigo.get().children.iterate(ene =>
-  {
-    if (ene.x < scene.jugador.get().x + scene.jugador.get().width && ene.x + ene.width > scene.jugador.get().x && ene.body.enable)
-    {
-      scene.disparoenemigo.get().getChildren().forEach(disp =>
-      {
-        // console.log(disp.active);
-
-        if (!disp.active && !disp.visible && !buscar && scene.time.now > scene.disparoenemigo.cadencia.bandera)
-        {
-          buscar = true;
-          settings_disparo_enemigo(disp, ene);
-          enemigo_gira(ene, scene);
-          scene.disparoenemigo.cadencia.bandera = scene.time.now + scene.disparoenemigo.cadencia.disparo;
-          play_sonidos(scene.sonidoDisparoEnemigo, false, 0.9);
-          // scene.sonidoDieT2.play();
-        }
-      });
-
-    } else if (ene.body.enable)
-    {
-      scene.disparoenemigo.get().getChildren().forEach(disp =>
-      {
-        if (Phaser.Math.Between(0, 999) < Settings.getNivel() * 9 && scene.time.now > scene.disparoenemigo.cadencia.bandera)
-        {
-          buscar = true;
-          settings_disparo_enemigo(disp, ene);
-          enemigo_gira(ene, scene);
-          scene.disparoenemigo.cadencia.bandera = scene.time.now + scene.disparoenemigo.cadencia.disparo;
-          play_sonidos(scene.sonidoDisparoEnemigo, false, 0.9);
-          // scene.sonidoDieT2.play();
-        }
-      });
-    }
-  });
-}
-
-function settings_disparo_enemigo(disp, ene)
-{
-  disp.setActive(true).setVisible(true);
-  disp.enableBody(true, ene.x, ene.y + Math.floor(ene.body.height / 2), true, true);
-  // disp.setX(ene.x);
-  // disp.setY(ene.y + Math.floor(ene.body.height / 2));
-  disp.setVelocityY(Settings.disparoEnemigo.velY + Settings.getNivel() * 50);
-  // disp.setAngle(90);
-  disp.setScale(1, 2).setAlpha(1).setDepth(Settings.depth.disparoEnemigo);
-  disp.setTint(Settings.coloresInvaders.disparo.naranja);
-}
-
-function enemigo_gira(ene, scene)
-{
-  scene.tweens.add(
-  {
-    targets: ene,
-    angle: 360,
-    duration: 300,
-    yoyo: true,
-  });
-}
-
 function colliderJugadorBloques(jugador, bloques)
 {
   // console.log(jugador);
@@ -137,8 +41,30 @@ function colliderJugadorJewels(jugador, jewels)
   // console.log(jewels);
 
   if (!this.jugador.controles.space.isDown) console.log('colision:' + jewels.getData('id'));
-  if (this.jugador.controles.space.isDown) console.log('empujando:' + jewels.getData('id'));
-  
+
+  if ((this.jugador.controles.space.isDown && Settings.controlElegido.teclado) || Settings.controlElegido.mobile)
+  {
+    let indexTecla = 99; // No direction-key pressed (default)
+    play_sonidos(this.sonido_ziuuu, false, 0.2);
+
+    Settings.mideTiempo[0] = this.time.now;
+
+    Object.values(Settings.jugador.teclas).forEach((tecla, index) =>
+    {
+      if (this.jugador.controles[tecla].isDown || this.joystickCursors[tecla].isDown) indexTecla = index; 
+    });
+
+    console.log('empujando:' + jewels.getData('id'), indexTecla);
+
+    const array_vel = [[-1, 0], [1, 0], [0, -1], [0, 1]];
+
+    if (indexTecla >= 0 && indexTecla < 4)
+    {
+      jewels.setData('vel-x', array_vel[indexTecla][0] * Settings.bloques.velPxl);
+      jewels.setData('vel-y', array_vel[indexTecla][1] * Settings.bloques.velPxl);
+    }
+  }
+
   this.jugador.get().setX(this.jugador.viejaX);
   this.jugador.get().setY(this.jugador.viejaY);
 }
@@ -155,7 +81,7 @@ function colliderBloquesBloques(bloques1, bloques2)
   
   bloques1.setData('vel-x', 0).setData('vel-y', 0);
   
-  // Check --> if 'shortTime collision' --> destroy block
+  // Check --> if 'shortTime collision' ... then ... destroy block
   Settings.mideTiempo[1] = this.time.now;
   const checkRomper = Settings.mideTiempo[2];
 
@@ -169,10 +95,53 @@ function colliderBloquesBloques(bloques1, bloques2)
     {
       this.brokenblock.create(bloques1.x, bloques1.y, false);
       bloques1.disableBody(true, true);
+      play_sonidos(this.sonido_crash, false, 0.6);
     }
-
-    play_sonidos(this.sonido_crash, false, 0.6);
   }
+}
+
+function colliderBloquesJewels(bloques1, jewels)
+{
+  // console.log(bloques1);
+  // console.log(jewels);
+  // console.log('.....');
+
+  // Decrease to 'exact pos'
+  bloques1.setX(bloques1.x + -(bloques1.getData('vel-x')));
+  bloques1.setY(bloques1.y + -(bloques1.getData('vel-y')));
+  
+  bloques1.setData('vel-x', 0).setData('vel-y', 0);
+  
+  // Check --> if 'shortTime collision' ... then ... destroy block
+  Settings.mideTiempo[1] = this.time.now;
+  const checkRomper = Settings.mideTiempo[2];
+
+  if (Settings.mideTiempo[1] - Settings.mideTiempo[0] < checkRomper)
+  {
+    console.log('romper!!');
+
+    // Shortest-Distance = 44 (tile 48px - 4)
+    const shortestBlock = Settings.tileXY.x - Settings.bloques.velPxl;
+    if (calcDistance_playerBlock(bloques1, this) === shortestBlock)
+    {
+      this.brokenblock.create(bloques1.x, bloques1.y, false);
+      bloques1.disableBody(true, true);
+      play_sonidos(this.sonido_crash, false, 0.6);
+    }
+  }
+}
+
+function colliderJewelsBloques(jewels, bloques)
+{
+  // console.log(bloques1);
+  // console.log(jewels);
+  // console.log('.....');
+
+  // Decrease to 'exact pos'
+  jewels.setX(jewels.x + -(jewels.getData('vel-x')));
+  jewels.setY(jewels.y + -(jewels.getData('vel-y')));
+  
+  jewels.setData('vel-x', 0).setData('vel-y', 0);
 }
 
 function calcDistance_playerBlock(block, scene)
@@ -323,105 +292,42 @@ function excepcionDisparoEnemigoVsJugador(disparoEnemigo, jugador)
   return true;
 }
 
-function colisionDisparoVsNodriza(disparo, nodriza)
-{
-  console.log('colision...disparo-nodriza');
-  console.log(disparo);
-
-  play_sonidos(this.sonidoBonusNodriza, false, 0.9);
-  // draw_explosionTimeout(this, disparo);
-  showBonus(this, disparo);
-
-  particulas(
-    disparo.x, disparo.y, 'particula-tint',
-    {min: 120, max: 250},
-    {min: Settings.pausas.duracionExplosion.enemigo, max: Settings.pausas.duracionExplosion.enemigo + 500},
-    {start: 0.9, end: 0},
-    new Phaser.Display.Color(Phaser.Math.Between(200, 255), Phaser.Math.Between(50, 255), 0).color,
-    null, false, this
-  );
-
-  suma_puntos(disparo);
-  this.marcador.update(0, Settings.getPuntos());
-  
-  nodriza.setActive(false).setVisible(false).setX(-9999);
-  disparo.setActive(false).setVisible(false).disableBody(true, true);
-}
-
-function colisionDisparoEnemigoVsDefensas(disparoEnemigo, defensa)
-{
-  console.log('colision disparoEnemigo-defensas');
-
-  particulas(
-    defensa.x, defensa.y, 'particula-tint',
-    {min: 100, max: 160},
-    {min: Settings.pausas.duracionExplosion.enemigo, max: Settings.pausas.duracionExplosion.enemigo + 500},
-    {start: 0.5, end: 0},
-    new Phaser.Display.Color(Phaser.Math.Between(170, 180), Phaser.Math.Between(155 ,195), 73).color,
-    null, false, this
-  );
-
-  defensa.setActive(false).setVisible(false).setX(-8888)
-  disparoEnemigo.setActive(false).setVisible(false).disableBody(true, true);
-}
-
-function colisionDisparoVsDefensas(disparo, defensa)
-{
-  console.log('colision disparo-defensas');
-
-  particulas(
-    defensa.x, defensa.y, 'particula-tint',
-    {min: 100, max: 160},
-    {min: Settings.pausas.duracionExplosion.enemigo, max: Settings.pausas.duracionExplosion.enemigo + 500},
-    {start: 0.5, end: 0},
-    new Phaser.Display.Color(Phaser.Math.Between(170, 180), Phaser.Math.Between(155 ,195), 73).color,
-    null, false, this
-  );
-
-  defensa.setActive(false).setVisible(false).setX(-8888)
-  disparo.setActive(false).setVisible(false).disableBody(true, true);
-}
+/* particulas(
+  defensa.x, defensa.y, 'particula-tint',
+  {min: 100, max: 160},
+  {min: Settings.pausas.duracionExplosion.enemigo, max: Settings.pausas.duracionExplosion.enemigo + 500},
+  {start: 0.5, end: 0},
+  new Phaser.Display.Color(Phaser.Math.Between(170, 180), Phaser.Math.Between(155 ,195), 73).color,
+  null, false, this
+); */
 
 function particulas(x, y, particula, vel, span, size, color, sprite, bool, scene)
 {
-    const partis = scene.add.particles(x, y, particula, {
-        speed: vel,
-        lifespan: span,
-        scale: size,
-        tint: color,
-        // gravityY: 200
-        blendMode: 'ADD'
-    });
-
-    scene.time.delayedCall(Settings.pausas.duracionExplosion.enemigo, () => partis.stop());
-
-    if (bool) partis.startFollow(sprite);
-}
-
-function draw_explosionTimeout(scene, enemigo)
-{
-  Settings.explosionInvaders = scene.add.image(enemigo.x, enemigo.y, 'explosion');
-  Settings.explosionInvaders.setTint(enemigo.tint).setScale(2).setAlpha(1);
-
-  scene.tweens.add(
-  {
-    targets: Settings.explosionInvaders,
-    alpha: 0,
-    duration: Settings.pausas.duracionExplosion.enemigo - 100
+  const partis = scene.add.particles(x, y, particula, {
+    speed: vel,
+    lifespan: span,
+    scale: size,
+    tint: color,
+    // gravityY: 200
+    blendMode: 'ADD'
   });
+
+  scene.time.delayedCall(Settings.pausas.duracionExplosion.enemigo, () => partis.stop());
+
+  if (bool) partis.startFollow(sprite);
 }
 
 function suma_puntos(puntos)
 {
-    const bonus = Settings.getPuntos() + puntos.getData('puntos');
-    Settings.setPuntos(bonus);
-    // console.log(bonus, Settings.getPuntos());
+  const bonus = Settings.getPuntos() + puntos.getData('puntos');
+  Settings.setPuntos(bonus);
+  // console.log(bonus, Settings.getPuntos());
 }
 
 function restar_vida()
 {
-    const actualizar = Settings.getVidas() - 1;
-    Settings.setVidas(actualizar);
+  const actualizar = Settings.getVidas() - 1;
+  Settings.setVidas(actualizar);
 }
 
 function showBonus(scene, enemigo)
@@ -460,5 +366,7 @@ export {
   colliderJugadorBloques,
   colliderJugadorJewels,
   colliderBloquesBloques,
+  colliderBloquesJewels,
+  colliderJewelsBloques,
   play_sonidos
 };

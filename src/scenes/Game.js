@@ -19,6 +19,8 @@ import {
   colliderJugadorBloques,
   colliderJugadorJewels,
   colliderBloquesBloques,
+  colliderBloquesJewels,
+  colliderJewelsBloques,
   play_sonidos
 } from '../functions/functions.js';
 
@@ -98,6 +100,7 @@ export class Game extends Scene
     if (!Settings.pausas.inicial && !Settings.isGameOver())
     {
       this.bloques.update();
+      this.jewels.update();
       this.jugador.update();
     }
 
@@ -208,6 +211,12 @@ export class Game extends Scene
 
     // Collide Bloques-Bloques
     this.physics.add.collider(this.bloques.get(), this.bloques.get(), colliderBloquesBloques, null, this);
+
+    // Collide Bloques-Jewels
+    this.physics.add.collider(this.bloques.get(), this.jewels.get(), colliderBloquesJewels, null, this);
+
+    // Collide Jewels-Bloques
+    this.physics.add.collider(this.jewels.get(), this.bloques.get(), colliderJewelsBloques, null, this);
   }
 
   rexVirtualJoystick()
