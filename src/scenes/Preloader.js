@@ -66,7 +66,7 @@ export class Preloader extends Scene
         this.load.atlas('tiles-jewels', './img/jewels.png', './img/jewels.json');
         this.load.spritesheet('tile-broken', './img/tile-broken-ssheet.png', {frameWidth: 64, frameHeight: 64});
         
-        this.load.spritesheet('pengo-ssheet', './img/pengo-ssheet.png', {frameWidth: 50, frameHeight: 50});
+        this.load.spritesheet('pengo-ssheet', './img/pengo-ssheet.png', {frameWidth: 50, frameHeight: 52});
 
         // Pluggin VirtualJoystick
         let url = 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexvirtualjoystickplugin.min.js';
