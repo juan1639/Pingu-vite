@@ -95,6 +95,9 @@ function colliderBloquesBloques(bloques1, bloques2)
     {
       this.brokenblock.create(bloques1.x, bloques1.y, false);
       bloques1.disableBody(true, true);
+      suma_puntos(bloques1, this);
+      // console.log(Settings.getPuntos());
+
       play_sonidos(this.sonido_crash, false, 0.6);
     }
   }
@@ -126,6 +129,9 @@ function colliderBloquesJewels(bloques1, jewels)
     {
       this.brokenblock.create(bloques1.x, bloques1.y, false);
       bloques1.disableBody(true, true);
+      suma_puntos(bloques1, this);
+      // console.log(Settings.getPuntos());
+
       play_sonidos(this.sonido_crash, false, 0.6);
     }
   }
@@ -348,10 +354,11 @@ function particulas(x, y, particula, vel, span, size, color, sprite, bool, scene
   if (bool) partis.startFollow(sprite);
 }
 
-function suma_puntos(puntos)
+function suma_puntos(puntos, scene)
 {
   const bonus = Settings.getPuntos() + puntos.getData('puntos');
   Settings.setPuntos(bonus);
+  scene.marcadorPtos.update(Settings.getTxtScore(), Settings.getPuntos());
   // console.log(bonus, Settings.getPuntos());
 }
 

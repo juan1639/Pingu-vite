@@ -30,6 +30,7 @@ export class Laberinto
             // block.setCollideWorldBounds(true);
             block.setData('id', index);
             block.setData('vel-x', 0).setData('vel-y', 0);
+            block.setData('puntos', Settings.bloques.puntos);
             // console.log(block.getData('id'));
         });
 

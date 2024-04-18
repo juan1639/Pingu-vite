@@ -35,8 +35,9 @@ export class Jewels
             let y;
 
             do {
-                x = Phaser.Math.Between(1, matrix[0].length - 2);
-                y = Phaser.Math.Between(1, matrix.length - 2);
+                // Random: start 2 --> end: lenght - 3 (no jewels at limits/borders)
+                x = Phaser.Math.Between(2, matrix[0].length - 3);
+                y = Phaser.Math.Between(2, matrix.length - 3);
 
             } while (matrix[y][x] !== 6 || (y === Settings.jugador.posIniY && x === Settings.jugador.posIniX));
 

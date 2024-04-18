@@ -63,7 +63,8 @@ export class Settings
     {
         vel: 200,
         velPxl: 4,
-        breakDuration: 900
+        breakDuration: 900,
+        puntos: 50
     };
 
     static mideTiempo = [null, null, 200];
