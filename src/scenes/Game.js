@@ -21,6 +21,7 @@ import {
   colliderBloquesBloques,
   colliderBloquesJewels,
   colliderJewelsBloques,
+  colliderJewelsJewels,
   play_sonidos
 } from '../functions/functions.js';
 
@@ -127,7 +128,7 @@ export class Game extends Scene
     this.txtpreparado = new Textos(this, {
       x: Math.floor(this.sys.game.config.width / 2),
       y: 0,
-      txt: ' Ready! ',
+      txt: `Level ${Settings.getNivel()} Ready!`,
       size: 78, color: '#ffa', style: 'bold',
       stroke: '#af1', sizeStroke: 16,
       shadowOsx: 2, shadowOsy: 2, shadowColor: '#111111',
@@ -217,6 +218,9 @@ export class Game extends Scene
 
     // Collide Jewels-Bloques
     this.physics.add.collider(this.jewels.get(), this.bloques.get(), colliderJewelsBloques, null, this);
+
+    // Collide Jewels-Jewels
+    this.physics.add.collider(this.jewels.get(), this.jewels.get(), colliderJewelsJewels, null, this);
   }
 
   rexVirtualJoystick()
