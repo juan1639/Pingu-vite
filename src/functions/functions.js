@@ -6,9 +6,12 @@ function colliderJugadorBloques(jugador, bloques)
   // console.log(jugador);
   // console.log(bloques);
 
-  if (!this.jugador.controles.space.isDown) console.log('colision:' + bloques.getData('id'));
+  // if (!this.jugador.controles.space.isDown) console.log('colision:' + bloques.getData('id'));
 
-  if ((this.jugador.controles.space.isDown && Settings.controlElegido.teclado) || Settings.controlElegido.mobile)
+  const limits = Settings.bloques.limits;
+
+  if ((this.jugador.controles.space.isDown && Settings.controlElegido.teclado && !limits.includes(bloques.getData('id'))) ||
+    (Settings.controlElegido.mobile && !limits.includes(bloques.getData('id'))))
   {
     let indexTecla = 99; // No direction-key pressed (default)
     play_sonidos(this.sonido_ziuuu, false, 0.2);

@@ -36,10 +36,11 @@ export class Jewels
 
             do {
                 // Random: start 2 --> end: lenght - 3 (no jewels at limits/borders)
+                // Valid position --> matrix[y][x]=0 ... else while ...
                 x = Phaser.Math.Between(2, matrix[0].length - 3);
                 y = Phaser.Math.Between(2, matrix.length - 3);
 
-            } while (matrix[y][x] !== 6 || (y === Settings.jugador.posIniY && x === Settings.jugador.posIniX));
+            } while (matrix[y][x] !== 0 || (y === Settings.jugador.posIniY && x === Settings.jugador.posIniX));
 
             this.jewels.create(
                 x * Settings.tileXY.x, y * Settings.tileXY.y, 'tiles-jewels', 'square_0000'

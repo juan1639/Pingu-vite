@@ -28,7 +28,7 @@ export class Laberinto
         {
             block.setScale(0.75).setImmovable(true).refreshBody().setDepth(Settings.depth.bloques);
             // block.setCollideWorldBounds(true);
-            block.setData('id', index);
+            block.setData('index', index);
             block.setData('vel-x', 0).setData('vel-y', 0);
             block.setData('puntos', Settings.bloques.puntos);
             // console.log(block.getData('id'));
@@ -53,18 +53,20 @@ export class Laberinto
     {
         const nivel = Settings.getNivel();
 
-        if (matrixLevels.array_levels[nivel][y][x] === 9) return true;
+        if (matrixLevels.array_levels[nivel][y][x] < 6) return true;
         return false;
     }
 
     elegir_tilesNiveles(valor, i, ii)
     {
-        // 6 = vacio, 1 = tile-azul, 2 = tile-limit, 3 = tile-marron, 4 = tile-blanco
-        if (valor !== 6)
+        // 0 = vacio, 1 = block-blue, 2,3,4,5 = block-limits/borders
+        if (valor > 0 && valor < 6)
         {
+            const blockAzul = 1;
+
             this.tile.create(
-                ii * Settings.tileXY.x, i * Settings.tileXY.y, `tile${valor}`
-            );
+                ii * Settings.tileXY.x, i * Settings.tileXY.y, `tile${blockAzul}`
+            ).setData('id', valor);
         }
         // Scale 0.75 = 48 / 64 --> (tileXY) / (img.png width or height)
     }
