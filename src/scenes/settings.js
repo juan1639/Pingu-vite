@@ -64,7 +64,7 @@ export class Settings
         vel: 200,
         velPxl: 4,
         breakDuration: 900,
-        puntos: 50,
+        puntos: 10,
         normal: [1],
         limits: [2, 3, 4, 5]
     };
@@ -89,6 +89,10 @@ export class Settings
         duracionExplosion: {
             jugador: 1000,
             enemigo: 400
+        },
+        bonus3Jewels: {
+            done: false,
+            duracion: 6000
         }
     };
 
@@ -146,6 +150,11 @@ export class Settings
     static isNivelSuperado()
     {
         return Settings.pausas.nivelSuperado.superado;
+    }
+
+    static isBonus3JewelsDone()
+    {
+        return Settings.pausas.bonus3Jewels.done;
     }
 
     static isPausaInicial()
@@ -217,6 +226,11 @@ export class Settings
     static setNivelSuperado(bool)
     {
         Settings.pausas.nivelSuperado.superado = bool;
+    }
+
+    static setBonus3JewelsDone(bool)
+    {
+        Settings.pausas.bonus3Jewels.done = bool;
     }
 
     static setGameOver(bool)

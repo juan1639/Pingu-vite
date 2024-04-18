@@ -1,4 +1,5 @@
 import { Settings } from "../scenes/settings";
+import { matrixLevels } from "../scenes/matrixLevels";
 import { Textos } from "../components/textos";
 
 function colliderJugadorBloques(jugador, bloques)
@@ -151,6 +152,8 @@ function colliderJewelsBloques(jewels, bloques)
   jewels.setY(jewels.y + -(jewels.getData('vel-y')));
   
   jewels.setData('vel-x', 0).setData('vel-y', 0);
+
+  check_3JewelsBonus(this);
 }
 
 function colliderJewelsJewels(bloques1, bloques2)
@@ -164,24 +167,8 @@ function colliderJewelsJewels(bloques1, bloques2)
   bloques1.setY(bloques1.y + -(bloques1.getData('vel-y')));
   
   bloques1.setData('vel-x', 0).setData('vel-y', 0);
-  
-  // Check --> if 'shortTime collision' ... then ... destroy block
-  /* Settings.mideTiempo[1] = this.time.now;
-  const checkRomper = Settings.mideTiempo[2];
 
-  if (Settings.mideTiempo[1] - Settings.mideTiempo[0] < checkRomper)
-  {
-    console.log('romper!!');
-
-    // Shortest-Distance = 44 (tile 48px - 4)
-    const shortestBlock = Settings.tileXY.x - Settings.bloques.velPxl;
-    if (calcDistance_playerBlock(bloques1, this) === shortestBlock)
-    {
-      this.brokenblock.create(bloques1.x, bloques1.y, false);
-      bloques1.disableBody(true, true);
-      play_sonidos(this.sonido_crash, false, 0.6);
-    }
-  } */
+  check_3JewelsBonus(this);
 }
 
 function calcDistance_playerBlock(block, scene)
@@ -190,6 +177,47 @@ function calcDistance_playerBlock(block, scene)
   const distY = Math.abs(scene.jugador.get().y - block.y);
   // console.log(distX + distY);
   return distX + distY;
+}
+
+function check_3JewelsBonus(scene)
+{
+  const nivel = Settings.getNivel();
+
+  for (let i = 0; i < matrixLevels.array_levels[nivel].length; i ++)
+  {
+    for (let ii = 0; ii < matrixLevels.array_levels[nivel][i].length; ii ++)
+    {
+      const coorY = i * Settings.tileXY.y;
+      const coorX = ii * Settings.tileXY.x;
+      // console.log(coorX, coorY);
+
+      const coorArrayX = [coorX, coorX + Settings.tileXY.x, coorX + Settings.tileXY.x * 2];
+      const coorArrayY = [coorY, coorY + Settings.tileXY.y, coorY + Settings.tileXY.y * 2];
+
+      const gem = scene.jewels.get().getChildren();
+      // console.log(gem[0].x, gem[0].y, gem[1].x, gem[1].y);
+
+      if (
+        (coorArrayX.includes(gem[0].x) && coorY === gem[0].y) &&
+        (coorArrayX.includes(gem[1].x) && coorY === gem[1].y) &&
+        (coorArrayX.includes(gem[2].x) && coorY === gem[2].y)
+      ) {
+        console.log('3 en raya! (horizontal)');
+        Settings.setBonus3JewelsDone(true);
+        return;
+      }
+
+      if (
+        (coorArrayY.includes(gem[0].y) && coorX === gem[0].x) &&
+        (coorArrayY.includes(gem[1].y) && coorX === gem[1].x) &&
+        (coorArrayY.includes(gem[2].y) && coorX === gem[2].x)
+      ) {
+        console.log('3 en raya! (vertical)');
+        Settings.setBonus3JewelsDone(true);
+        return;
+      }
+    }
+  }
 }
 
 function colisionJugadorVsEnemigo(enemigo, jugador)
