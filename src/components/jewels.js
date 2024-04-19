@@ -27,6 +27,9 @@ export class Jewels
 
         this.jewels = this.relatedScene.physics.add.group();
 
+        const arrayCheckNotSamePosY = [];
+        const arrayCheckNotSamePosX = [];
+
         for (let i = 0; i < 3; i ++)
         {
             const nivel = Settings.getNivel();
@@ -40,7 +43,15 @@ export class Jewels
                 x = Phaser.Math.Between(2, matrix[0].length - 3);
                 y = Phaser.Math.Between(2, matrix.length - 3);
 
-            } while (matrix[y][x] !== 0 || (y === Settings.jugador.posIniY && x === Settings.jugador.posIniX));
+            } while (
+                matrix[y][x] !== 0 ||
+                (y === Settings.jugador.posIniY && x === Settings.jugador.posIniX) ||
+                (arrayCheckNotSamePosY.includes(y) && arrayCheckNotSamePosX.includes(x))
+            );
+
+            arrayCheckNotSamePosY.push(y);
+            arrayCheckNotSamePosX.push(x);
+            console.log(arrayCheckNotSamePosY, arrayCheckNotSamePosX);
 
             this.jewels.create(
                 x * Settings.tileXY.x, y * Settings.tileXY.y, 'tiles-jewels', 'square_0000'

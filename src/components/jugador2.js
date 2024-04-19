@@ -236,8 +236,6 @@ export class JugadorPreGame
         this.jugadorpregame.setVelocityX(90);
         this.currentAnima = 0;
 
-        // this.relatedScene.anims.remove('le-ri-up-do');
-
         const animas = [
             ['le', 2, 3],
             ['ri', 6, 7],

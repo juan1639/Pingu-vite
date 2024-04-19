@@ -92,8 +92,10 @@ export class Settings
         },
         bonus3Jewels: {
             done: false,
-            duracion: 12000,
-            running: false
+            duracion: 14000,
+            running: false,
+            bonus: 10000,
+            decBonusCountDown: 100
         },
         txtCongrats: {
             duracion: 9000
@@ -166,6 +168,11 @@ export class Settings
     static isBonus3JewelsRunning()
     {
         return Settings.pausas.bonus3Jewels.running;
+    }
+
+    static getBonus3JewelsBonus()
+    {
+        return Settings.pausas.bonus3Jewels.bonus;
     }
 
     static isPausaInicial()
@@ -247,6 +254,11 @@ export class Settings
     static setBonus3JewelsRunning(bool)
     {
         Settings.pausas.bonus3Jewels.running = bool;
+    }
+
+    static setBonus3JewelsBonus(ptos)
+    {
+        Settings.pausas.bonus3Jewels.bonus = ptos;
     }
 
     static setGameOver(bool)

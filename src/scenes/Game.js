@@ -23,6 +23,7 @@ import {
   colliderBloquesJewels,
   colliderJewelsBloques,
   colliderJewelsJewels,
+  countDownBonus,
   play_sonidos
 } from '../functions/functions.js';
 
@@ -128,7 +129,8 @@ export class Game extends Scene
               0xffcc11,
               null, false, this
             );
-            
+
+            countDownBonus(this);
             play_sonidos(this.sonido_congrats, false, 0.9);
           }
         },
@@ -265,11 +267,11 @@ export class Game extends Scene
   {
     this.joyStick = this.plugins.get('rexvirtualjoystickplugin').add(this, {
       x: 90,
-      y: this.sys.game.config.height - 50,
-      radius: 60,
-      base: this.add.circle(0, 0, 60, 0x888888, 0.4),
+      y: this.sys.game.config.height - 80,
+      radius: 90,
+      base: this.add.circle(0, 0, 90, 0x888888, 0.4),
       // base: this.add.image(0, 0, 'boton-fire-joystick').setScale(1),
-      thumb: this.add.circle(0, 0, 30, 0xcccccc, 0.7),
+      thumb: this.add.circle(0, 0, 40, 0xcccccc, 0.7),
       // thumb: this.add.image(0, 0, 'base-joystick').setScale(1)
       dir: '4dir',
       // forceMin: 16,

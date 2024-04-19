@@ -369,6 +369,47 @@ function excepcionDisparoEnemigoVsJugador(disparoEnemigo, jugador)
   null, false, this
 ); */
 
+function countDownBonus(scene)
+{
+  const txtbonus = new Textos(scene, {
+    x: scene.jugador.get().x,
+    y: scene.jugador.get().y + 90,
+    txt: Settings.getBonus3JewelsBonus(),
+    size: 70, color: '#ffa', style: 'bold',
+    stroke: '#af1', sizeStroke: 16,
+    shadowOsx: 2, shadowOsy: 2, shadowColor: '#111111',
+    bool1: false, bool2: true, origin: [0.5, 0.5],
+    elastic: false, dura: 0
+  });
+  
+  txtbonus.create();
+  txtbonus.get().setDepth(Settings.depth.textos);
+
+  scene.time.delayedCall(Settings.pausas.bonus3Jewels.duracion, () => txtbonus.get().setVisible(false));
+
+  const decBonus = Settings.pausas.bonus3Jewels.decBonusCountDown;
+  const repetir = Math.floor(Settings.getBonus3JewelsBonus() / decBonus) - 1;
+
+  const playerClock = scene.add.timeline([
+    {
+      at: 100, // 0.1sg --> dec time
+      run: () =>
+      {
+        // console.log('sg');
+        const decBonus = Settings.pausas.bonus3Jewels.decBonusCountDown;
+        Settings.setBonus3JewelsBonus(Settings.getBonus3JewelsBonus() - decBonus);
+
+        txtbonus.get().setText(Settings.getBonus3JewelsBonus());
+
+        Settings.setPuntos(Settings.getPuntos() + decBonus);
+        scene.marcadorPtos.update(Settings.getTxtScore(), Settings.getPuntos());
+      }
+    }
+  ]);
+
+  playerClock.repeat(repetir).play();
+}
+
 function particulas(x, y, particula, vel, span, size, color, sprite, bool, scene)
 {
   const partis = scene.add.particles(x, y, particula, {
@@ -444,5 +485,6 @@ export {
   colliderJewelsBloques,
   colliderJewelsJewels,
   particulas,
+  countDownBonus,
   play_sonidos
 };
