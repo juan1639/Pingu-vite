@@ -58,6 +58,8 @@ export class Preloader extends Scene
         this.load.spritesheet('radio-buttons', './img/radio-buttons-lightblue.png', {frameWidth: 50, frameHeight: 50});
         this.load.spritesheet('boton-fullscreen', './img/boton-fullscreen.png', {frameWidth: 64, frameHeight: 64});
 
+        this.load.image('particula1', './img/particula1.png');
+
         for (let i = 1; i < 5; i ++)
         {
             this.load.image(`tile${i}`, `./img/tile${i}.png`);
@@ -82,6 +84,8 @@ export class Preloader extends Scene
         this.load.audio('musica-fondo', './audio/musica-fondo.mp3');
         this.load.audio('mario-tuberias', './audio/mario-tuberias.ogg');
         this.load.audio('crash', './audio/crash.mp3');
+        this.load.audio('congrats-voice', './audio/congrats-deep-voice.mp3');
+        this.load.audio('you-win', './audio/you-win.mp3');
     }
 
     create()

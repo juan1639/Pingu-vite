@@ -13,6 +13,7 @@ import { Marcador } from './../components/marcador.js';
 import { Settings } from './settings.js';
 import { BotonFire } from '../components/botonfire.js';
 import { BotonFullScreen, BotonEsc } from '../components/boton-nuevapartida.js';
+import { particulas } from '../functions/functions.js';
 
 import {
   // overlapJugadorFantasmas,
@@ -98,27 +99,60 @@ export class Game extends Scene
 
   update()
   {
-    if (!Settings.pausas.inicial && !Settings.isGameOver())
+    if (!Settings.pausas.inicial && !Settings.isGameOver() && !Settings.isBonus3JewelsRunning())
     {
       this.bloques.update();
       this.jewels.update();
       this.jugador.update();
     }
 
-    /* if (this.puntito.get().countActive() <= 0 && !Settings.isNivelSuperado())
+    if (Settings.isBonus3JewelsDone() && !Settings.isBonus3JewelsRunning() && !Settings.isNivelSuperado())
     {
-      Settings.setNivelSuperado(true);
-      Settings.setFantasmasScary(false);
+      Settings.setBonus3JewelsRunning(true);
       this.texto_enhorabuena();
+      Settings.audio.musicaFondo.volume = 0;
+      play_sonidos(this.sonido_youWin, false, 0.9);
 
-      setTimeout(() =>
-      {
-        Settings.setNivelSuperado(false);
-        this.scene.start('Congratulations');
-      }, Settings.getPausaNivelSuperado());
-    } */
-    
-    // this.mobile_controls();
+      this.timeline3Jewels = this.add.timeline([
+        {
+          at: 1500,
+          run: () =>
+          {
+            particulas(
+              this.jewels.get().getChildren()[0].x,
+              this.jewels.get().getChildren()[0].y,
+              'particula1',
+              {min: 220, max: 420},
+              {min: 2500, max: 3000},
+              {start: 0.1, end: 0.6},
+              0xffcc11,
+              null, false, this
+            );
+            
+            play_sonidos(this.sonido_congrats, false, 0.9);
+          }
+        },
+        {
+          at: Settings.pausas.bonus3Jewels.duracion,
+          run: () =>
+          {
+            Settings.setBonus3JewelsRunning(false),
+            Settings.setNivelSuperado(true);
+
+            console.log(
+              'Done:',
+              Settings.isBonus3JewelsDone(),
+              'Running:',
+              Settings.isBonus3JewelsRunning(),
+              'LevelUp:',
+              Settings.isNivelSuperado()
+            );
+          }
+        }
+      ]);
+
+      this.timeline3Jewels.play();
+    }
   }
 
   set_pausaInicial(tiempo)
@@ -186,17 +220,21 @@ export class Game extends Scene
   texto_enhorabuena()
   {
     this.txtcongrats = new Textos(this, {
-      x: this.jugador.get().x, y: 0,
+      x: Math.floor(this.sys.game.config.width / 2), y: 0,
       txt: ' Congratulations! ',
       size: 70, color: '#ffa', style: 'bold',
       stroke: '#5f1', sizeStroke: 16,
       shadowOsx: 2, shadowOsy: 2, shadowColor: '#111111',
       bool1: false, bool2: true, origin: [0.5, 0.5],
-      elastic: this.jugador.get().y - Settings.tileXY.y, dura: 3000
+      elastic: this.jugador.get().y - Settings.tileXY.y, dura: 3500
     });
     
     this.txtcongrats.create();
-    this.txtcongrats.get().setDepth(Settings.getDepth().textos);
+    this.txtcongrats.get().setDepth(Settings.depth.textos);
+
+    this.tweens.add({
+      targets: this.txtcongrats.get(), alpha: 0, duration: Settings.pausas.txtCongrats.duracion
+    });
   }
 
   set_colliders()
@@ -329,6 +367,8 @@ export class Game extends Scene
 
     this.sonido_ziuuu = this.sound.add('ziuuu1');
     this.sonido_crash = this.sound.add('crash');
+    this.sonido_congrats = this.sound.add('congrats-voice');
+    this.sonido_youWin = this.sound.add('you-win');
     Settings.audio.musicaFondo = this.sound.add('musica-fondo');
   }
 }

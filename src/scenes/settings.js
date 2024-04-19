@@ -92,7 +92,11 @@ export class Settings
         },
         bonus3Jewels: {
             done: false,
-            duracion: 6000
+            duracion: 12000,
+            running: false
+        },
+        txtCongrats: {
+            duracion: 9000
         }
     };
 
@@ -100,6 +104,8 @@ export class Settings
         fondo: -900,
         bloques: -800,
         limites: -700,
+        bonus3Jewels: -680,
+        jewels: -650,
         jugador: -600,
         enemigo: -500,
         explosiones: -400,
@@ -155,6 +161,11 @@ export class Settings
     static isBonus3JewelsDone()
     {
         return Settings.pausas.bonus3Jewels.done;
+    }
+
+    static isBonus3JewelsRunning()
+    {
+        return Settings.pausas.bonus3Jewels.running;
     }
 
     static isPausaInicial()
@@ -231,6 +242,11 @@ export class Settings
     static setBonus3JewelsDone(bool)
     {
         Settings.pausas.bonus3Jewels.done = bool;
+    }
+
+    static setBonus3JewelsRunning(bool)
+    {
+        Settings.pausas.bonus3Jewels.running = bool;
     }
 
     static setGameOver(bool)

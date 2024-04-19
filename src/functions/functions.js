@@ -380,7 +380,12 @@ function particulas(x, y, particula, vel, span, size, color, sprite, bool, scene
     blendMode: 'ADD'
   });
 
-  scene.time.delayedCall(Settings.pausas.duracionExplosion.enemigo, () => partis.stop());
+  partis.setDepth(Settings.depth.bonus3Jewels);
+
+  scene.time.delayedCall(Settings.pausas.bonus3Jewels.duracion, () => {
+    partis.stop();
+    Settings.audio.musicaFondo.volume = 0.6;
+  });
 
   if (bool) partis.startFollow(sprite);
 }
@@ -438,5 +443,6 @@ export {
   colliderBloquesJewels,
   colliderJewelsBloques,
   colliderJewelsJewels,
+  particulas,
   play_sonidos
 };

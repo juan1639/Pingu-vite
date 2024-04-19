@@ -44,7 +44,7 @@ export class Jewels
 
             this.jewels.create(
                 x * Settings.tileXY.x, y * Settings.tileXY.y, 'tiles-jewels', 'square_0000'
-            ).setImmovable(true).refreshBody().setDepth(Settings.depth.bloques).setScale(0.75); // Scale 48/64
+            ).setImmovable(true).refreshBody().setDepth(Settings.depth.jewels).setScale(0.75); // Scale 48/64
         }
 
         this.jewels.children.iterate((gem, index) =>
