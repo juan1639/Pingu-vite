@@ -32,14 +32,32 @@ export class PreGame extends Scene
 
         this.radiobuttons.push(new ElegirControles(this, {
             left: Math.floor(this.sys.game.config.width / 15),
-            top: Math.floor(this.sys.game.config.height / 4),
-            frame: 1, scale: 1, texto: ' Keyboard cursors ', id: 'teclado'
+            top: Math.floor(this.sys.game.config.height / 6),
+            addLeft: 0, orX: 0, orY: 0.5, frame: 1, scale: 1,
+            txtSize: 50, texto: ' Keyboard cursors ', id: 'teclado'
         }));
 
         this.radiobuttons.push(new ElegirControles(this, {
             left: Math.floor(this.sys.game.config.width / 15),
-            top: Math.floor(this.sys.game.config.height / 2.6),
-            frame: 0, scale: 1, texto: ' Mobile controls ', id: 'mobile'
+            top: Math.floor(this.sys.game.config.height / 3.2),
+            addLeft: 0, orX: 0, orY: 0.5, frame: 0, scale: 1,
+            txtSize: 50, texto: ' Mobile controls ', id: 'mobile'
+        }));
+
+        this.radioFps = [];
+
+        this.radioFps.push(new ElegirControles(this, {
+            left: Math.floor(this.sys.game.config.width / 10),
+            top: Math.floor(this.sys.game.config.height / 1.8),
+            addLeft: 52, orX: 0.5, orY: 0.5, frame: 0, scale: 0.9,
+            txtSize: 40, texto: '30FPS', id: '30FPS'
+        }));
+
+        this.radioFps.push(new ElegirControles(this, {
+            left: Math.floor(this.sys.game.config.width / 1.6),
+            top: Math.floor(this.sys.game.config.height / 1.8),
+            addLeft: 52, orX: 0.5, orY: 0.5, frame: 1, scale: 0.9,
+            txtSize: 40, texto: '60 FPS', id: '60FPS'
         }));
     }
 
@@ -48,6 +66,7 @@ export class PreGame extends Scene
         this.add.image(0, 0, 'fondo').setDepth(Settings.depth.fondo).setOrigin(0, 0);
         
         this.radiobuttons.forEach(radiobutton => radiobutton.create());
+        this.radioFps.forEach(fps => fps.create());
         this.botoninicio.create('Game', false);
     }
 }

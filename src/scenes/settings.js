@@ -25,6 +25,12 @@ export class Settings
         scaleY: 1
     };
 
+    static fps =
+    {
+        fps60: true,
+        allowUpdate: true
+    };
+
     static gameOver = false;
 
     static puntos = 0;
@@ -145,6 +151,16 @@ export class Settings
     };
 
     // --- Getters ---
+    static isFps60()
+    {
+        return Settings.fps.fps60;
+    }
+    
+    static isAllowUpdate()
+    {
+        return Settings.fps.allowUpdate;
+    }
+
     static getLayer1()
     {
         return Settings.layer1;
@@ -231,6 +247,15 @@ export class Settings
     }
 
     // --- Setters ---
+    static setFps60(bool)
+    {
+        Settings.fps.fps60 = bool;
+    }
+    static setAllowUpdate(bool)
+    {
+        Settings.fps.allowUpdate = bool;
+    }
+
     static setLaye1ScaleX(valor)
     {
         Settings.layer1.scaleX = valor;

@@ -100,6 +100,19 @@ export class Game extends Scene
 
   update()
   {
+    if (!Settings.isFps60())
+    {
+      if (Settings.isAllowUpdate())
+      {
+        Settings.setAllowUpdate(false);
+        return;
+      }
+      else
+      {
+        Settings.setAllowUpdate(true);
+      }
+    }
+
     if (!Settings.pausas.inicial && !Settings.isGameOver() && !Settings.isBonus3JewelsRunning())
     {
       this.bloques.update();
