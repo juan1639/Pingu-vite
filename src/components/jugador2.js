@@ -34,7 +34,7 @@ export class Jugador
             ['do', 0, 1]
         ];
 
-        for (let i = 0; i < animas.length; i ++)
+        /* for (let i = 0; i < animas.length; i ++)
         {
             this.relatedScene.anims.create(
             {
@@ -46,12 +46,12 @@ export class Jugador
                 yoyo: true,
                 repeat: -1
             });
-        }
+        } */
 
         this.relatedScene.anims.create(
         {
-            key: 'turn',
-            frames: [{key: 'pengo-ssheet', frame: 23}],
+            key: 'no-move',
+            frames: [{key: 'pengo-ssheet', frame: 0}],
             frameRate: 20,
         });
         

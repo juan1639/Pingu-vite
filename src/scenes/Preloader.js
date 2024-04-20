@@ -86,6 +86,8 @@ export class Preloader extends Scene
         this.load.audio('crash', './audio/crash.mp3');
         this.load.audio('congrats-voice', './audio/congrats-deep-voice.mp3');
         this.load.audio('you-win', './audio/you-win.mp3');
+        this.load.audio('key', './audio/key.wav');
+        this.load.audio('numkey', './audio/numkey.wav');
     }
 
     create()

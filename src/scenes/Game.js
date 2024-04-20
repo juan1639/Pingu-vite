@@ -109,52 +109,57 @@ export class Game extends Scene
 
     if (Settings.isBonus3JewelsDone() && !Settings.isBonus3JewelsRunning() && !Settings.isNivelSuperado())
     {
-      Settings.setBonus3JewelsRunning(true);
-      this.texto_enhorabuena();
-      Settings.audio.musicaFondo.volume = 0;
-      play_sonidos(this.sonido_youWin, false, 0.9);
-
-      this.timeline3Jewels = this.add.timeline([
-        {
-          at: 1500,
-          run: () =>
-          {
-            particulas(
-              this.jewels.get().getChildren()[0].x,
-              this.jewels.get().getChildren()[0].y,
-              'particula1',
-              {min: 220, max: 420},
-              {min: 2500, max: 3000},
-              {start: 0.1, end: 0.6},
-              0xffcc11,
-              null, false, this
-            );
-
-            countDownBonus(this);
-            play_sonidos(this.sonido_congrats, false, 0.9);
-          }
-        },
-        {
-          at: Settings.pausas.bonus3Jewels.duracion,
-          run: () =>
-          {
-            Settings.setBonus3JewelsRunning(false),
-            Settings.setNivelSuperado(true);
-
-            console.log(
-              'Done:',
-              Settings.isBonus3JewelsDone(),
-              'Running:',
-              Settings.isBonus3JewelsRunning(),
-              'LevelUp:',
-              Settings.isNivelSuperado()
-            );
-          }
-        }
-      ]);
-
-      this.timeline3Jewels.play();
+      this.timeToBonus3Jewels();
     }
+  }
+
+  timeToBonus3Jewels()
+  {
+    Settings.setBonus3JewelsRunning(true);
+    this.texto_enhorabuena();
+    Settings.audio.musicaFondo.volume = 0;
+    play_sonidos(this.sonido_youWin, false, 0.9);
+
+    this.timeline3Jewels = this.add.timeline([
+      {
+        at: 1500,
+        run: () =>
+        {
+          particulas(
+            this.jewels.get().getChildren()[0].x,
+            this.jewels.get().getChildren()[0].y,
+            'particula1',
+            {min: 220, max: 420},
+            {min: 2500, max: 3000},
+            {start: 0.1, end: 0.6},
+            0xffcc11,
+            null, false, this
+          );
+
+          countDownBonus(this);
+          play_sonidos(this.sonido_congrats, false, 0.9);
+        }
+      },
+      {
+        at: Settings.pausas.bonus3Jewels.duracion,
+        run: () =>
+        {
+          Settings.setBonus3JewelsRunning(false),
+          Settings.setNivelSuperado(true);
+
+          console.log(
+            'Done:',
+            Settings.isBonus3JewelsDone(),
+            'Running:',
+            Settings.isBonus3JewelsRunning(),
+            'LevelUp:',
+            Settings.isNivelSuperado()
+          );
+        }
+      }
+    ]);
+
+    this.timeline3Jewels.play();
   }
 
   set_pausaInicial(tiempo)
@@ -371,6 +376,8 @@ export class Game extends Scene
     this.sonido_crash = this.sound.add('crash');
     this.sonido_congrats = this.sound.add('congrats-voice');
     this.sonido_youWin = this.sound.add('you-win');
+    this.sonido_key = this.sound.add('key');
+    this.sonido_numkey = this.sound.add('numkey');
     Settings.audio.musicaFondo = this.sound.add('musica-fondo');
   }
 }

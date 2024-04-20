@@ -403,6 +403,7 @@ function countDownBonus(scene)
 
         Settings.setPuntos(Settings.getPuntos() + decBonus);
         scene.marcadorPtos.update(Settings.getTxtScore(), Settings.getPuntos());
+        play_sonidos(scene.sonido_numkey, false, 0.8);
       }
     }
   ]);
