@@ -146,7 +146,8 @@ export class Game extends Scene
         {
           Settings.setBonus3JewelsRunning(false),
           Settings.setNivelSuperado(true);
-
+          this.jewels.get().children.iterate(gem => gem.play('jewels-anim', true));
+          
           console.log(
             'Done:',
             Settings.isBonus3JewelsDone(),
