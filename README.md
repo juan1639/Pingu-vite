@@ -15,6 +15,8 @@ Mueve al pingüino por el laberinto de hielo y empuja los bloques. El objetivo e
 - **Bonus:** al alinear las 3 joyas recibes un bonus de **10.000 puntos**, que se suma al marcador poco a poco, y pasas de nivel.
 - **Récord:** se guarda en el navegador y se mantiene aunque cierres la página.
 
+Hay **4 niveles**, cada uno con un laberinto distinto: todos de pasillos estrechos: el clásico, *Columnas* (muros verticales para zigzaguear), *Anillos* (rectángulos uno dentro de otro) y *Laberinto*. Al superar el último aparece la pantalla final. Las joyas salen en un sitio distinto en cada partida.
+
 ## Controles
 
 Antes de empezar la partida eliges el tipo de control:
