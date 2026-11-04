@@ -34,6 +34,8 @@ There are no tests and no linter.
 
 **Record** is kept in `localStorage` (`Settings.claveRecord`, wrapped in try/catch). `Settings.setRecord()` saves it, and `actualizar_marcadores()` in `functions.js` updates it whenever the score goes past it.
 
-**Mobile joystick**: the `rexvirtualjoystickplugin` is loaded at runtime from a GitHub raw URL in `Preloader` (not imported from the npm `phaser3-rex-plugins` package), so it needs network access.
+**Mobile joystick**: the `rexvirtualjoystickplugin` is loaded at runtime from a GitHub raw URL in `Preloader` (the npm `phaser3-rex-plugins` package is not installed), so it needs network access.
 
 Assets live in `public/assets/` and are loaded by key in `Preloader.js`.
+
+**Versions**: `phaser` is pinned to `~3.90.0` (a bare `npm install phaser` would pull Phaser 4). Vite stays on 5.x by the user's choice. Its remaining `npm audit` warnings only affect the dev server, not the published game.
