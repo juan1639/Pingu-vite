@@ -31,10 +31,7 @@ export class Laberinto
             block.setData('index', index);
             block.setData('vel-x', 0).setData('vel-y', 0);
             block.setData('puntos', Settings.bloques.puntos);
-            // console.log(block.getData('id'));
         });
-
-        console.log(this.tile);
     }
 
     update()
@@ -49,14 +46,6 @@ export class Laberinto
         });
     }
 
-    static check_colision(x, y)
-    {
-        const nivel = Settings.getNivel();
-
-        if (matrixLevels.array_levels[nivel][y][x] < 6) return true;
-        return false;
-    }
-
     elegir_tilesNiveles(valor, i, ii)
     {
         // 0 = vacio, 1 = block-blue, 2,3,4,5 = block-limits/borders
@@ -69,16 +58,6 @@ export class Laberinto
             ).setData('id', valor);
         }
         // Scale 0.75 = 48 / 64 --> (tileXY) / (img.png width or height)
-    }
-
-    set_idFormat(index)
-    {
-        const nivel = Settings.getNivel();
-
-        const y = Math.floor(index / Settings.matrixLevels.array_levels[nivel][0].length);
-        const x = index - y * Settings.matrixLevels.array_levels[nivel][0].length;
-
-        return [y, x];
     }
 
     get()
@@ -114,8 +93,6 @@ export class BrokenBlock
         }
 
         this.broken.play('broken-block-anim', true);
-
-        console.log(this.broken);
     }
 
     get()

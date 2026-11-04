@@ -52,7 +52,6 @@ export class Jewels
 
             arrayCheckNotSamePosY.push(y);
             arrayCheckNotSamePosX.push(x);
-            console.log(arrayCheckNotSamePosY, arrayCheckNotSamePosX);
 
             this.jewels.create(
                 x * Settings.tileXY.x, y * Settings.tileXY.y, 'tiles-jewels', 'square_0000'
@@ -65,8 +64,6 @@ export class Jewels
             gem.setData('id', index);
             gem.setData('vel-x', 0).setData('vel-y', 0);
         });
-
-        console.log(this.jewels);
     }
 
     update()

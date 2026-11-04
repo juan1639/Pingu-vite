@@ -44,38 +44,14 @@ export class ElegirControles
 
     this.radiobutton.on('pointerdown', (e) =>
     {
-      // play_sonidos(this.sonidoMenuSelect, false, 0.9);
-      if (id.includes('FPS'))
-      {
-        this.relatedScene.radioFps.forEach(radio => radio.get().setFrame(0));
-      }
-      else
-      {
-        this.relatedScene.radiobuttons.forEach(radio => radio.get().setFrame(0));
-      }
-
+      this.relatedScene.radiobuttons.forEach(radio => radio.get().setFrame(0));
       this.radiobutton.setFrame(1);
 
-      if (id.includes('FPS'))
-      {
-        if (Settings.isFps60())
-        {
-          Settings.setFps60(false);
-        }
-        else
-        {
-          Settings.setFps60(true);
-        }
-      }
-      else
-      {
-        Object.keys(Settings.controlElegido).forEach(control => {
-          Settings.controlElegido[control] = false;
-        });
-  
-        Settings.controlElegido[this.radiobutton.getData('id')] = true;
-        console.log(Settings.controlElegido.mobile, Settings.controlElegido.teclado);
-      }
+      Object.keys(Settings.controlElegido).forEach(control => {
+        Settings.controlElegido[control] = false;
+      });
+
+      Settings.controlElegido[this.radiobutton.getData('id')] = true;
     });
   }
 

@@ -19,25 +19,17 @@ export class Settings
         y: 48
     };
 
-    static layer1 =
-    {
-        scaleX: 1,
-        scaleY: 1
-    };
-
-    static fps =
-    {
-        fps60: true,
-        allowUpdate: true
-    };
-
     static gameOver = false;
 
     static puntos = 0;
     static nivel = 1;
-    static hi = 12000;
+    // El record se guarda en el navegador (localStorage)
+    static claveRecord = 'pingu-record';
+    static recordInicial = 12000;
+    static hi = Settings.cargar_record();
     static vidas = 3;
     static txtScore = ' Score: ';
+    static txtRecord = ' Record: ';
 
     static velJugador = 4;
 
@@ -77,24 +69,12 @@ export class Settings
 
     static mideTiempo = [null, null, 200];
 
-    static incGodownInvaders =
-    [
-        2, 2, 4, 5, 8, 10, 12, 15, 18, 20, 22, 25, 28, 30, 30, 30, 30, 30, 30, 30, 30
-    ];
-
     static pausas =
     {
         inicial: false,
-        revivir: 4000,
-        invisible: 3000,
-        showBonus: 3500,
         nivelSuperado: {
             superado: false,
             duracion: 3200
-        },
-        duracionExplosion: {
-            jugador: 1000,
-            enemigo: 400
         },
         bonus3Jewels: {
             done: false,
@@ -151,25 +131,38 @@ export class Settings
         musicaFondo: null
     };
 
+    // --- Record (localStorage puede fallar: modo privado, bloqueado...) ---
+    static cargar_record()
+    {
+        try
+        {
+            const guardado = parseInt(localStorage.getItem(Settings.claveRecord), 10);
+            return Number.isNaN(guardado) ? Settings.recordInicial : guardado;
+        }
+        catch (e)
+        {
+            return Settings.recordInicial;
+        }
+    }
+
+    static guardar_record()
+    {
+        try
+        {
+            localStorage.setItem(Settings.claveRecord, String(Settings.hi));
+        }
+        catch (e) {}
+    }
+
     // --- Getters ---
-    static isFps60()
-    {
-        return Settings.fps.fps60;
-    }
-    
-    static isAllowUpdate()
-    {
-        return Settings.fps.allowUpdate;
-    }
-
-    static getLayer1()
-    {
-        return Settings.layer1;
-    }
-
     static getTxtScore()
     {
         return Settings.txtScore;
+    }
+
+    static getTxtRecord()
+    {
+        return Settings.txtRecord;
     }
 
     static isNivelSuperado()
@@ -248,25 +241,6 @@ export class Settings
     }
 
     // --- Setters ---
-    static setFps60(bool)
-    {
-        Settings.fps.fps60 = bool;
-    }
-    static setAllowUpdate(bool)
-    {
-        Settings.fps.allowUpdate = bool;
-    }
-
-    static setLaye1ScaleX(valor)
-    {
-        Settings.layer1.scaleX = valor;
-    };
-
-    static setLaye1ScaleY(valor)
-    {
-        Settings.layer1.scaleY = valor;
-    };
-
     static setNivelSuperado(bool)
     {
         Settings.pausas.nivelSuperado.superado = bool;
@@ -305,6 +279,7 @@ export class Settings
     static setRecord(hiScore)
     {
         Settings.hi = hiScore;
+        Settings.guardar_record();
     }
 
     static setVidas(lifes)

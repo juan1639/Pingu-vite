@@ -34,8 +34,6 @@ export class Textos
         // if (!excepcionesString.includes(txt)) this.texto.setX(centrar_txt(this.texto, args[12] * args[13]));
 
         this.elastic(txt, elastic, dura);
-
-        console.log(this.texto);
     }
     
     elastic(txt, elastic, dura)

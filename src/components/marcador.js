@@ -27,8 +27,6 @@ export class Marcador
 
         this.marcador.setStroke(strokeColor, 16).setShadow(2, 2, '#111111', 2, false, true);
         //#de77ae #ee9011 #af1
-
-        console.log(this.marcador);
     }
 
     update(txt, valor)

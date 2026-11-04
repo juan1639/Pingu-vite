@@ -76,8 +76,6 @@ export class MainMenu extends Scene
         timeline.play();
 
         play_sonidos(this.marioTuberias, false, 0.6);
-        
-        console.log(this.txt);
     }
 
     update()

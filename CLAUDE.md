@@ -26,11 +26,13 @@ There are no tests and no linter.
 
 **Movement is grid-locked**: the player only changes direction when its position is an exact multiple of the tile size, so speeds (`Settings.velJugador`, `Settings.bloques.velPxl`) must divide 48 evenly.
 
-**Collision callbacks and shared helpers** (player/blocks/jewels colliders, 3-jewels bonus check, particles, scoring, `play_sonidos`) are in `src/functions/functions.js` and wired up in `Game.set_colliders()`. Some functions there (enemy and shot collisions) are left over from earlier games and are unused.
+**Collision callbacks and shared helpers** (player/blocks/jewels colliders, 3-jewels bonus check, particles, scoring, `play_sonidos`) are in `src/functions/functions.js` and wired up in `Game.set_colliders()`. A pushed block or jewel moves 4px per step; when it hits something, `retroceder_y_parar()` undoes the last step so it lands exactly on the grid.
 
 **Cameras**: `Game` uses the main camera (follows the player, bounds scaled by `Settings.screen.escBoundsX/Y`) plus two extra cameras, one for the score HUD and one for the mobile controls. HUD and controls objects are placed at off-screen coordinates (e.g. negative y) that only those extra cameras scroll to. Keep this in mind when positioning UI.
 
-**30/60 FPS**: when 60 FPS is off, `Game.update()` skips every other frame using `Settings.fps.allowUpdate`.
+**Fixed logic rate**: game logic moves sprites a fixed number of pixels per call, so `Game.update()` only runs it on frames where the Arcade world emitted `worldstep` (60 fixed steps/s). This keeps the speed the same on 60/120/144 Hz monitors. Below 60 FPS the game slows down, because logic runs at most once per frame.
+
+**Record** is kept in `localStorage` (`Settings.claveRecord`, wrapped in try/catch). `Settings.setRecord()` saves it, and `actualizar_marcadores()` in `functions.js` updates it whenever the score goes past it.
 
 **Mobile joystick**: the `rexvirtualjoystickplugin` is loaded at runtime from a GitHub raw URL in `Preloader` (not imported from the npm `phaser3-rex-plugins` package), so it needs network access.
 

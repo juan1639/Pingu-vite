@@ -47,7 +47,6 @@ export class BotonNuevaPartida
 
     this.boton.on('pointerdown', (e) =>
     {
-      // console.log(e);
       play_sonidos(Settings.audio.monedaMario, false, 0.7);
 
       this.relatedScene.scene.start(nextScene);
