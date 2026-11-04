@@ -75,10 +75,10 @@ export class Jugador
 
         if (!Settings.isJugadorMoving())
         {
-            Object.keys(Settings.jugador.direccion).forEach(direcc =>
+            for (const direcc of Object.keys(Settings.jugador.direccion))
             {
                 const tecla = Settings.jugador.teclas[direcc];
-    
+
                 if (this.controles[tecla].isDown || this.relatedScene.joystickCursors[tecla].isDown)
                 {
                     Settings.setJugadorMoving(true);
@@ -87,8 +87,10 @@ export class Jugador
                     this.jugador.anims.play(this.jugador.getData('anima'), true);
                     this.jugador.setAngle(Settings.jugador.direccion[this.jugador.getData('direccion')][2]);
                     this.set_velocity();
+                    // Solo una direccion por frame: con dos teclas a la vez se movia en diagonal y salia de la cuadricula
+                    break;
                 }
-            });
+            }
     
             if (this.controles.space.isDown)
             {

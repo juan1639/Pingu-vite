@@ -101,6 +101,7 @@ export class Settings
             duracion: 14000,
             running: false,
             bonus: 10000,
+            bonusInicial: 10000, // la cuenta atras deja 'bonus' a 0, se restaura en cada nivel
             decBonusCountDown: 100
         },
         txtCongrats: {

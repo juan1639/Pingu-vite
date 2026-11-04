@@ -12,18 +12,24 @@ export class Congratulations extends Phaser.Scene
 
   init()
   {
-    this.botoninicio = new BotonNuevaPartida(this);
+    this.botoninicio = new BotonNuevaPartida(this, {
+      left: Math.floor(this.sys.game.config.width / 2),
+      top: Math.floor(this.sys.game.config.height / 1.3),
+      id: 'boton-nueva-partida',
+      scX: 0.6, scY: 0.5, angle: 1, originX: 0.5, originY: 0.5,
+      texto: ' Next Level ', nextScene: 'Game'
+    });
   }
 
   create()
   {
-    this.add.image(0, 0, 'fondo').setOrigin(0, 0);
+    this.add.image(0, 0, 'fondo').setOrigin(0, 0).setDepth(Settings.depth.fondo);
 
     const aparecerBoton = 3200;
     this.incremento_nivel = Settings.getNivel() + 1;
     Settings.setNivelSuperado(false);
     
-    this.sonido_intermision = this.sound.add('aliens-atmos');
+    this.sonido_intermision = this.sound.add('mario-tuberias'); // 'aliens-atmos' no se carga en el Preloader
 
     this.txt = new Textos(this, {
       x: Math.floor(this.sys.game.config.width / 2),

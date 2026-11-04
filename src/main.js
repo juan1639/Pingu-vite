@@ -4,6 +4,7 @@ import { MainMenu } from './scenes/MainMenu';
 import { Game } from './scenes/Game';
 import { PreGame } from './scenes/GameOver';
 import { Congratulations } from './scenes/congratulations.js';
+import { PantallaFinal } from './scenes/pantallaFinal.js';
 // import VirtualJoystickPlugin from 'phaser3-rex-plugins/plugins/virtualjoystick-plugin.js';
 
 //  Find out more information about the Game Config at:
@@ -40,8 +41,14 @@ const config = {
         MainMenu,
         PreGame,
         Game,
-        Congratulations
+        Congratulations,
+        PantallaFinal
     ]
 };
 
-export default new Phaser.Game(config);
+const juego = new Phaser.Game(config);
+
+// Acceso desde la consola para depurar (solo en desarrollo)
+if (import.meta.env.DEV) window.juego = juego;
+
+export default juego;

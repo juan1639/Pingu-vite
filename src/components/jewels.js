@@ -14,7 +14,8 @@ export class Jewels
         // const target = Phaser.Math.Between(0, strJewels.length - 1);
         const target = 3; // Square
 
-        if (Settings.getNivel() > 1) this.anims.remove('jewels-anim');
+        // Las animaciones son globales: si ya existe (nivel o partida anterior) se recrea
+        if (this.relatedScene.anims.exists('jewels-anim')) this.relatedScene.anims.remove('jewels-anim');
         
         this.relatedScene.anims.create(
         {

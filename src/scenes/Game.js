@@ -11,6 +11,7 @@ import { Jugador, JugadorDies, JugadorShowVidas } from '../components/jugador2.j
 import { Textos } from '../components/textos.js';
 import { Marcador } from './../components/marcador.js';
 import { Settings } from './settings.js';
+import { matrixLevels } from './matrixLevels.js';
 import { BotonFire } from '../components/botonfire.js';
 import { BotonFullScreen, BotonEsc } from '../components/boton-nuevapartida.js';
 import { particulas } from '../functions/functions.js';
@@ -37,6 +38,12 @@ export class Game extends Scene
   init()
   {
     Settings.setGameOver(false);
+
+    // Settings es estatico: el estado del bonus del nivel anterior seguiria activo
+    Settings.setBonus3JewelsDone(false);
+    Settings.setBonus3JewelsRunning(false);
+    Settings.setBonus3JewelsBonus(Settings.pausas.bonus3Jewels.bonusInicial);
+    Settings.setNivelSuperado(false);
 
     this.set_pausaInicial(2800);
 
@@ -170,10 +177,31 @@ export class Game extends Scene
             Settings.isNivelSuperado()
           );
         }
+      },
+      {
+        at: Settings.pausas.bonus3Jewels.duracion + Settings.getPausaNivelSuperado(),
+        run: () => this.pasar_nivel()
       }
     ]);
 
     this.timeline3Jewels.play();
+  }
+
+  pasar_nivel()
+  {
+    // La musica es del sound manager global: si no se para, se solapa con la del nivel siguiente
+    Settings.audio.musicaFondo.stop();
+
+    const ultimoNivel = matrixLevels.array_levels.length - 1;
+
+    if (Settings.getNivel() >= ultimoNivel)
+    {
+      this.scene.start('PantallaFinal');
+    }
+    else
+    {
+      this.scene.start('Congratulations');
+    }
   }
 
   set_pausaInicial(tiempo)
