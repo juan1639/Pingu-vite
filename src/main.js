@@ -5,6 +5,7 @@ import { Game } from './scenes/Game';
 import { PreGame } from './scenes/GameOver';
 import { Congratulations } from './scenes/congratulations.js';
 import { PantallaFinal } from './scenes/pantallaFinal.js';
+import { PantallaGameOver } from './scenes/pantallaGameOver.js';
 
 //  Find out more information about the Game Config at:
 //  https://newdocs.phaser.io/docs/3.70.0/Phaser.Types.Core.GameConfig
@@ -32,7 +33,8 @@ const config = {
         PreGame,
         Game,
         Congratulations,
-        PantallaFinal
+        PantallaFinal,
+        PantallaGameOver
     ]
 };
 

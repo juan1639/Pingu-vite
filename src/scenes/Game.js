@@ -8,6 +8,7 @@ import { Scene } from 'phaser';
 import { Laberinto, BrokenBlock } from '../components/laberinto.js';
 import { Jewels } from '../components/jewels.js';
 import { Jugador } from '../components/jugador2.js';
+import { Enemigos } from '../components/enemigos.js';
 import { Textos } from '../components/textos.js';
 import { Marcador } from './../components/marcador.js';
 import { Settings } from './settings.js';
@@ -21,7 +22,8 @@ import {
   colliderJewelParar,
   particulas,
   countDownBonus,
-  play_sonidos
+  play_sonidos,
+  actualizar_marcadores
 } from '../functions/functions.js';
 
 export class Game extends Scene
@@ -46,6 +48,8 @@ export class Game extends Scene
     this.bloques = new Laberinto(this);
     this.brokenblock = new BrokenBlock(this);
     this.jewels = new Jewels(this);
+    this.enemigos = new Enemigos(this);
+    this.muriendo = false;
 
     this.jugador = new Jugador(this, {
       x: Settings.jugador.posIniX * Settings.tileXY.x,
@@ -76,10 +80,12 @@ export class Game extends Scene
     this.brokenblock.create(0, 0, true);
     this.jewels.create();
     this.jugador.create();
+    this.enemigos.create();
 
     this.marcadorPtos.create();
     this.marcadorNivel.create();
     this.marcadorHi.create();
+    this.marcadorVidas.create();
     this.botonfullscreen.create();
     this.botonesc.create();
 
@@ -107,11 +113,24 @@ export class Game extends Scene
     if (!this.pasoFisica) return;
     this.pasoFisica = false;
 
-    if (!Settings.pausas.inicial && !Settings.isGameOver() && !Settings.isBonus3JewelsRunning())
+    if (!Settings.pausas.inicial && !Settings.isGameOver() && !Settings.isBonus3JewelsRunning() && !this.muriendo)
     {
       this.bloques.update();
       this.jewels.update();
       this.jugador.update();
+
+      // Con el nivel superado los enemigos se quedan quietos (y no salen mas)
+      if (!Settings.isNivelSuperado())
+      {
+        if (this.enemigos.update())
+        {
+          this.jugador_tocado();
+        }
+        else if (this.enemigos.todos_eliminados())
+        {
+          this.nivel_superado_enemigos();
+        }
+      }
     }
 
     if (Settings.isBonus3JewelsDone() && !Settings.isBonus3JewelsRunning() && !Settings.isNivelSuperado())
@@ -163,6 +182,93 @@ export class Game extends Scene
     ]);
 
     this.timeline3Jewels.play();
+  }
+
+  // Nivel superado eliminando a los 12 enemigos (sin el bonus de las joyas)
+  nivel_superado_enemigos()
+  {
+    Settings.setNivelSuperado(true);
+    this.texto_enhorabuena();
+    play_sonidos(this.sonido_youWin, false, 0.9);
+
+    this.time.delayedCall(Settings.getPausaNivelSuperado() + 1500, () => this.pasar_nivel());
+  }
+
+  jugador_tocado()
+  {
+    this.muriendo = true;
+    const jugador = this.jugador.get();
+
+    play_sonidos(this.sonido_ziuuu, false, 0.9);
+    jugador.anims.stop();
+    jugador.setTint(Settings.enemigos.tinte);
+
+    this.tweens.add({
+      targets: jugador,
+      angle: 720,
+      scale: 0.4,
+      duration: Settings.pausas_muerte.animacion,
+      onComplete: () =>
+      {
+        Settings.setVidas(Settings.getVidas() - 1);
+        this.marcadorVidas.update(Settings.getTxtVidas(), Settings.getVidas());
+
+        if (Settings.getVidas() <= 0)
+        {
+          this.game_over();
+        }
+        else
+        {
+          this.reaparecer();
+        }
+      }
+    });
+  }
+
+  reaparecer()
+  {
+    const tile = Settings.tileXY.x;
+    const jugador = this.jugador.get();
+    const { x, y } = this.enemigos.casilla_libre_cercana(Settings.jugador.posIniX * tile, Settings.jugador.posIniY * tile);
+
+    jugador.clearTint().setAngle(0).setScale(0.9).setPosition(x, y);
+    jugador.anims.play(jugador.getData('anima'), true);
+    this.jugador.viejaX = x;
+    this.jugador.viejaY = y;
+    Settings.setJugadorMoving(false);
+
+    this.enemigos.volver_a_casa();
+    this.muriendo = false;
+
+    // Un momento de pausa antes de seguir, como al empezar el nivel
+    Settings.setPausaInicial(true);
+
+    const txt = new Textos(this, {
+      x: Math.floor(this.sys.game.config.width / 2),
+      y: Math.floor(this.sys.game.config.height / 2),
+      txt: ' Ready! ',
+      size: 78, color: '#ffa', style: 'bold',
+      stroke: '#af1', sizeStroke: 16,
+      shadowOsx: 2, shadowOsy: 2, shadowColor: '#111111',
+      bool1: false, bool2: true, origin: [0.5, 0.5],
+      elastic: false, dura: 0
+    });
+    txt.create();
+    txt.get().setDepth(Settings.depth.textos).setScrollFactor(0);
+    this.mapa_scores.ignore(txt.get());
+
+    this.time.delayedCall(Settings.pausas_muerte.reaparecer, () =>
+    {
+      txt.get().destroy();
+      Settings.setPausaInicial(false);
+    });
+  }
+
+  game_over()
+  {
+    Settings.setGameOver(true);
+    Settings.audio.musicaFondo.stop();
+    this.scene.start('PantallaGameOver');
   }
 
   pasar_nivel()
@@ -305,18 +411,23 @@ export class Game extends Scene
   instanciar_marcadores()
   {
     const ancho = this.sys.game.config.width;
+    // Camara del marcador con zoom 0.6: caben ~1333 px; Score / Level / Lives / Record / Music
     const marcadoresPosY = -99;
 
     this.marcadorPtos = new Marcador(this, {
-      x: 10, y: marcadoresPosY, size: 40, txt: Settings.getTxtScore(), color: '#fff', strokeColor: '#af1', id: 0
+      x: 10, y: marcadoresPosY, size: 36, txt: Settings.getTxtScore(), color: '#fff', strokeColor: '#af1', id: 0
     });
 
     this.marcadorNivel = new Marcador(this, {
-      x: Math.floor(ancho / 2), y: marcadoresPosY, size: 40, txt: ' Level: ', color: '#ff5', strokeColor: '#16d', id: 1
+      x: 315, y: marcadoresPosY, size: 36, txt: ' Level: ', color: '#ff5', strokeColor: '#16d', id: 1
     });
 
     this.marcadorHi = new Marcador(this, {
-      x: Math.floor(ancho / 1.2), y: marcadoresPosY, size: 40, txt: Settings.getTxtRecord(), color: '#fff', strokeColor: '#af1', id: 2
+      x: 715, y: marcadoresPosY, size: 36, txt: Settings.getTxtRecord(), color: '#fff', strokeColor: '#af1', id: 2
+    });
+
+    this.marcadorVidas = new Marcador(this, {
+      x: 516, y: marcadoresPosY, size: 36, txt: Settings.getTxtVidas(), color: '#fff', strokeColor: '#f71', id: 3
     });
 
     this.botonfullscreen = new BotonFullScreen(this, {

@@ -69,6 +69,9 @@ function colliderBloqueParar(bloque, otro)
       bloque.disableBody(true, true);
       suma_puntos(bloque, this);
 
+      // Era un huevo: el enemigo que iba a salir de el ya no saldra
+      if (bloque.getData('huevo')) this.enemigos.quitar_huevo(bloque);
+
       play_sonidos(this.sonido_crash, false, 0.6);
     }
   }
@@ -216,5 +219,6 @@ export {
   particulas,
   countDownBonus,
   play_sonidos,
-  al_tocar
+  al_tocar,
+  actualizar_marcadores
 };

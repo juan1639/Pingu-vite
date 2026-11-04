@@ -12,7 +12,11 @@ Mueve al pingüino por el laberinto de hielo y empuja los bloques. El objetivo e
 
 - **Empujar:** un bloque o una joya empujados se deslizan hasta chocar con otro bloque.
 - **Romper bloques:** si empujas un bloque que está pegado a otro (no tiene sitio para moverse), se rompe y ganas **10 puntos**. Los bloques del borde no se pueden empujar.
-- **Bonus:** al alinear las 3 joyas recibes un bonus de **10.000 puntos**, que se suma al marcador poco a poco, y pasas de nivel.
+- **Bonus:** al alinear las 3 joyas recibes un bonus de **10.000 puntos**, que se suma al marcador poco a poco.
+- **Enemigos:** cada nivel tiene 12, que salen de bloques de hielo. Al empezar, esos bloques parpadean un momento: ¡recuerda dónde están! Como mucho hay 4 a la vez; cuando eliminas uno, sale otro.
+- **Aplastar enemigos:** empuja un bloque o una joya contra un enemigo para aplastarlo (**400 puntos**). Si rompes un bloque del que iba a salir un enemigo, ese enemigo ya no saldrá (**500 puntos**).
+- **Vidas:** empiezas con **3**. Si un enemigo te toca pierdes una y vuelves a la casilla inicial. Sin vidas, *Game Over*.
+- **Pasar de nivel:** alinea las 3 joyas (con bonus) o elimina a los 12 enemigos.
 - **Récord:** se guarda en el navegador y se mantiene aunque cierres la página.
 
 Hay **4 niveles**, cada uno con un laberinto distinto: todos de pasillos estrechos: el clásico, *Columnas* (muros verticales para zigzaguear), *Anillos* (rectángulos uno dentro de otro) y *Laberinto*. Al superar el último aparece la pantalla final. Las joyas salen en un sitio distinto en cada partida.
@@ -50,7 +54,7 @@ El juego se abre en http://localhost:8080 y se recarga solo al cambiar el códig
 
 - `src/main.js`: configuración de Phaser y lista de escenas.
 - `src/scenes/`: escenas (título, elección de controles, partida, "Level Up!" y pantalla final), `settings.js` con los valores y el estado del juego, y `matrixLevels.js` con los niveles.
-- `src/components/`: jugador, laberinto, joyas, marcadores, botones y control táctil.
+- `src/components/`: jugador, enemigos, laberinto, joyas, marcadores, botones y control táctil.
 - `src/functions/functions.js`: colisiones, puntuación, bonus y sonidos.
 - `public/assets/`: imágenes, sonidos y atlas.
 

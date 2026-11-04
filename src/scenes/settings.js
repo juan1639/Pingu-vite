@@ -27,7 +27,8 @@ export class Settings
     static claveRecord = 'pingu-record';
     static recordInicial = 12000;
     static hi = Settings.cargar_record();
-    static vidas = 3;
+    static vidasIniciales = 3;
+    static vidas = Settings.vidasIniciales;
     static txtScore = ' Score: ';
     static txtRecord = ' Record: ';
 
@@ -68,6 +69,28 @@ export class Settings
     };
 
     static mideTiempo = [null, null, 200];
+
+    // Enemigos: salen de bloques "huevo" elegidos al azar al empezar cada nivel
+    static enemigos =
+    {
+        total: 12,              // huevos por nivel
+        maxALaVez: 4,
+        velPxl: 2,              // la mitad que el jugador; tiene que dividir 48
+        probPerseguir: 0.6,     // en cada cruce: 60% el camino que acerca al jugador, si no al azar
+        puntosAplastar: 400,
+        puntosHuevo: 500,       // romper un bloque del que iba a salir un enemigo
+        distanciaMinimaInicio: 4, // casillas: ningun huevo pegado a la salida del jugador
+        retrasoSalida: 600,     // ms entre salidas seguidas
+        retrasoReponer: 1500,   // ms desde que muere uno hasta que sale el siguiente
+        tinte: 0xff5555,        // provisional: usan el sprite del pinguino
+        tintePlano: 0xffffff
+    };
+
+    static pausas_muerte =
+    {
+        animacion: 1800,        // ms girando antes de restar la vida
+        reaparecer: 1500        // ms de "Ready!" al volver a la casilla inicial
+    };
 
     static pausas =
     {
@@ -220,6 +243,11 @@ export class Settings
     static getVidas()
     {
         return Settings.vidas;
+    }
+
+    static getTxtVidas()
+    {
+        return ' Lives: ';
     }
 
     static getVelJugador()

@@ -14,7 +14,7 @@ export class PreGame extends Scene
     {
         Settings.setPuntos(0);
         Settings.setNivel(1);
-        Settings.setVidas(3);
+        Settings.setVidas(Settings.vidasIniciales);
         Settings.setGameOver(false);
         Settings.setNivelSuperado(false);
         Settings.controlElegido.mobile = false;
