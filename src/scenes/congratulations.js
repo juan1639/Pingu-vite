@@ -29,7 +29,7 @@ export class Congratulations extends Phaser.Scene
     this.incremento_nivel = Settings.getNivel() + 1;
     Settings.setNivelSuperado(false);
     
-    this.sonido_intermision = this.sound.add('mario-tuberias'); // 'aliens-atmos' no se carga en el Preloader
+    this.sonido_intermision = this.sound.add('musica-menu');
 
     this.txt = new Textos(this, {
       x: Math.floor(this.sys.game.config.width / 2),

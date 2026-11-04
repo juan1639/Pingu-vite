@@ -47,15 +47,30 @@ export class Enemigos
             huevo.setData('puntos', cfg.puntosHuevo);
         });
 
-        // Parpadeo durante el "Ready!" para que el jugador vea (y recuerde) donde estan
-        this.relatedScene.tweens.add({
-            targets: this.huevos,
-            alpha: 0.2,
-            delay: 400,
-            duration: 250,
-            yoyo: true,
-            repeat: 3,
-            onComplete: () => this.huevos.forEach(h => h.setAlpha(1))
+        this.destellar_huevos();
+    }
+
+    // Durante el "Ready!" los huevos destellan en amarillo para que el jugador vea (y recuerde) donde estan.
+    // Solo color: cambiar la escala tocaria el cuerpo fisico y chocaria con los bloques de al lado
+    destellar_huevos()
+    {
+        const { colorDestello, destellos, intervaloDestello } = Settings.enemigos;
+        let encendido = false;
+
+        this.relatedScene.time.addEvent({
+            delay: intervaloDestello,
+            startAt: intervaloDestello - 300, // el primero a los 300 ms
+            repeat: destellos * 2 - 1,
+            callback: () =>
+            {
+                encendido = !encendido;
+                this.huevos.forEach(h =>
+                {
+                    if (!h.active) return;
+                    if (encendido) h.setTintFill(colorDestello);
+                    else h.clearTint();
+                });
+            }
         });
     }
 

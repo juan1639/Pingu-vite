@@ -189,7 +189,9 @@ export class Game extends Scene
   {
     Settings.setNivelSuperado(true);
     this.texto_enhorabuena();
-    play_sonidos(this.sonido_youWin, false, 0.9);
+    // La musica de fondo se baja para que se oiga la fanfarria (pasar_nivel() la para)
+    Settings.audio.musicaFondo.volume = 0;
+    play_sonidos(this.sonido_fanfarria, false, 0.9);
 
     this.time.delayedCall(Settings.getPausaNivelSuperado() + 1500, () => this.pasar_nivel());
   }
@@ -450,13 +452,14 @@ export class Game extends Scene
     this.sonido_crash = this.sound.add('crash');
     this.sonido_congrats = this.sound.add('congrats-voice');
     this.sonido_youWin = this.sound.add('you-win');
+    this.sonido_fanfarria = this.sound.add('fanfarria');
     this.sonido_numkey = this.sound.add('numkey');
     Settings.audio.musicaFondo = this.sound.add('musica-fondo');
 
     // Los sonidos son del sound manager global: sin esto se acumulan copias en cada nivel
     const sonidos = [
       this.sonido_getReady, this.sonido_ziuuu, this.sonido_crash, this.sonido_congrats,
-      this.sonido_youWin, this.sonido_numkey, Settings.audio.musicaFondo
+      this.sonido_youWin, this.sonido_fanfarria, this.sonido_numkey, Settings.audio.musicaFondo
     ];
     this.events.once('shutdown', () => sonidos.forEach(sonido => sonido.destroy()));
   }

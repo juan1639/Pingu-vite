@@ -14,7 +14,7 @@ export class MainMenu extends Scene
 
     init()
     {
-        this.marioTuberias = this.sound.add('mario-tuberias');
+        this.musicaMenu = this.sound.add('musica-menu');
 
         this.jugador = new JugadorPreGame(this, {
             // x: Math.floor(this.sys.game.config.width / 2),
@@ -75,10 +75,10 @@ export class MainMenu extends Scene
 
         timeline.play();
 
-        play_sonidos(this.marioTuberias, false, 0.6);
+        play_sonidos(this.musicaMenu, false, 0.6);
 
         // Los sonidos son del sound manager global: no se paran solos al cambiar de escena
-        this.events.once('shutdown', () => this.marioTuberias.destroy());
+        this.events.once('shutdown', () => this.musicaMenu.destroy());
     }
 
     update()
