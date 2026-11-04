@@ -1,110 +1,67 @@
-# Pingu Vite
+# PinguClon
 
-This is a recreation of sega arcade classic Pengo of 1982.
+Juego de laberinto y bloques de hielo inspirado en el clásico arcade **Pengo** (Sega, 1982), hecho con Phaser 3 y Vite.
 
-To play:
-https://juan1639.github.io/Pingu-vite
+**Jugar en el navegador:** https://juan1639.github.io/Pingu-vite
 
-<img src="miniatura-pingu.png" alt="img of this game"/>
+![Captura de una partida](screenshots/screenshot.png)
 
-# Phaser Vite Template
+## Cómo se juega
 
-This is a Phaser 3 project template that uses Vite for bundling. It supports hot-reloading for quick development workflow and includes scripts to generate production-ready builds.
+Mueve al pingüino por el laberinto de hielo y empuja los bloques. El objetivo es **colocar las 3 joyas moradas en línea**: en la misma fila o columna y en casillas seguidas.
 
-**[This Template is also available as a TypeScript version.](https://github.com/phaserjs/template-vite-ts)**
+- **Empujar:** un bloque o una joya empujados se deslizan hasta chocar con otro bloque.
+- **Romper bloques:** si empujas un bloque que está pegado a otro (no tiene sitio para moverse), se rompe y ganas **10 puntos**. Los bloques del borde no se pueden empujar.
+- **Bonus:** al alinear las 3 joyas recibes un bonus de **10.000 puntos**, que se suma al marcador poco a poco, y pasas de nivel.
+- **Récord:** se guarda en el navegador y se mantiene aunque cierres la página.
 
-### Versions
+## Controles
 
-This template has been updated for:
+Antes de empezar la partida eliges el tipo de control:
+
+| | Teclado | Móvil / pantalla táctil |
+|---|---|---|
+| Moverse | Flechas | Apoya el dedo en cualquier parte de la pantalla y arrástralo hacia la dirección; al soltar, el pingüino se para |
+| Empujar | Mantén **Espacio** mientras andas contra el bloque | Basta con andar contra el bloque |
+
+En la partida, el botón **Music** activa o silencia la música y el botón de la esquina pone el juego a pantalla completa.
+
+## Ejecutarlo en tu ordenador
+
+Necesitas [Node.js](https://nodejs.org).
+
+```bash
+npm install
+npm run dev
+```
+
+El juego se abre en http://localhost:8080 y se recarga solo al cambiar el código. Para probarlo desde el móvil en la misma red Wi-Fi: `npm run dev -- --host`.
+
+| Comando | Qué hace |
+|---|---|
+| `npm install` | Instala las dependencias |
+| `npm run dev` | Servidor de desarrollo con recarga automática |
+| `npm run build` | Versión final del juego en la carpeta `dist/` |
+| `npm run deploy` | Genera `dist/` y la publica en GitHub Pages (rama `gh-pages`) |
+
+## Estructura
+
+- `src/main.js`: configuración de Phaser y lista de escenas.
+- `src/scenes/`: escenas (título, elección de controles, partida, "Level Up!" y pantalla final), `settings.js` con los valores y el estado del juego, y `matrixLevels.js` con los niveles.
+- `src/components/`: jugador, laberinto, joyas, marcadores, botones y control táctil.
+- `src/functions/functions.js`: colisiones, puntuación, bonus y sonidos.
+- `public/assets/`: imágenes, sonidos y atlas.
+
+Los niveles son matrices de casillas en `src/scenes/matrixLevels.js` (0 = vacío, 1 = bloque de hielo, 2–5 = bordes). Si se añaden más, el juego pasa por todos y al terminar el último muestra la pantalla final.
+
+## Versiones
 
 - [Phaser 3.90.0](https://github.com/phaserjs/phaser)
-- [Vite 5.4.21](https://github.com/vitejs/vite)
+- [Vite 5.4](https://github.com/vitejs/vite)
 
-![screenshot](screenshot.png)
+Proyecto creado a partir de la plantilla oficial [phaserjs/template-vite](https://github.com/phaserjs/template-vite).
 
-## Requirements
+## Créditos
 
-[Node.js](https://nodejs.org) is required to install dependencies and run scripts via `npm`.
-
-## Available Commands
-
-| Command | Description |
-|---------|-------------|
-| `npm install` | Install project dependencies |
-| `npm run dev` | Launch a development web server |
-| `npm run build` | Create a production build in the `dist` folder |
-
-## Writing Code
-
-After cloning the repo, run `npm install` from your project directory. Then, you can start the local development server by running `npm run dev`.
-
-The local development server runs on `http://localhost:8080` by default. Please see the Vite documentation if you wish to change this, or add SSL support.
-
-Once the server is running you can edit any of the files in the `src` folder. Vite will automatically recompile your code and then reload the browser.
-
-## Template Project Structure
-
-We have provided a default project structure to get you started. This is as follows:
-
-- `index.html` - A basic HTML page to contain the game.
-- `src` - Contains the game source code.
-- `src/main.js` - The main entry point. This contains the game configuration and starts the game.
-- `src/scenes/` - The Phaser Scenes are in this folder.
-- `public/style.css` - Some simple CSS rules to help with page layout.
-- `public/assets` - Contains the static assets used by the game.
-
-## Handling Assets
-
-Vite supports loading assets via JavaScript module `import` statements.
-
-This template provides support for both embedding assets and also loading them from a static folder. To embed an asset, you can import it at the top of the JavaScript file you are using it in:
-
-```js
-import logoImg from './assets/logo.png'
-```
-
-To load static files such as audio files, videos, etc place them into the `public/assets` folder. Then you can use this path in the Loader calls within Phaser:
-
-```js
-preload ()
-{
-    //  This is an example of an imported bundled image.
-    //  Remember to import it at the top of this file
-    this.load.image('logo', logoImg);
-
-    //  This is an example of loading a static image
-    //  from the public/assets folder:
-    this.load.image('background', 'assets/bg.png');
-}
-```
-
-When you issue the `npm run build` command, all static assets are automatically copied to the `dist/assets` folder.
-
-## Deploying to Production
-
-After you run the `npm run build` command, your code will be built into a single bundle and saved to the `dist` folder, along with any other assets your project imported, or stored in the public assets folder.
-
-In order to deploy your game, you will need to upload *all* of the contents of the `dist` folder to a public facing web server.
-
-## Customizing the Template
-
-### Vite
-
-If you want to customize your build, such as adding plugin (i.e. for loading CSS or fonts), you can modify the `vite/config.*.mjs` file for cross-project changes, or you can modify and/or create new configuration files and target them in specific npm tasks inside of `package.json`. Please see the [Vite documentation](https://vitejs.dev/) for more information.
-
-## Join the Phaser Community!
-
-We love to see what developers like you create with Phaser! It really motivates us to keep improving. So please join our community and show-off your work 😄
-
-**Visit:** The [Phaser website](https://phaser.io) and follow on [Phaser Twitter](https://twitter.com/phaser_)<br />
-**Play:** Some of the amazing games [#madewithphaser](https://twitter.com/search?q=%23madewithphaser&src=typed_query&f=live)<br />
-**Learn:** [API Docs](https://newdocs.phaser.io), [Support Forum](https://phaser.discourse.group/) and [StackOverflow](https://stackoverflow.com/questions/tagged/phaser-framework)<br />
-**Discord:** Join us on [Discord](https://discord.gg/phaser)<br />
-**Code:** 2000+ [Examples](https://labs.phaser.io)<br />
-**Read:** The [Phaser World](https://phaser.io/community/newsletter) Newsletter<br />
-
-Created by [Phaser Studio](mailto:support@phaser.io). Powered by coffee, anime, pixels and love.
-
-The Phaser logo and characters are &copy; 2011 - 2024 Phaser Studio Inc.
-
-All rights reserved.
+Programado por **Juan Eguía** ([juan1639](https://github.com/juan1639)).
+Basado en *Pengo* © Sega 1982. Proyecto sin ánimo de lucro, hecho por afición.
