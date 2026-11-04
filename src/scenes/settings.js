@@ -128,7 +128,9 @@ export class Settings
     static audio =
     {
         monedaMario: null,
-        musicaFondo: null
+        musicaFondo: null,
+        volMusica: 0.6,
+        musicaSilenciada: false // lo cambia el boton "Music" y dura toda la sesion
     };
 
     // --- Record (localStorage puede fallar: modo privado, bloqueado...) ---
@@ -155,6 +157,16 @@ export class Settings
     }
 
     // --- Getters ---
+    static getVolumenMusica()
+    {
+        return Settings.audio.musicaSilenciada ? 0 : Settings.audio.volMusica;
+    }
+
+    static isMusicaSilenciada()
+    {
+        return Settings.audio.musicaSilenciada;
+    }
+
     static getTxtScore()
     {
         return Settings.txtScore;
@@ -241,6 +253,11 @@ export class Settings
     }
 
     // --- Setters ---
+    static setMusicaSilenciada(bool)
+    {
+        Settings.audio.musicaSilenciada = bool;
+    }
+
     static setNivelSuperado(bool)
     {
         Settings.pausas.nivelSuperado.superado = bool;

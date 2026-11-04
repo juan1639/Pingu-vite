@@ -197,7 +197,7 @@ export class Game extends Scene
         at: tiempo - 300,
         run: () =>
         {
-          play_sonidos(Settings.audio.musicaFondo, true, 0.6);
+          play_sonidos(Settings.audio.musicaFondo, true, Settings.getVolumenMusica());
         }
       },
       {
@@ -366,5 +366,12 @@ export class Game extends Scene
     this.sonido_youWin = this.sound.add('you-win');
     this.sonido_numkey = this.sound.add('numkey');
     Settings.audio.musicaFondo = this.sound.add('musica-fondo');
+
+    // Los sonidos son del sound manager global: sin esto se acumulan copias en cada nivel
+    const sonidos = [
+      this.sonido_getReady, this.sonido_ziuuu, this.sonido_crash, this.sonido_congrats,
+      this.sonido_youWin, this.sonido_numkey, Settings.audio.musicaFondo
+    ];
+    this.events.once('shutdown', () => sonidos.forEach(sonido => sonido.destroy()));
   }
 }

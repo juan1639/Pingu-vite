@@ -12,7 +12,11 @@ export class BotonNuevaPartida
 
   create()
   {
-    Settings.audio.monedaMario = this.relatedScene.sound.add('moneda-mario');
+    // Uno solo para todo el juego: suena al pulsar y debe seguir durante el cambio de escena
+    if (!Settings.audio.monedaMario)
+    {
+      Settings.audio.monedaMario = this.relatedScene.sound.add('moneda-mario');
+    }
 
     const {left, top, id, scX, scY, angle, originX, originY, texto, nextScene} = this.args;
 
@@ -142,7 +146,9 @@ export class BotonEsc
     });
 
     this.txt.create();
-    this.txt.get().setDepth(Settings.depth.botonesTxt).setAlpha(1).setScale(1);
+    this.txt.get().setDepth(Settings.depth.botonesTxt).setScale(1);
+    // Al empezar cada nivel el boton se crea de nuevo: refleja si la musica ya estaba silenciada
+    this.txt.get().setAlpha(texto.includes('Music') && Settings.isMusicaSilenciada() ? 0.3 : 1);
 
     this.boton.on('pointerover', () =>
     {
@@ -160,15 +166,13 @@ export class BotonEsc
     {
       if (texto.includes('Music'))
       {
-        if (Settings.audio.musicaFondo.volume > 0)
+        Settings.setMusicaSilenciada(!Settings.isMusicaSilenciada());
+        this.txt.get().setAlpha(Settings.isMusicaSilenciada() ? 0.3 : 1);
+
+        // Durante el bonus la musica esta bajada: al acabar ya recoge el volumen correcto
+        if (!Settings.isBonus3JewelsRunning())
         {
-          Settings.audio.musicaFondo.volume = 0;
-          this.txt.get().setAlpha(0.3);
-        }
-        else
-        {
-          Settings.audio.musicaFondo.volume = 0.6;
-          this.txt.get().setAlpha(1);
+          Settings.audio.musicaFondo.volume = Settings.getVolumenMusica();
         }
       }
       

@@ -167,7 +167,7 @@ function particulas(x, y, particula, vel, span, size, color, sprite, bool, scene
 
   scene.time.delayedCall(Settings.pausas.bonus3Jewels.duracion, () => {
     partis.stop();
-    Settings.audio.musicaFondo.volume = 0.6;
+    Settings.audio.musicaFondo.volume = Settings.getVolumenMusica();
   });
 
   if (bool) partis.startFollow(sprite);
