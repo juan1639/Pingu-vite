@@ -48,6 +48,19 @@ export class Enemigos
         });
 
         this.destellar_huevos();
+
+        // Recordatorio: cada cierto tiempo vuelven a destellar los huevos que quedan
+        this.relatedScene.time.addEvent({
+            delay: cfg.intervaloRecordatorio,
+            loop: true,
+            callback: () =>
+            {
+                if (this.huevos.length > 0 && !Settings.isNivelSuperado() && !Settings.isGameOver())
+                {
+                    this.destellar_huevos();
+                }
+            }
+        });
     }
 
     // Durante el "Ready!" los huevos destellan en amarillo para que el jugador vea (y recuerde) donde estan.
@@ -325,6 +338,46 @@ export class Enemigos
     quitar_huevo(bloque)
     {
         this.huevos = this.huevos.filter(h => h !== bloque);
+    }
+
+    // El jugador ha roto un huevo: se quita y se celebra (los puntos ya los suma suma_puntos)
+    huevo_roto(bloque)
+    {
+        const scene = this.relatedScene;
+        const { x, y } = bloque;
+        const cfg = Settings.enemigos;
+
+        this.quitar_huevo(bloque);
+        play_sonidos(scene.sonido_moneda, false, 0.8);
+
+        // Estallido de chispas amarillas
+        const chispas = scene.add.particles(x, y, 'particula1', {
+            speed: { min: 120, max: 320 },
+            lifespan: 650,
+            scale: { start: 0.35, end: 0 },
+            tint: cfg.colorDestello,
+            blendMode: 'ADD',
+            emitting: false
+        });
+        chispas.setDepth(Settings.depth.explosiones);
+        chispas.explode(24);
+        scene.time.delayedCall(800, () => chispas.destroy());
+
+        // "+500" que sube y se desvanece
+        const txt = scene.add.text(x, y, `+${cfg.puntosHuevo}`, {
+            fontSize: '34px', fontStyle: 'bold', fontFamily: 'verdana, arial, sans-serif',
+            fill: '#ffe033'
+        });
+        txt.setOrigin(0.5, 0.5).setStroke('#b52', 8).setDepth(Settings.depth.textos);
+
+        scene.tweens.add({
+            targets: txt,
+            y: y - 60,
+            alpha: 0,
+            delay: 400,
+            duration: 900,
+            onComplete: () => txt.destroy()
+        });
     }
 
     // Nivel superado por enemigos: no queda ninguno vivo ni por salir

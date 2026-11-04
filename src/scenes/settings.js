@@ -85,6 +85,7 @@ export class Settings
         colorDestello: 0xffe033, // huevos durante el "Ready!"
         destellos: 5,
         intervaloDestello: 240, // ms encendido / apagado (5 destellos = 2.4 s, cabe en el "Ready!")
+        intervaloRecordatorio: 20000, // ms: los huevos que quedan vuelven a destellar
         tinte: 0xff5555,        // provisional: usan el sprite del pinguino
         tintePlano: 0xffffff
     };
@@ -92,7 +93,8 @@ export class Settings
     static pausas_muerte =
     {
         animacion: 1800,        // ms girando antes de restar la vida
-        reaparecer: 1500        // ms de "Ready!" al volver a la casilla inicial
+        reaparecer: 1500,       // ms de "Ready!" al volver a la casilla inicial
+        gameOver: 4000          // ms con la partida congelada antes de la pantalla de Game Over
     };
 
     static pausas =

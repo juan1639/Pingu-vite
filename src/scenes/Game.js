@@ -268,9 +268,28 @@ export class Game extends Scene
 
   game_over()
   {
+    // Se congela la partida un rato con el aviso, para que el jugador asimile que ha terminado
     Settings.setGameOver(true);
     Settings.audio.musicaFondo.stop();
-    this.scene.start('PantallaGameOver');
+    this.enemigos.get().forEach(e => e.anims.stop());
+
+    const txt = new Textos(this, {
+      x: Math.floor(this.sys.game.config.width / 2),
+      y: Math.floor(this.sys.game.config.height / 2),
+      txt: ' Game Over ',
+      size: 90, color: '#ffa', style: 'bold',
+      stroke: '#f41', sizeStroke: 16,
+      shadowOsx: 2, shadowOsy: 2, shadowColor: '#111111',
+      bool1: false, bool2: true, origin: [0.5, 0.5],
+      elastic: false, dura: 0
+    });
+    txt.create();
+    txt.get().setDepth(Settings.depth.textos).setScrollFactor(0).setScale(0.3);
+    this.mapa_scores.ignore(txt.get());
+
+    this.tweens.add({ targets: txt.get(), scale: 1, duration: 700, ease: 'Back.Out' });
+
+    this.time.delayedCall(Settings.pausas_muerte.gameOver, () => this.scene.start('PantallaGameOver'));
   }
 
   pasar_nivel()
@@ -453,13 +472,14 @@ export class Game extends Scene
     this.sonido_congrats = this.sound.add('congrats-voice');
     this.sonido_youWin = this.sound.add('you-win');
     this.sonido_fanfarria = this.sound.add('fanfarria');
+    this.sonido_moneda = this.sound.add('moneda-mario');
     this.sonido_numkey = this.sound.add('numkey');
     Settings.audio.musicaFondo = this.sound.add('musica-fondo');
 
     // Los sonidos son del sound manager global: sin esto se acumulan copias en cada nivel
     const sonidos = [
       this.sonido_getReady, this.sonido_ziuuu, this.sonido_crash, this.sonido_congrats,
-      this.sonido_youWin, this.sonido_fanfarria, this.sonido_numkey, Settings.audio.musicaFondo
+      this.sonido_youWin, this.sonido_fanfarria, this.sonido_moneda, this.sonido_numkey, Settings.audio.musicaFondo
     ];
     this.events.once('shutdown', () => sonidos.forEach(sonido => sonido.destroy()));
   }
