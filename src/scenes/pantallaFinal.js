@@ -59,6 +59,10 @@ export class PantallaFinal extends Scene
 
     this.time.delayedCall(aparecerBoton, () => this.botoninicio.create());
 
-    play_sonidos(this.sound.add('congrats-voice'), false, 0.9);
+    const sonidoFinal = this.sound.add('congrats-voice');
+    play_sonidos(sonidoFinal, false, 0.9);
+
+    // Los sonidos son del sound manager global: no se paran solos al cambiar de escena
+    this.events.once('shutdown', () => sonidoFinal.destroy());
   }
 }

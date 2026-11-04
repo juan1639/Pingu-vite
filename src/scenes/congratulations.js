@@ -58,5 +58,8 @@ export class Congratulations extends Phaser.Scene
     this.timeline.play();
 
     play_sonidos(this.sonido_intermision, false, 0.8);
+
+    // Los sonidos son del sound manager global: no se paran solos al cambiar de escena
+    this.events.once('shutdown', () => this.sonido_intermision.destroy());
   }
 }

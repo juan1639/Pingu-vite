@@ -76,6 +76,9 @@ export class MainMenu extends Scene
         timeline.play();
 
         play_sonidos(this.marioTuberias, false, 0.6);
+
+        // Los sonidos son del sound manager global: no se paran solos al cambiar de escena
+        this.events.once('shutdown', () => this.marioTuberias.destroy());
     }
 
     update()
