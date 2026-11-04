@@ -12,6 +12,8 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    /* Sin esto el movil usa el arrastre para desplazar/zoom y corta el joystick tactil */
+    touch-action: none;
 }
 canvas {
     border: 1px solid #111;

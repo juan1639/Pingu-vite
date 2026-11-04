@@ -13,6 +13,7 @@ import { Marcador } from './../components/marcador.js';
 import { Settings } from './settings.js';
 import { matrixLevels } from './matrixLevels.js';
 import { BotonFullScreen, BotonEsc } from '../components/boton-nuevapartida.js';
+import { ControlTactil } from '../components/controlTactil.js';
 import {
   colliderJugadorBloques,
   colliderJugadorJewels,
@@ -54,6 +55,10 @@ export class Game extends Scene
     });
 
     this.instanciar_marcadores();
+
+    // Con teclado no se crea, pero sus cursores (siempre sin pulsar) se leen igual
+    this.controlTactil = new ControlTactil(this);
+    this.joystickCursors = this.controlTactil.cursores;
   }
 
   preload() {}
@@ -65,7 +70,6 @@ export class Game extends Scene
 
     this.set_sonidos();
     this.set_cameras();
-    this.set_cameras_controles();
     this.set_cameras_marcadores();
 
     this.bloques.create();
@@ -79,8 +83,12 @@ export class Game extends Scene
     this.botonfullscreen.create();
     this.botonesc.create();
 
-    this.rexVirtualJoystick();
-    this.hideMobileControls();
+    if (Settings.controlElegido.mobile)
+    {
+      this.controlTactil.create();
+      // El joystick solo se dibuja en la camara principal, no en la del marcador
+      this.mapa_scores.ignore(this.controlTactil.get());
+    }
 
     this.cameras.main.startFollow(this.jugador.get());
 
@@ -270,30 +278,6 @@ export class Game extends Scene
     this.physics.add.collider(this.jewels.get(), this.jewels.get(), colliderJewelParar, null, this);
   }
 
-  rexVirtualJoystick()
-  {
-    this.joyStick = this.plugins.get('rexvirtualjoystickplugin').add(this, {
-      x: 90,
-      y: this.sys.game.config.height - 80,
-      radius: 90,
-      base: this.add.circle(0, 0, 90, 0x888888, 0.4),
-      thumb: this.add.circle(0, 0, 40, 0xcccccc, 0.7),
-      dir: '4dir',
-      fixed: true,
-      enable: true
-    });
-
-    this.joystickCursors = this.joyStick.createCursorKeys();
-  }
-
-  hideMobileControls()
-  {
-    if (!Settings.controlElegido.mobile)
-    {
-      this.joyStick.setVisible(false);
-    }
-  }
-
   set_cameras()
   {
     this.cameras.main.setBounds(
@@ -309,15 +293,6 @@ export class Game extends Scene
     );
   }
 
-  set_cameras_controles()
-  {
-    var { x, y, ancho, alto, scrollX, scrollY } = Settings.getCameraControles();
-    
-    this.mapa_controles = this.cameras.add(x, y, ancho, alto).setZoom(0.9).setName('view-controls').setAlpha(1).setOrigin(0, 0);
-    this.mapa_controles.scrollX = scrollX;
-    this.mapa_controles.scrollY = scrollY;
-  }
-  
   set_cameras_marcadores()
   {
     var { x, y, ancho, alto, scrollX, scrollY } = Settings.getCameraScores();

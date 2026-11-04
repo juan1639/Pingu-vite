@@ -115,16 +115,6 @@ export class Settings
         scrollY: -90
     };
 
-    static cameraControles =
-    {
-        x: Math.floor(Settings.screen.width / 1.3),
-        y: Math.floor(Settings.screen.height / 1.4),
-        ancho: 270,
-        alto: 270,
-        scrollX: Math.floor(Settings.screen.width / 1.3),
-        scrollY: -600
-    };
-
     static audio =
     {
         monedaMario: null,
@@ -245,11 +235,6 @@ export class Settings
     static getCameraScores()
     {
         return Settings.cameraScores;
-    }
-
-    static getCameraControles()
-    {
-        return Settings.cameraControles;
     }
 
     // --- Setters ---

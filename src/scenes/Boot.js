@@ -1,5 +1,6 @@
 import { Scene } from 'phaser';
 import { Textos } from "../components/textos.js";
+import { al_tocar } from '../functions/functions.js';
 
 export class Boot extends Scene
 {
@@ -32,6 +33,7 @@ export class Boot extends Scene
         this.add.image(0, 0, 'fondo').setOrigin(0, 0);
         this.txt.create();
 
-        this.input.on('pointerdown', () => this.scene.start('Preloader'));
+        // En un movil en vertical tambien vale tocar las bandas negras de fuera del canvas
+        al_tocar(this, () => this.scene.start('Preloader'));
     }
 }

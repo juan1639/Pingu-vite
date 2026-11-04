@@ -190,6 +190,17 @@ function actualizar_marcadores(scene)
   }
 }
 
+// Toque o clic en cualquier parte de la pagina (no solo en el canvas), una vez
+function al_tocar(scene, callback)
+{
+  const app = document.getElementById('app') || document.body;
+  const handler = () => { quitar(); callback(); };
+  const quitar = () => app.removeEventListener('pointerdown', handler);
+
+  app.addEventListener('pointerdown', handler);
+  scene.events.once('shutdown', quitar);
+}
+
 function play_sonidos(id, loop, volumen)
 {
   id.volume = volumen;
@@ -204,5 +215,6 @@ export {
   colliderJewelParar,
   particulas,
   countDownBonus,
-  play_sonidos
+  play_sonidos,
+  al_tocar
 };

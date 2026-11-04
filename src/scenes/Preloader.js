@@ -70,10 +70,6 @@ export class Preloader extends Scene
         
         this.load.spritesheet('pengo-ssheet', './img/pengo-ssheet.png', {frameWidth: 50, frameHeight: 52});
 
-        // Pluggin VirtualJoystick
-        let url = 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexvirtualjoystickplugin.min.js';
-        this.load.plugin('rexvirtualjoystickplugin', url, true);
-
         //  Archivos de audio
         this.load.audio('get-ready', './audio/get-ready.mp3');
         this.load.audio('moneda-mario', './audio/p-ping.mp3');

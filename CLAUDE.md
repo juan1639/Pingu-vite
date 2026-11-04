@@ -28,13 +28,13 @@ There are no tests and no linter.
 
 **Collision callbacks and shared helpers** (player/blocks/jewels colliders, 3-jewels bonus check, particles, scoring, `play_sonidos`) are in `src/functions/functions.js` and wired up in `Game.set_colliders()`. A pushed block or jewel moves 4px per step; when it hits something, `retroceder_y_parar()` undoes the last step so it lands exactly on the grid.
 
-**Cameras**: `Game` uses the main camera (follows the player, bounds scaled by `Settings.screen.escBoundsX/Y`) plus two extra cameras, one for the score HUD and one for the mobile controls. HUD and controls objects are placed at off-screen coordinates (e.g. negative y) that only those extra cameras scroll to. Keep this in mind when positioning UI.
+**Cameras**: `Game` uses the main camera (follows the player, bounds scaled by `Settings.screen.escBoundsX/Y`) plus an extra camera for the score HUD. HUD objects are placed at off-screen coordinates (negative y) that only that camera scrolls to. Objects fixed to the screen (`setScrollFactor(0)`, like the touch joystick) are drawn by every camera, so the HUD camera must `ignore()` them. Keep this in mind when positioning UI.
 
 **Fixed logic rate**: game logic moves sprites a fixed number of pixels per call, so `Game.update()` only runs it on frames where the Arcade world emitted `worldstep` (60 fixed steps/s). This keeps the speed the same on 60/120/144 Hz monitors. Below 60 FPS the game slows down, because logic runs at most once per frame.
 
 **Record** is kept in `localStorage` (`Settings.claveRecord`, wrapped in try/catch). `Settings.setRecord()` saves it, and `actualizar_marcadores()` in `functions.js` updates it whenever the score goes past it.
 
-**Mobile joystick**: the `rexvirtualjoystickplugin` is loaded at runtime from a GitHub raw URL in `Preloader` (the npm `phaser3-rex-plugins` package is not installed), so it needs network access.
+**Touch controls** (`src/components/controlTactil.js`, only when "Mobile controls" is chosen in PreGame): a floating joystick built on browser pointer events on `#app`, so touches on the black bands outside the canvas count too (`touch-action: none` in `public/style.css` keeps the phone from scrolling). Dragging past a small dead zone holds one of 4 directions, and lifting the finger releases it. It exposes `cursores` with the same shape as `createCursorKeys()`, read through `Game.joystickCursors`. In mobile mode, walking into a block pushes it (no action button). `al_tocar()` in `functions.js` is the same idea for "tap to continue" screens (Boot).
 
 Assets live in `public/assets/` and are loaded by key in `Preloader.js`.
 
