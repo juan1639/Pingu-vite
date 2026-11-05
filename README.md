@@ -10,7 +10,7 @@ Juego de laberinto y bloques de hielo inspirado en el clásico arcade **Pengo** 
 
 Mueve al pingüino por el laberinto de hielo y empuja los bloques. El objetivo es **colocar las 3 joyas moradas en línea**: en la misma fila o columna y en casillas seguidas.
 
-- **Empujar:** un bloque o una joya empujados se deslizan hasta chocar con otro bloque.
+- **Empujar:** un bloque o una joya empujados se deslizan hasta chocar con otro bloque. Ojo: después de empujar, el pingüino se queda quieto 1 segundo, y los enemigos pueden aprovecharlo.
 - **Romper bloques:** si empujas un bloque que está pegado a otro (no tiene sitio para moverse), se rompe y ganas **10 puntos**. Los bloques del borde no se pueden empujar.
 - **Bonus:** al alinear las 3 joyas recibes un bonus de **10.000 puntos**, que se suma al marcador poco a poco.
 - **Enemigos:** cada nivel tiene 12, que salen de bloques de hielo. Al empezar, esos bloques destellan en amarillo, y vuelven a hacerlo cada 20 segundos como recordatorio. Como mucho hay 4 a la vez; cuando eliminas uno, sale otro.

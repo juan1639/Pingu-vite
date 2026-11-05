@@ -25,7 +25,6 @@ function intentar_empujar(objeto, scene)
   if (!empuja) return;
 
   play_sonidos(scene.sonido_ziuuu, false, 0.2);
-  Settings.mideTiempo[0] = scene.time.now;
 
   let indexTecla = 99; // Ninguna direccion pulsada
 
@@ -38,9 +37,38 @@ function intentar_empujar(objeto, scene)
 
   if (indexTecla < 4)
   {
-    objeto.setData('vel-x', array_vel[indexTecla][0] * Settings.bloques.velPxl);
-    objeto.setData('vel-y', array_vel[indexTecla][1] * Settings.bloques.velPxl);
+    const [dx, dy] = array_vel[indexTecla];
+    scene.jugador.empujar();
+
+    // Un bloque pegado a otro bloque o a una joya no puede moverse: se rompe (las joyas no se rompen)
+    if (scene.bloques.get().contains(objeto) && casilla_ocupada(objeto, dx, dy, scene))
+    {
+      romper_bloque(objeto, scene);
+      return;
+    }
+
+    objeto.setData('vel-x', dx * Settings.bloques.velPxl);
+    objeto.setData('vel-y', dy * Settings.bloques.velPxl);
   }
+}
+
+function casilla_ocupada(objeto, dx, dy, scene)
+{
+  const col = Math.round(objeto.x / Settings.tileXY.x) + dx;
+  const fila = Math.round(objeto.y / Settings.tileXY.y) + dy;
+  return scene.enemigos.casillas_ocupadas().has(`${col},${fila}`);
+}
+
+function romper_bloque(bloque, scene)
+{
+  scene.brokenblock.create(bloque.x, bloque.y, false);
+  bloque.disableBody(true, true);
+  suma_puntos(bloque, scene);
+
+  // Era un huevo: el enemigo que iba a salir de el ya no saldra
+  if (bloque.getData('huevo')) scene.enemigos.huevo_roto(bloque);
+
+  play_sonidos(scene.sonido_crash, false, 0.6);
 }
 
 function volver_jugador(scene)
@@ -50,31 +78,10 @@ function volver_jugador(scene)
 }
 
 // --- Colisiones de bloques y joyas en movimiento ---
-// Bloque contra bloque o joya: se para y, si se acaba de empujar estando pegado a otro, se rompe
+// Bloque en movimiento contra bloque o joya: se para (romperse se decide al empujar, en intentar_empujar)
 function colliderBloqueParar(bloque, otro)
 {
   retroceder_y_parar(bloque);
-
-  Settings.mideTiempo[1] = this.time.now;
-  const checkRomper = Settings.mideTiempo[2];
-
-  if (Settings.mideTiempo[1] - Settings.mideTiempo[0] < checkRomper)
-  {
-    // Distancia minima = 44 (tile 48px - 4): el bloque no llego a moverse
-    const shortestBlock = Settings.tileXY.x - Settings.bloques.velPxl;
-
-    if (calcDistance_playerBlock(bloque, this) === shortestBlock)
-    {
-      this.brokenblock.create(bloque.x, bloque.y, false);
-      bloque.disableBody(true, true);
-      suma_puntos(bloque, this);
-
-      // Era un huevo: el enemigo que iba a salir de el ya no saldra
-      if (bloque.getData('huevo')) this.enemigos.huevo_roto(bloque);
-
-      play_sonidos(this.sonido_crash, false, 0.6);
-    }
-  }
 }
 
 // Joya contra bloque o joya: se para y se comprueba el 3 en raya
@@ -91,13 +98,6 @@ function retroceder_y_parar(objeto)
   objeto.setY(objeto.y - objeto.getData('vel-y'));
 
   objeto.setData('vel-x', 0).setData('vel-y', 0);
-}
-
-function calcDistance_playerBlock(block, scene)
-{
-  const distX = Math.abs(scene.jugador.get().x - block.x);
-  const distY = Math.abs(scene.jugador.get().y - block.y);
-  return distX + distY;
 }
 
 function check_3JewelsBonus(scene)

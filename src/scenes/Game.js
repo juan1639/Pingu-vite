@@ -199,30 +199,22 @@ export class Game extends Scene
   jugador_tocado()
   {
     this.muriendo = true;
-    const jugador = this.jugador.get();
 
     play_sonidos(this.sonido_ziuuu, false, 0.9);
-    jugador.anims.stop();
-    jugador.setTint(Settings.jugador.tinteMuerte);
+    this.jugador.morir();
 
-    this.tweens.add({
-      targets: jugador,
-      angle: 720,
-      scale: 0.4,
-      duration: Settings.pausas_muerte.animacion,
-      onComplete: () =>
+    this.time.delayedCall(Settings.pausas_muerte.animacion, () =>
+    {
+      Settings.setVidas(Settings.getVidas() - 1);
+      this.marcadorVidas.update(Settings.getTxtVidas(), Settings.getVidas());
+
+      if (Settings.getVidas() <= 0)
       {
-        Settings.setVidas(Settings.getVidas() - 1);
-        this.marcadorVidas.update(Settings.getTxtVidas(), Settings.getVidas());
-
-        if (Settings.getVidas() <= 0)
-        {
-          this.game_over();
-        }
-        else
-        {
-          this.reaparecer();
-        }
+        this.game_over();
+      }
+      else
+      {
+        this.reaparecer();
       }
     });
   }
@@ -230,14 +222,9 @@ export class Game extends Scene
   reaparecer()
   {
     const tile = Settings.tileXY.x;
-    const jugador = this.jugador.get();
     const { x, y } = this.enemigos.casilla_libre_cercana(Settings.jugador.posIniX * tile, Settings.jugador.posIniY * tile);
 
-    jugador.clearTint().setAngle(0).setScale(0.9).setPosition(x, y);
-    jugador.anims.play(jugador.getData('anima'), true);
-    this.jugador.viejaX = x;
-    this.jugador.viejaY = y;
-    Settings.setJugadorMoving(false);
+    this.jugador.reaparecer(x, y);
 
     this.enemigos.volver_a_casa();
     this.muriendo = false;

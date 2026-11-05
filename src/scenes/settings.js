@@ -40,7 +40,9 @@ export class Settings
         posIniY: 7,
         oriX: 0.5,
         oriY: 0.5,
-        tinteMuerte: 0xff5555,  // al tocarle un enemigo
+        framesMuerte: [16, 17], // pengo-ssheet, en bucle al tocarle un enemigo
+        frameEmpujar: 10,       // pengo-ssheet: se queda quieto asi al empujar
+        pausaEmpujar: 1000,     // ms sin poder moverse tras empujar (mas riesgo de que le pillen)
         velX: Settings.velJugador,
         velY: Settings.velJugador,
         moving: false,
@@ -69,7 +71,6 @@ export class Settings
         limits: [2, 3, 4, 5]
     };
 
-    static mideTiempo = [null, null, 200];
 
     // Enemigos: salen de bloques "huevo" elegidos al azar al empezar cada nivel
     static enemigos =
@@ -91,7 +92,7 @@ export class Settings
 
     static pausas_muerte =
     {
-        animacion: 1800,        // ms girando antes de restar la vida
+        animacion: 2000,        // ms con la animacion de muerte antes de restar la vida
         reaparecer: 1500,       // ms de "Ready!" al volver a la casilla inicial
         gameOver: 4000          // ms con la partida congelada antes de la pantalla de Game Over
     };

@@ -25,6 +25,19 @@ export class Jugador
         // Las animaciones le/ri/up/do se crean en JugadorPreGame (MainMenu)
         this.jugador.anims.play(this.jugador.getData('anima'), true);
 
+        // Las animaciones son globales: solo se crea la primera vez
+        if (!this.relatedScene.anims.exists('jugador-muerte'))
+        {
+            this.relatedScene.anims.create({
+                key: 'jugador-muerte',
+                frames: this.relatedScene.anims.generateFrameNumbers('pengo-ssheet', { frames: Settings.jugador.framesMuerte }),
+                frameRate: 6,
+                repeat: -1
+            });
+        }
+
+        this.empujandoHasta = 0;
+
         this.controles = this.relatedScene.input.keyboard.createCursorKeys();
     }
 
@@ -35,6 +48,15 @@ export class Jugador
             Settings.setJugadorMoving(false);
             this.viejaX = this.jugador.x;
             this.viejaY = this.jugador.y;
+        }
+
+        // Tras empujar se queda quieto un momento
+        if (this.empujandoHasta > 0)
+        {
+            if (this.relatedScene.time.now < this.empujandoHasta) return;
+
+            this.empujandoHasta = 0;
+            this.jugador.anims.play(this.jugador.getData('anima'), true);
         }
 
         if (!Settings.isJugadorMoving())
@@ -60,6 +82,31 @@ export class Jugador
         {
             this.set_velocity();
         }
+    }
+
+    // Llamado al empujar un bloque o una joya
+    empujar()
+    {
+        this.empujandoHasta = this.relatedScene.time.now + Settings.jugador.pausaEmpujar;
+        this.jugador.anims.stop();
+        this.jugador.setFrame(Settings.jugador.frameEmpujar);
+    }
+
+    morir()
+    {
+        this.empujandoHasta = 0;
+        this.jugador.anims.play('jugador-muerte', true);
+    }
+
+    // Vuelve a la casilla (x, y) listo para jugar
+    reaparecer(x, y)
+    {
+        this.empujandoHasta = 0;
+        this.jugador.setPosition(x, y);
+        this.jugador.anims.play(this.jugador.getData('anima'), true);
+        this.viejaX = x;
+        this.viejaY = y;
+        Settings.setJugadorMoving(false);
     }
 
     set_velocity()
