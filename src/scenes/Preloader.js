@@ -74,7 +74,7 @@ export class Preloader extends Scene
         this.load.audio('get-ready', './audio/get-ready.mp3');
         this.load.audio('moneda-mario', './audio/p-ping.mp3');
         this.load.audio('ziuuu1', './audio/slide-whistle-1.mp3');
-        this.load.audio('musica-fondo', './audio/musica-fondo.mp3');
+        this.load.audio('musica-fondo', './audio/bg-music-game-8-bit.mp3');
         this.load.audio('musica-menu', './audio/musica-menu.wav');
         this.load.audio('fanfarria', './audio/fanfarria.wav');
         this.load.audio('crash', './audio/crash.mp3');
