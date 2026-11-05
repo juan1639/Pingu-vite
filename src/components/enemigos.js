@@ -304,23 +304,41 @@ export class Enemigos
 
     mover_arrastrados()
     {
+        // Agrupados por bloque: los que lleva un mismo bloque se aplastan a la vez
+        const porBloque = new Map();
+
         for (const enemigo of this.lista)
         {
             const bloque = enemigo.getData('arrastradoPor');
             if (!bloque) continue;
+            if (!porBloque.has(bloque)) porBloque.set(bloque, []);
+            porBloque.get(bloque).push(enemigo);
+        }
 
+        porBloque.forEach((enemigos, bloque) =>
+        {
             const parado = !bloque.active || (bloque.getData('vel-x') === 0 && bloque.getData('vel-y') === 0);
 
-            if (parado)
+            if (!parado)
             {
-                enemigo.setData('arrastradoPor', null);
-                this.aplastar(enemigo);
+                enemigos.forEach(e => this.colocar_arrastrado(e));
+                return;
             }
-            else
+
+            enemigos.forEach(e =>
             {
-                this.colocar_arrastrado(enemigo);
-            }
-        }
+                e.setData('arrastradoPor', null);
+                this.aplastar(e);
+            });
+
+            // Bonificacion: 400 por uno, x2 por cada enemigo mas aplastado a la vez (400, 800, 1600, 3200)
+            const puntos = Settings.enemigos.puntosAplastar * 2 ** (enemigos.length - 1);
+            Settings.setPuntos(Settings.getPuntos() + puntos);
+            actualizar_marcadores(this.relatedScene);
+
+            // El efecto sale donde esta el primero (el mas pegado al bloque)
+            this.celebrar_puntos(enemigos[0].x, enemigos[0].y, puntos);
+        });
     }
 
     colocar_arrastrado(enemigo)
@@ -340,8 +358,7 @@ export class Enemigos
         enemigo.setData('muriendo', true);
         enemigo.anims.stop();
 
-        Settings.setPuntos(Settings.getPuntos() + Settings.enemigos.puntosAplastar);
-        actualizar_marcadores(scene);
+        // Los puntos los suma mover_arrastrados() para todo el grupo
         play_sonidos(scene.sonido_crash, false, 0.8);
 
         // Se aplasta contra el obstaculo (en la direccion del empuje) y desaparece
@@ -430,11 +447,16 @@ export class Enemigos
     // El jugador ha roto un huevo: se quita y se celebra (los puntos ya los suma suma_puntos)
     huevo_roto(bloque)
     {
+        this.quitar_huevo(bloque);
+        this.celebrar_puntos(bloque.x, bloque.y, Settings.enemigos.puntosHuevo);
+    }
+
+    // Chispas, "+puntos" que sube y se desvanece, y sonido de moneda (los puntos se suman aparte)
+    celebrar_puntos(x, y, puntos)
+    {
         const scene = this.relatedScene;
-        const { x, y } = bloque;
         const cfg = Settings.enemigos;
 
-        this.quitar_huevo(bloque);
         play_sonidos(scene.sonido_moneda, false, 0.8);
 
         // Estallido de chispas amarillas
@@ -450,16 +472,22 @@ export class Enemigos
         chispas.explode(24);
         scene.time.delayedCall(800, () => chispas.destroy());
 
-        // "+500" que sube y se desvanece
-        const txt = scene.add.text(x, y, `+${cfg.puntosHuevo}`, {
+        const txt = scene.add.text(x, y, `+${puntos}`, {
             fontSize: '34px', fontStyle: 'bold', fontFamily: 'verdana, arial, sans-serif',
             fill: '#ffe033'
         });
         txt.setOrigin(0.5, 0.5).setStroke('#b52', 8).setDepth(Settings.depth.textos);
 
+        // Cerca del borde de la pantalla el texto se mete hacia dentro para que se lea entero
+        // (zona que ve la camara, que sigue al jugador y no siempre muestra todo el laberinto)
+        const limites = scene.cameras.main.worldView;
+        const margenX = txt.width / 2 + 4;
+        txt.x = Math.min(Math.max(x, limites.x + margenX), limites.right - margenX);
+        txt.y = Math.max(y, limites.y + txt.height + 60);
+
         scene.tweens.add({
             targets: txt,
-            y: y - 60,
+            y: txt.y - 60,
             alpha: 0,
             delay: 400,
             duration: 900,

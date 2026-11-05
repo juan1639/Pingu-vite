@@ -80,7 +80,7 @@ export class Settings
         maxALaVez: 4,
         velPxl: 2,              // la mitad que el jugador; tiene que dividir 48
         probPerseguir: 0.6,     // en cada cruce: 60% el camino que acerca al jugador, si no al azar
-        puntosAplastar: 400,
+        puntosAplastar: 400,    // x2 por cada enemigo mas aplastado a la vez
         distanciaArrastre: 30,  // px delante del centro del bloque que lo arrastra (achatado contra el)
         separacionArrastre: 8,  // px entre enemigos si el bloque arrastra varios
         puntosHuevo: 500,       // romper un bloque del que iba a salir un enemigo
