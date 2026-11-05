@@ -80,7 +80,8 @@ export class BrokenBlock
         this.broken.setScale(0.75).setImmovable(true);
         this.broken.setDepth(Settings.depth.bloques).setVisible(true);
 
-        if (firstTime)
+        // Las animaciones son globales: en el segundo nivel ya existe
+        if (firstTime && !this.relatedScene.anims.exists('broken-block-anim'))
         {
             this.relatedScene.anims.create(
             {

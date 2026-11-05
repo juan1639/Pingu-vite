@@ -156,8 +156,14 @@ export class JugadorPreGame
             ['do', 0, 1]
         ];
 
+        // Las animaciones son globales: se crean en la primera escena que use este jugador
+        // (titulo o "Level Up!") y las siguientes las reutilizan
+        const anims = this.relatedScene.anims;
+
         for (let i = 0; i < animas.length; i ++)
         {
+            if (anims.exists(animas[i][0])) continue;
+
             this.relatedScene.anims.create(
             {
                 key: animas[i][0], 
@@ -170,7 +176,7 @@ export class JugadorPreGame
             });
         }
 
-        this.relatedScene.anims.create(
+        if (!anims.exists('culete')) this.relatedScene.anims.create(
         {
             key: 'culete', 
             frames: this.relatedScene.anims.generateFrameNumbers(
@@ -181,7 +187,7 @@ export class JugadorPreGame
             repeat: 2
         });
 
-        this.relatedScene.anims.create(
+        if (!anims.exists('sentadilla')) this.relatedScene.anims.create(
             {
                 key: 'sentadilla', 
                 frames: this.relatedScene.anims.generateFrameNumbers(

@@ -1,6 +1,7 @@
 import { Settings } from './settings.js';
 import { Textos } from '../components/textos.js';
 import { BotonNuevaPartida } from "../components/boton-nuevapartida.js";
+import { JugadorPreGame } from '../components/jugador2.js';
 import { play_sonidos } from '../functions/functions.js';
 
 export class Congratulations extends Phaser.Scene
@@ -12,6 +13,15 @@ export class Congratulations extends Phaser.Scene
 
   init()
   {
+    // El mismo pinguino que en el titulo: entra por la izquierda, anda hasta el centro y hace sus animaciones.
+    // El boton "Next Level" cambia de escena en cuanto se pulsa, aunque no haya terminado
+    this.jugador = new JugadorPreGame(this, {
+      x: 0,
+      y: Math.floor(this.sys.game.config.height / 2),
+      oriX: Settings.jugador.oriX,
+      oriY: Settings.jugador.oriY,
+    });
+
     this.botoninicio = new BotonNuevaPartida(this, {
       left: Math.floor(this.sys.game.config.width / 2),
       top: Math.floor(this.sys.game.config.height / 1.3),
@@ -24,6 +34,7 @@ export class Congratulations extends Phaser.Scene
   create()
   {
     this.add.image(0, 0, 'fondo').setOrigin(0, 0).setDepth(Settings.depth.fondo);
+    this.jugador.create();
 
     const aparecerBoton = 3200;
     this.incremento_nivel = Settings.getNivel() + 1;
@@ -61,5 +72,10 @@ export class Congratulations extends Phaser.Scene
 
     // Los sonidos son del sound manager global: no se paran solos al cambiar de escena
     this.events.once('shutdown', () => this.sonido_intermision.destroy());
+  }
+
+  update()
+  {
+    this.jugador.update();
   }
 }
