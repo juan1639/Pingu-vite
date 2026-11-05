@@ -124,6 +124,7 @@ export class Enemigos
         }
 
         this.comprobar_aplastados();
+        this.mover_arrastrados();
 
         return this.toca_jugador();
     }
@@ -254,7 +255,7 @@ export class Enemigos
         return ocupadas;
     }
 
-    // Un bloque o una joya deslizandose que alcanza a un enemigo lo aplasta
+    // Un bloque o una joya deslizandose que alcanza a un enemigo se lo lleva por delante
     comprobar_aplastados()
     {
         const alcance = Settings.tileXY.x - 8;
@@ -269,17 +270,72 @@ export class Enemigos
         {
             if (enemigo.getData('muriendo')) continue;
 
-            const golpe = enMovimiento.some(o =>
+            const golpe = enMovimiento.find(o =>
                 Math.abs(o.x - enemigo.x) < alcance && Math.abs(o.y - enemigo.y) < alcance
             );
 
-            if (golpe) this.aplastar(enemigo);
+            if (golpe) this.arrastrar(enemigo, golpe);
         }
+    }
+
+    // Como en el Pengo original: el enemigo queda pegado delante del bloque hasta que este se para
+    arrastrar(enemigo, bloque)
+    {
+        const dx = Math.sign(bloque.getData('vel-x'));
+        const dy = Math.sign(bloque.getData('vel-y'));
+        // Si ya lleva otros, este va un poco mas adelante
+        const yaLleva = this.lista.filter(e => e.getData('arrastradoPor') === bloque).length;
+
+        enemigo.setData('muriendo', true);
+        enemigo.setData('arrastradoPor', bloque);
+        enemigo.setData('arrastreDir', { dx, dy });
+        enemigo.setData('arrastreDist', Settings.enemigos.distanciaArrastre + yaLleva * Settings.enemigos.separacionArrastre);
+        enemigo.anims.stop();
+
+        // Achatado contra el bloque en la direccion del empuje
+        if (dx !== 0) enemigo.setScale(0.9 * 0.6, 0.9);
+        else enemigo.setScale(0.9, 0.9 * 0.6);
+
+        this.colocar_arrastrado(enemigo);
+
+        // Mientras va arrastrado ya no cuenta como vivo: el siguiente tarda lo mismo que antes en salir
+        this.proximaSalida = Math.max(this.proximaSalida, this.relatedScene.time.now + Settings.enemigos.retrasoReponer);
+    }
+
+    mover_arrastrados()
+    {
+        for (const enemigo of this.lista)
+        {
+            const bloque = enemigo.getData('arrastradoPor');
+            if (!bloque) continue;
+
+            const parado = !bloque.active || (bloque.getData('vel-x') === 0 && bloque.getData('vel-y') === 0);
+
+            if (parado)
+            {
+                enemigo.setData('arrastradoPor', null);
+                this.aplastar(enemigo);
+            }
+            else
+            {
+                this.colocar_arrastrado(enemigo);
+            }
+        }
+    }
+
+    colocar_arrastrado(enemigo)
+    {
+        const bloque = enemigo.getData('arrastradoPor');
+        const { dx, dy } = enemigo.getData('arrastreDir');
+        const dist = enemigo.getData('arrastreDist');
+
+        enemigo.setPosition(bloque.x + dx * dist, bloque.y + dy * dist);
     }
 
     aplastar(enemigo)
     {
         const scene = this.relatedScene;
+        const dir = enemigo.getData('arrastreDir') || { dx: 0, dy: 1 };
 
         enemigo.setData('muriendo', true);
         enemigo.anims.stop();
@@ -288,10 +344,10 @@ export class Enemigos
         actualizar_marcadores(scene);
         play_sonidos(scene.sonido_crash, false, 0.8);
 
-        // Se aplasta y desaparece
+        // Se aplasta contra el obstaculo (en la direccion del empuje) y desaparece
         scene.tweens.add({
             targets: enemigo,
-            scaleY: 0.15,
+            ...(dir.dx !== 0 ? { scaleX: 0.12 } : { scaleY: 0.12 }),
             alpha: 0,
             duration: 450,
             onComplete: () =>
@@ -320,6 +376,9 @@ export class Enemigos
     {
         this.lista.forEach(e =>
         {
+            // Los que van arrastrados o aplastandose siguen a lo suyo
+            if (e.getData('muriendo')) return;
+
             const { x, y } = this.casilla_libre_cercana(e.getData('casaX'), e.getData('casaY'));
             e.setPosition(x, y).setData('dir', null);
             e.anims.play('enemigo-do', true);

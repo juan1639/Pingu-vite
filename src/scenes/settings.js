@@ -43,7 +43,7 @@ export class Settings
         framesMuerte: [16, 17], // pengo-ssheet, en bucle al tocarle un enemigo
         // pengo-ssheet: se queda quieto asi al empujar, segun la direccion
         frameEmpujar: { le: 10, ri: 14, up: 12, do: 8 },
-        pausaEmpujar: 500,     // ms sin poder moverse tras empujar (mas riesgo de que le pillen)
+        pausaEmpujar: 450,     // ms sin poder moverse tras empujar (mas riesgo de que le pillen)
         velX: Settings.velJugador,
         velY: Settings.velJugador,
         moving: false,
@@ -81,6 +81,8 @@ export class Settings
         velPxl: 2,              // la mitad que el jugador; tiene que dividir 48
         probPerseguir: 0.6,     // en cada cruce: 60% el camino que acerca al jugador, si no al azar
         puntosAplastar: 400,
+        distanciaArrastre: 30,  // px delante del centro del bloque que lo arrastra (achatado contra el)
+        separacionArrastre: 8,  // px entre enemigos si el bloque arrastra varios
         puntosHuevo: 500,       // romper un bloque del que iba a salir un enemigo
         distanciaMinimaInicio: 4, // casillas: ningun huevo pegado a la salida del jugador
         retrasoSalida: 600,     // ms entre salidas seguidas
