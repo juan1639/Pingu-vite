@@ -203,7 +203,7 @@ export class Game extends Scene
 
     play_sonidos(this.sonido_ziuuu, false, 0.9);
     jugador.anims.stop();
-    jugador.setTint(Settings.enemigos.tinte);
+    jugador.setTint(Settings.jugador.tinteMuerte);
 
     this.tweens.add({
       targets: jugador,

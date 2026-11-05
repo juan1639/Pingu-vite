@@ -40,6 +40,7 @@ export class Settings
         posIniY: 7,
         oriX: 0.5,
         oriY: 0.5,
+        tinteMuerte: 0xff5555,  // al tocarle un enemigo
         velX: Settings.velJugador,
         velY: Settings.velJugador,
         moving: false,
@@ -86,8 +87,6 @@ export class Settings
         destellos: 5,
         intervaloDestello: 240, // ms encendido / apagado (5 destellos = 2.4 s, cabe en el "Ready!")
         intervaloRecordatorio: 20000, // ms: los huevos que quedan vuelven a destellar
-        tinte: 0xff5555,        // provisional: usan el sprite del pinguino
-        tintePlano: 0xffffff
     };
 
     static pausas_muerte =

@@ -2,10 +2,18 @@ import { Settings } from '../scenes/settings.js';
 import { play_sonidos, actualizar_marcadores } from '../functions/functions.js';
 
 const DIRECCIONES = [
-    { dx: -1, dy: 0, anima: 'le' },
-    { dx: 1, dy: 0, anima: 'ri' },
-    { dx: 0, dy: -1, anima: 'up' },
-    { dx: 0, dy: 1, anima: 'do' }
+    { dx: -1, dy: 0, anima: 'enemigo-le' },
+    { dx: 1, dy: 0, anima: 'enemigo-ri' },
+    { dx: 0, dy: -1, anima: 'enemigo-up' },
+    { dx: 0, dy: 1, anima: 'enemigo-do' }
+];
+
+// Mismo reparto de fotogramas que pengo-ssheet (el del jugador), solo cambian los colores
+const ANIMAS = [
+    ['enemigo-le', 2, 3],
+    ['enemigo-ri', 6, 7],
+    ['enemigo-up', 4, 5],
+    ['enemigo-do', 0, 1]
 ];
 
 // Enemigos al estilo Pengo:
@@ -26,6 +34,8 @@ export class Enemigos
     create()
     {
         const cfg = Settings.enemigos;
+
+        this.crear_animaciones();
         const tile = Settings.tileXY.x;
         const iniX = Settings.jugador.posIniX;
         const iniY = Settings.jugador.posIniY;
@@ -149,14 +159,33 @@ export class Enemigos
         this.proximaSalida = ahora + cfg.retrasoSalida;
     }
 
+    // Las animaciones son globales: solo se crean la primera vez
+    crear_animaciones()
+    {
+        const anims = this.relatedScene.anims;
+
+        ANIMAS.forEach(([key, inicio, fin]) =>
+        {
+            if (anims.exists(key)) return;
+
+            anims.create({
+                key,
+                frames: anims.generateFrameNumbers('pengo-enemies-ssheet', { start: inicio, end: fin }),
+                frameRate: 5,
+                yoyo: true,
+                repeat: -1
+            });
+        });
+    }
+
     crear_enemigo(x, y)
     {
-        const enemigo = this.relatedScene.add.sprite(x, y, 'pengo-ssheet');
+        const enemigo = this.relatedScene.add.sprite(x, y, 'pengo-enemies-ssheet');
 
-        enemigo.setScale(0.9).setDepth(Settings.depth.enemigo).setTint(Settings.enemigos.tinte);
+        enemigo.setScale(0.9).setDepth(Settings.depth.enemigo);
         enemigo.setData('casaX', x).setData('casaY', y);
         enemigo.setData('dir', null).setData('muriendo', false);
-        enemigo.anims.play('do', true);
+        enemigo.anims.play('enemigo-do', true);
 
         // Los marcadores tienen su propia camara: el enemigo solo se dibuja en la principal
         this.relatedScene.mapa_scores.ignore(enemigo);
@@ -254,7 +283,6 @@ export class Enemigos
 
         enemigo.setData('muriendo', true);
         enemigo.anims.stop();
-        enemigo.setTint(Settings.enemigos.tintePlano);
 
         Settings.setPuntos(Settings.getPuntos() + Settings.enemigos.puntosAplastar);
         actualizar_marcadores(scene);
@@ -294,7 +322,7 @@ export class Enemigos
         {
             const { x, y } = this.casilla_libre_cercana(e.getData('casaX'), e.getData('casaY'));
             e.setPosition(x, y).setData('dir', null);
-            e.anims.play('do', true);
+            e.anims.play('enemigo-do', true);
         });
 
         this.proximaSalida = this.relatedScene.time.now + Settings.enemigos.retrasoReponer;

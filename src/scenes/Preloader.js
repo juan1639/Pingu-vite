@@ -69,6 +69,7 @@ export class Preloader extends Scene
         this.load.spritesheet('tile-broken', './img/tile-broken-ssheet.png', {frameWidth: 64, frameHeight: 64});
         
         this.load.spritesheet('pengo-ssheet', './img/pengo-ssheet.png', {frameWidth: 50, frameHeight: 52});
+        this.load.spritesheet('pengo-enemies-ssheet', './img/pengo-enemies-ssheet.png', {frameWidth: 50, frameHeight: 52});
 
         //  Archivos de audio
         this.load.audio('get-ready', './audio/get-ready.mp3');
