@@ -29,6 +29,9 @@ export class Enemigos
         this.lista = [];
         this.huevos = [];
         this.proximaSalida = 0;
+        // Pasos de logica jugados en este nivel (60 por segundo); sin contar pausas ni muertes
+        this.pasosJugados = 0;
+        this.prisa = false;
     }
 
     create()
@@ -100,6 +103,7 @@ export class Enemigos
     // Devuelve true si un enemigo ha tocado al jugador
     update()
     {
+        this.contar_tiempo();
         this.intentar_salida();
 
         let ocupadas = null;
@@ -113,13 +117,17 @@ export class Enemigos
                 // Solo se calcula si algun enemigo esta en el centro de una casilla
                 if (!ocupadas) ocupadas = this.casillas_ocupadas();
                 this.elegir_direccion(enemigo, ocupadas);
+
+                // La velocidad solo cambia en el centro de una casilla: a mitad de camino
+                // (posicion multiplo de 2 pero no de 4) se saltaria el centro y saldria de la cuadricula
+                enemigo.setData('vel', this.velocidad());
             }
 
             const dir = enemigo.getData('dir');
             if (dir)
             {
-                enemigo.x += dir.dx * Settings.enemigos.velPxl;
-                enemigo.y += dir.dy * Settings.enemigos.velPxl;
+                enemigo.x += dir.dx * enemigo.getData('vel');
+                enemigo.y += dir.dy * enemigo.getData('vel');
             }
         }
 
@@ -127,6 +135,23 @@ export class Enemigos
         this.mover_arrastrados();
 
         return this.toca_jugador();
+    }
+
+    // Pasado un tiempo en el mismo nivel los enemigos van al doble de velocidad (para no especular)
+    contar_tiempo()
+    {
+        this.pasosJugados++;
+
+        if (!this.prisa && this.pasosJugados * 1000 / 60 >= Settings.enemigos.tiempoPrisa)
+        {
+            this.prisa = true;
+            this.relatedScene.aviso_prisa();
+        }
+    }
+
+    velocidad()
+    {
+        return this.prisa ? Settings.enemigos.velPxlPrisa : Settings.enemigos.velPxl;
     }
 
     intentar_salida()
@@ -185,7 +210,7 @@ export class Enemigos
 
         enemigo.setScale(0.9).setDepth(Settings.depth.enemigo);
         enemigo.setData('casaX', x).setData('casaY', y);
-        enemigo.setData('dir', null).setData('muriendo', false);
+        enemigo.setData('dir', null).setData('muriendo', false).setData('vel', this.velocidad());
         enemigo.anims.play('enemigo-do', true);
 
         // Los marcadores tienen su propia camara: el enemigo solo se dibuja en la principal

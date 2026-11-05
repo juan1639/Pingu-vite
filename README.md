@@ -15,6 +15,7 @@ Mueve al pingüino por el laberinto de hielo y empuja los bloques. El objetivo e
 - **Bonus:** al alinear las 3 joyas recibes un bonus de **10.000 puntos**, que se suma al marcador poco a poco.
 - **Enemigos:** cada nivel tiene 12, que salen de bloques de hielo. Al empezar, esos bloques destellan en amarillo, y vuelven a hacerlo cada 20 segundos como recordatorio. Como mucho hay 4 a la vez; cuando eliminas uno, sale otro.
 - **Aplastar enemigos:** empuja un bloque o una joya contra un enemigo: se lo lleva por delante hasta que choca y lo aplasta (**400 puntos**). Un mismo bloque puede llevarse a varios enemigos, y aplastarlos a la vez da más: 2 → **800**, 3 → **1.600**, 4 → **3.200**. Si rompes un bloque del que iba a salir un enemigo, ese enemigo ya no saldrá (**500 puntos**).
+- **¡Date prisa!** Si pasas **1 minuto** en el mismo nivel, aparece *Hurry Up!* y los enemigos empiezan a ir al doble de velocidad.
 - **Vidas:** empiezas con **3**. Si un enemigo te toca pierdes una y vuelves a la casilla inicial. Sin vidas, *Game Over*.
 - **Pasar de nivel:** alinea las 3 joyas (con bonus) o elimina a los 12 enemigos.
 - **Récord:** se guarda en el navegador y se mantiene aunque cierres la página.

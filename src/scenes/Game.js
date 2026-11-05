@@ -253,6 +253,33 @@ export class Game extends Scene
     });
   }
 
+  // Aviso de que los enemigos acaban de doblar su velocidad
+  aviso_prisa()
+  {
+    const txt = new Textos(this, {
+      x: Math.floor(this.sys.game.config.width / 2),
+      y: Math.floor(this.sys.game.config.height / 4),
+      txt: ' Hurry Up! ',
+      size: 72, color: '#ffa', style: 'bold',
+      stroke: '#f41', sizeStroke: 16,
+      shadowOsx: 2, shadowOsy: 2, shadowColor: '#111111',
+      bool1: false, bool2: true, origin: [0.5, 0.5],
+      elastic: false, dura: 0
+    });
+    txt.create();
+    txt.get().setDepth(Settings.depth.textos).setScrollFactor(0);
+    this.mapa_scores.ignore(txt.get());
+
+    this.tweens.add({
+      targets: txt.get(),
+      alpha: 0.2,
+      duration: 300,
+      yoyo: true,
+      repeat: 3,
+      onComplete: () => txt.get().destroy()
+    });
+  }
+
   game_over()
   {
     // Se congela la partida un rato con el aviso, para que el jugador asimile que ha terminado

@@ -79,6 +79,8 @@ export class Settings
         total: 12,              // huevos por nivel
         maxALaVez: 4,
         velPxl: 2,              // la mitad que el jugador; tiene que dividir 48
+        tiempoPrisa: 60000,     // ms jugados en el mismo nivel hasta que van mas rapido
+        velPxlPrisa: 4,         // el doble (tiene que dividir 48 y ser multiplo de velPxl)
         probPerseguir: 0.6,     // en cada cruce: 60% el camino que acerca al jugador, si no al azar
         puntosAplastar: 400,    // x2 por cada enemigo mas aplastado a la vez
         distanciaArrastre: 30,  // px delante del centro del bloque que lo arrastra (achatado contra el)
