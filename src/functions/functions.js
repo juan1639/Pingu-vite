@@ -38,7 +38,8 @@ function intentar_empujar(objeto, scene)
   if (indexTecla < 4)
   {
     const [dx, dy] = array_vel[indexTecla];
-    scene.jugador.empujar();
+    // indexTecla sigue el orden de Settings.jugador.teclas: le, ri, up, do
+    scene.jugador.empujar(Object.keys(Settings.jugador.teclas)[indexTecla]);
 
     // Un bloque pegado a otro bloque o a una joya no puede moverse: se rompe (las joyas no se rompen)
     if (scene.bloques.get().contains(objeto) && casilla_ocupada(objeto, dx, dy, scene))

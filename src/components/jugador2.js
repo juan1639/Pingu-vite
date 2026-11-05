@@ -85,11 +85,12 @@ export class Jugador
     }
 
     // Llamado al empujar un bloque o una joya
-    empujar()
+    // direccion: 'le' | 'ri' | 'up' | 'do'
+    empujar(direccion)
     {
         this.empujandoHasta = this.relatedScene.time.now + Settings.jugador.pausaEmpujar;
         this.jugador.anims.stop();
-        this.jugador.setFrame(Settings.jugador.frameEmpujar);
+        this.jugador.setFrame(Settings.jugador.frameEmpujar[direccion]);
     }
 
     morir()

@@ -41,8 +41,9 @@ export class Settings
         oriX: 0.5,
         oriY: 0.5,
         framesMuerte: [16, 17], // pengo-ssheet, en bucle al tocarle un enemigo
-        frameEmpujar: 10,       // pengo-ssheet: se queda quieto asi al empujar
-        pausaEmpujar: 1000,     // ms sin poder moverse tras empujar (mas riesgo de que le pillen)
+        // pengo-ssheet: se queda quieto asi al empujar, segun la direccion
+        frameEmpujar: { le: 10, ri: 14, up: 12, do: 8 },
+        pausaEmpujar: 500,     // ms sin poder moverse tras empujar (mas riesgo de que le pillen)
         velX: Settings.velJugador,
         velY: Settings.velJugador,
         moving: false,
