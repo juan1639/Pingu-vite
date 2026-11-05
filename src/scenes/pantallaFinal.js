@@ -4,7 +4,7 @@ import { Textos } from '../components/textos.js';
 import { BotonNuevaPartida } from '../components/boton-nuevapartida.js';
 import { play_sonidos } from '../functions/functions.js';
 
-// Se muestra al superar el ultimo nivel de matrixLevels
+// Se muestra al superar el ultimo nivel (Settings.getNivelesTotales(): escenarios x loops)
 export class PantallaFinal extends Scene
 {
   constructor()

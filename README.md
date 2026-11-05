@@ -15,12 +15,12 @@ Mueve al pingüino por el laberinto de hielo y empuja los bloques. El objetivo e
 - **Bonus:** al alinear las 3 joyas recibes un bonus de **10.000 puntos**, que se suma al marcador poco a poco.
 - **Enemigos:** cada nivel tiene 12, que salen de bloques de hielo. Al empezar, esos bloques destellan en amarillo, y vuelven a hacerlo cada 20 segundos como recordatorio. Como mucho hay 4 a la vez; cuando eliminas uno, sale otro.
 - **Aplastar enemigos:** empuja un bloque o una joya contra un enemigo: se lo lleva por delante hasta que choca y lo aplasta (**400 puntos**). Un mismo bloque puede llevarse a varios enemigos, y aplastarlos a la vez da más: 2 → **800**, 3 → **1.600**, 4 → **3.200**. Si rompes un bloque del que iba a salir un enemigo, ese enemigo ya no saldrá (**500 puntos**).
-- **¡Date prisa!** Si pasas **1 minuto** en el mismo nivel, aparece *Hurry Up!* y los enemigos empiezan a ir al doble de velocidad.
+- **¡Date prisa!** Si pasas demasiado tiempo en el mismo nivel, aparece *Hurry Up!* y los enemigos empiezan a ir al doble de velocidad. En la primera vuelta es al minuto, y cada vuelta da menos margen: 60, 45, 30, 25 y 20 segundos.
 - **Vidas:** empiezas con **3**. Si un enemigo te toca pierdes una y vuelves a la casilla inicial. Sin vidas, *Game Over*.
 - **Pasar de nivel:** alinea las 3 joyas (con bonus) o elimina a los 12 enemigos.
 - **Récord:** se guarda en el navegador y se mantiene aunque cierres la página.
 
-Hay **4 niveles**, cada uno con un laberinto distinto: todos de pasillos estrechos: el clásico, *Columnas* (muros verticales para zigzaguear), *Anillos* (rectángulos uno dentro de otro) y *Laberinto*. Al superar el último aparece la pantalla final. Las joyas salen en un sitio distinto en cada partida.
+Hay **20 niveles**: 4 laberintos de pasillos estrechos (el clásico, *Columnas* con muros verticales para zigzaguear, *Anillos* con rectángulos uno dentro de otro, y *Laberinto*) que se repiten en **5 vueltas**, cada una con menos tiempo antes del *Hurry Up!*. El nivel 5 vuelve a ser el primer laberinto, y así sucesivamente. Al superar el nivel 20 aparece la pantalla final. Las joyas y los enemigos salen en un sitio distinto en cada partida.
 
 ## Controles
 
@@ -59,7 +59,7 @@ El juego se abre en http://localhost:8080 y se recarga solo al cambiar el códig
 - `src/functions/functions.js`: colisiones, puntuación, bonus y sonidos.
 - `public/assets/`: imágenes, sonidos y atlas.
 
-Los niveles son matrices de casillas en `src/scenes/matrixLevels.js` (0 = vacío, 1 = bloque de hielo, 2–5 = bordes). Si se añaden más, el juego pasa por todos y al terminar el último muestra la pantalla final.
+Los niveles son matrices de casillas en `src/scenes/matrixLevels.js` (0 = vacío, 1 = bloque de hielo, 2–5 = bordes). Si se añaden más, cada vuelta pasa por todos; el número de vueltas es `Settings.loops` (5).
 
 ## Versiones
 

@@ -311,7 +311,7 @@ export class Game extends Scene
     // La musica es del sound manager global: si no se para, se solapa con la del nivel siguiente
     Settings.audio.musicaFondo.stop();
 
-    const ultimoNivel = matrixLevels.array_levels.length - 1;
+    const ultimoNivel = Settings.getNivelesTotales();
 
     if (Settings.getNivel() >= ultimoNivel)
     {
@@ -486,14 +486,14 @@ export class Game extends Scene
     this.sonido_congrats = this.sound.add('congrats-voice');
     this.sonido_youWin = this.sound.add('you-win');
     this.sonido_fanfarria = this.sound.add('fanfarria');
-    this.sonido_moneda = this.sound.add('moneda-mario');
+    this.sonido_palanca = this.sound.add('palanca');
     this.sonido_numkey = this.sound.add('numkey');
     Settings.audio.musicaFondo = this.sound.add('musica-fondo');
 
     // Los sonidos son del sound manager global: sin esto se acumulan copias en cada nivel
     const sonidos = [
       this.sonido_getReady, this.sonido_ziuuu, this.sonido_crash, this.sonido_congrats,
-      this.sonido_youWin, this.sonido_fanfarria, this.sonido_moneda, this.sonido_numkey, Settings.audio.musicaFondo
+      this.sonido_youWin, this.sonido_fanfarria, this.sonido_palanca, this.sonido_numkey, Settings.audio.musicaFondo
     ];
     this.events.once('shutdown', () => sonidos.forEach(sonido => sonido.destroy()));
   }

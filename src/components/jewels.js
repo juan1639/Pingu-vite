@@ -33,8 +33,7 @@ export class Jewels
 
         for (let i = 0; i < 3; i ++)
         {
-            const nivel = Settings.getNivel();
-            const matrix = matrixLevels.array_levels[nivel];
+            const matrix = matrixLevels.array_levels[Settings.getEscenario()];
             let x;
             let y;
 

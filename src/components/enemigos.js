@@ -142,7 +142,7 @@ export class Enemigos
     {
         this.pasosJugados++;
 
-        if (!this.prisa && this.pasosJugados * 1000 / 60 >= Settings.enemigos.tiempoPrisa)
+        if (!this.prisa && this.pasosJugados * 1000 / 60 >= Settings.getTiempoPrisa())
         {
             this.prisa = true;
             this.relatedScene.aviso_prisa();
@@ -476,13 +476,13 @@ export class Enemigos
         this.celebrar_puntos(bloque.x, bloque.y, Settings.enemigos.puntosHuevo);
     }
 
-    // Chispas, "+puntos" que sube y se desvanece, y sonido de moneda (los puntos se suman aparte)
+    // Chispas, "+puntos" que sube y se desvanece, y sonido de palanca (los puntos se suman aparte)
     celebrar_puntos(x, y, puntos)
     {
         const scene = this.relatedScene;
         const cfg = Settings.enemigos;
 
-        play_sonidos(scene.sonido_moneda, false, 0.8);
+        play_sonidos(scene.sonido_palanca, false, 0.8);
 
         // Estallido de chispas amarillas
         const chispas = scene.add.particles(x, y, 'particula1', {

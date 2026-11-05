@@ -1,3 +1,4 @@
+import { matrixLevels } from './matrixLevels.js';
 
 export class Settings
 {
@@ -22,7 +23,9 @@ export class Settings
     static gameOver = false;
 
     static puntos = 0;
+    // Niveles en bucle: los escenarios de matrixLevels se repiten 'loops' veces (4 x 5 = 20 niveles)
     static nivel = 1;
+    static loops = 5;
     // El record se guarda en el navegador (localStorage)
     static claveRecord = 'pingu-record';
     static recordInicial = 12000;
@@ -79,7 +82,8 @@ export class Settings
         total: 12,              // huevos por nivel
         maxALaVez: 4,
         velPxl: 2,              // la mitad que el jugador; tiene que dividir 48
-        tiempoPrisa: 60000,     // ms jugados en el mismo nivel hasta que van mas rapido
+        // ms jugados en el mismo nivel hasta que van mas rapido, uno por loop (cada loop, menos margen)
+        tiempoPrisaPorLoop: [60000, 45000, 30000, 25000, 20000],
         velPxlPrisa: 4,         // el doble (tiene que dividir 48 y ser multiplo de velPxl)
         probPerseguir: 0.6,     // en cada cruce: 60% el camino que acerca al jugador, si no al azar
         puntosAplastar: 400,    // x2 por cada enemigo mas aplastado a la vez
@@ -150,7 +154,7 @@ export class Settings
 
     static audio =
     {
-        monedaMario: null,
+        palanca: null,          // sonido de los botones
         musicaFondo: null,
         volMusica: 0.6,
         musicaSilenciada: false // lo cambia el boton "Music" y dura toda la sesion
@@ -243,6 +247,35 @@ export class Settings
     static getNivel()
     {
         return Settings.nivel;
+    }
+
+    // Escenarios distintos en matrixLevels (el indice 0 no se usa)
+    static getNumEscenarios()
+    {
+        return matrixLevels.array_levels.length - 1;
+    }
+
+    static getNivelesTotales()
+    {
+        return Settings.getNumEscenarios() * Settings.loops;
+    }
+
+    // Indice en matrixLevels del nivel actual: 1, 2, 3, 4, 1, 2...
+    static getEscenario()
+    {
+        return (Settings.nivel - 1) % Settings.getNumEscenarios() + 1;
+    }
+
+    // 1 en los niveles 1-4, 2 en los 5-8...
+    static getLoop()
+    {
+        return Math.floor((Settings.nivel - 1) / Settings.getNumEscenarios()) + 1;
+    }
+
+    static getTiempoPrisa()
+    {
+        const tiempos = Settings.enemigos.tiempoPrisaPorLoop;
+        return tiempos[Math.min(Settings.getLoop(), tiempos.length) - 1];
     }
 
     static getRecord()

@@ -13,9 +13,9 @@ export class BotonNuevaPartida
   create()
   {
     // Uno solo para todo el juego: suena al pulsar y debe seguir durante el cambio de escena
-    if (!Settings.audio.monedaMario)
+    if (!Settings.audio.palanca)
     {
-      Settings.audio.monedaMario = this.relatedScene.sound.add('moneda-mario');
+      Settings.audio.palanca = this.relatedScene.sound.add('palanca');
     }
 
     const {left, top, id, scX, scY, angle, originX, originY, texto, nextScene} = this.args;
@@ -51,7 +51,7 @@ export class BotonNuevaPartida
 
     this.boton.on('pointerdown', (e) =>
     {
-      play_sonidos(Settings.audio.monedaMario, false, 0.7);
+      play_sonidos(Settings.audio.palanca, false, 0.7);
 
       this.relatedScene.scene.start(nextScene);
     });

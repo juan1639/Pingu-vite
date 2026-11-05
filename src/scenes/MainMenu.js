@@ -60,7 +60,7 @@ export class MainMenu extends Scene
             Math.floor(this.sys.game.config.width / 4),
             Math.floor(this.sys.game.config.height / 1.04),
             'Based on classic arcade game Pengo of Sega 1982',
-            {fontSize: '16px', color: '#9ff', align: 'justify', fontFamily: 'Arial'}
+            {fontSize: '16px', color: '#ff9', align: 'justify', fontFamily: 'Arial'}
         );
 
         const timeline = this.add.timeline([

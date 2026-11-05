@@ -12,7 +12,7 @@ export class Laberinto
     {
         this.tile = this.relatedScene.physics.add.group();
 
-        const nivel = Settings.getNivel();
+        const nivel = Settings.getEscenario();
 
         for (let i = 0; i < matrixLevels.array_levels[nivel].length; i ++)
         {
