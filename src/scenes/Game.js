@@ -42,6 +42,7 @@ export class Game extends Scene
     Settings.setBonus3JewelsRunning(false);
     Settings.setBonus3JewelsBonus(Settings.pausas.bonus3Jewels.bonusInicial);
     Settings.setNivelSuperado(false);
+    Settings.resultadoNivel = null;
 
     this.set_pausaInicial(2800);
 
@@ -188,12 +189,30 @@ export class Game extends Scene
   nivel_superado_enemigos()
   {
     Settings.setNivelSuperado(true);
+    this.bonus_tiempo();
     this.texto_enhorabuena();
     // La musica de fondo se baja para que se oiga la fanfarria (pasar_nivel() la para)
     Settings.audio.musicaFondo.volume = 0;
     play_sonidos(this.sonido_fanfarria, false, 0.9);
 
     this.time.delayedCall(Settings.getPausaNivelSuperado() + 1500, () => this.pasar_nivel());
+  }
+
+  // Bonus por rapidez: se suma ya (cuenta para record y vidas extra) y "Level Up!" lo muestra en una tabla
+  bonus_tiempo()
+  {
+    // Mismo reloj que el "Hurry Up!": pasos de logica jugados, 60 por segundo
+    const segundos = this.enemigos.pasosJugados / 60;
+    const tramo = Settings.bonusTiempo.tramos.find(t => segundos < t.hasta);
+    const bonus = tramo ? tramo.puntos : 0;
+
+    if (bonus > 0)
+    {
+      Settings.setPuntos(Settings.getPuntos() + bonus);
+      actualizar_marcadores(this);
+    }
+
+    Settings.resultadoNivel = { segundos, bonus };
   }
 
   jugador_tocado()

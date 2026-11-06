@@ -32,6 +32,20 @@ export class Settings
     static hi = Settings.cargar_record();
     static vidasIniciales = 3;
     static vidas = Settings.vidasIniciales;
+    // Bonus por rapidez al superar el nivel eliminando a los enemigos (como en el Pengo original).
+    // Segundos jugados (sin pausas ni muertes); a partir del ultimo tramo no hay bonus
+    static bonusTiempo = {
+        tramos: [
+            { hasta: 30, puntos: 5000 },
+            { hasta: 45, puntos: 2000 },
+            { hasta: 60, puntos: 1000 }
+        ]
+    };
+
+    // Lo rellena Game al superar el nivel por enemigos y lo muestra la pantalla "Level Up!".
+    // null = nivel superado con las joyas (sin tabla)
+    static resultadoNivel = null;
+
     // Vidas extra al llegar a estos puntos (una vez cada una por partida)
     static vidasExtra = {
         umbrales: [5000, 25000, 50000],

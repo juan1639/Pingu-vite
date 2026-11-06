@@ -18,6 +18,7 @@ Mueve al pingüino por el laberinto de hielo y empuja los bloques. El objetivo e
 - **¡Date prisa!** Si pasas demasiado tiempo en el mismo nivel, aparece *Hurry Up!* y los enemigos empiezan a ir al doble de velocidad. En la primera vuelta es al minuto, y cada vuelta da menos margen: 60, 45, 30, 25 y 20 segundos.
 - **Vidas:** empiezas con **3**. Si un enemigo te toca pierdes una y vuelves a la casilla inicial. Sin vidas, *Game Over*. Ganas una vida extra al llegar a **5.000**, **25.000** y **50.000** puntos (aparece *Extra Life!*).
 - **Pasar de nivel:** alinea las 3 joyas (con bonus) o elimina a los 12 enemigos.
+- **Bonus de rapidez:** si pasas el nivel eliminando a los enemigos, cuanto antes lo hagas más puntos: menos de 30 s, **5.000**; menos de 45 s, **2.000**; menos de 60 s, **1.000**; 60 s o más, nada. Solo cuenta el tiempo jugado, y la pantalla *Level Up!* muestra tu tiempo en una tabla.
 - **Récord:** se guarda en el navegador y se mantiene aunque cierres la página.
 
 Hay **20 niveles**: 4 laberintos de pasillos estrechos (el clásico, *Columnas* con muros verticales para zigzaguear, *Anillos* con rectángulos uno dentro de otro, y *Laberinto*) que se repiten en **5 vueltas**, cada una con menos tiempo antes del *Hurry Up!*. El nivel 5 vuelve a ser el primer laberinto, y así sucesivamente. Al superar el nivel 20 aparece la pantalla final. Las joyas y los enemigos salen en un sitio distinto en cada partida.
