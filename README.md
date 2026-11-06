@@ -10,7 +10,7 @@ Juego de laberinto y bloques de hielo inspirado en el clásico arcade **Pengo** 
 
 | | |
 |---|---|
-| <img src="screenshots/img-pingu-vite-1.png.png" width="400"/> | <img src="screenshots/img-pingu-vite-2.png" width="400"/> |
+| <img src="screenshots/img-pingu-vite-1.png" width="400"/> | <img src="screenshots/img-pingu-vite-2.png" width="400"/> |
 | *screenshot* | *Get ready* |
 | <img src="screenshots/img-pingu-vite-3.png" width="400"/> | <img src="screenshots/img-pingu-vite-4.png" width="400"/> |
 | *Alinear 3 gemas* | *Game Over* |
