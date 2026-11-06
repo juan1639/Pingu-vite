@@ -186,6 +186,7 @@ function suma_puntos(puntos, scene)
 function actualizar_marcadores(scene)
 {
   scene.marcadorPtos.update(Settings.getTxtScore(), Settings.getPuntos());
+  comprobar_vida_extra(scene);
 
   if (Settings.getPuntos() > Settings.getRecord())
   {
@@ -203,6 +204,25 @@ function al_tocar(scene, callback)
 
   app.addEventListener('pointerdown', handler);
   scene.events.once('shutdown', quitar);
+}
+
+// Todas las sumas de puntos pasan por actualizar_marcadores(): aqui se mira el siguiente umbral
+function comprobar_vida_extra(scene)
+{
+  const extra = Settings.vidasExtra;
+  let ganadas = 0;
+
+  while (extra.conseguidas < extra.umbrales.length && Settings.getPuntos() >= extra.umbrales[extra.conseguidas])
+  {
+    extra.conseguidas++;
+    ganadas++;
+  }
+
+  if (ganadas === 0) return;
+
+  Settings.setVidas(Settings.getVidas() + ganadas);
+  scene.marcadorVidas.update(Settings.getTxtVidas(), Settings.getVidas());
+  scene.aviso_vida_extra();
 }
 
 function play_sonidos(id, loop, volumen)

@@ -256,12 +256,24 @@ export class Game extends Scene
   // Aviso de que los enemigos acaban de doblar su velocidad
   aviso_prisa()
   {
+    this.aviso(' Hurry Up! ', '#f41', Math.floor(this.sys.game.config.height / 4));
+  }
+
+  // Un poco mas abajo que el "Hurry Up!" por si coinciden
+  aviso_vida_extra()
+  {
+    this.aviso(' Extra Life! ', '#4c1', Math.floor(this.sys.game.config.height / 4) + 85);
+  }
+
+  // Texto fijo en pantalla que parpadea un par de segundos y desaparece
+  aviso(texto, colorBorde, y)
+  {
     const txt = new Textos(this, {
       x: Math.floor(this.sys.game.config.width / 2),
-      y: Math.floor(this.sys.game.config.height / 4),
-      txt: ' Hurry Up! ',
+      y,
+      txt: texto,
       size: 72, color: '#ffa', style: 'bold',
-      stroke: '#f41', sizeStroke: 16,
+      stroke: colorBorde, sizeStroke: 16,
       shadowOsx: 2, shadowOsy: 2, shadowColor: '#111111',
       bool1: false, bool2: true, origin: [0.5, 0.5],
       elastic: false, dura: 0

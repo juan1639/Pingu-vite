@@ -32,6 +32,11 @@ export class Settings
     static hi = Settings.cargar_record();
     static vidasIniciales = 3;
     static vidas = Settings.vidasIniciales;
+    // Vidas extra al llegar a estos puntos (una vez cada una por partida)
+    static vidasExtra = {
+        umbrales: [5000, 25000, 50000],
+        conseguidas: 0
+    };
     static txtScore = ' Score: ';
     static txtRecord = ' Record: ';
 

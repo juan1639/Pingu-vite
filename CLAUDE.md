@@ -34,6 +34,8 @@ There are no tests and no linter.
 
 **Fixed logic rate**: game logic moves sprites a fixed number of pixels per call, so `Game.update()` only runs it on frames where the Arcade world emitted `worldstep` (60 fixed steps/s). This keeps the speed the same on 60/120/144 Hz monitors. Below 60 FPS the game slows down, because logic runs at most once per frame.
 
+**Extra lives**: `Settings.vidasExtra.umbrales` (5000, 25000, 50000), one each per game (`conseguidas` is reset in `PreGame`). Every score change goes through `actualizar_marcadores()`, which calls `comprobar_vida_extra()` and shows `Game.aviso_vida_extra()`; it and `aviso_prisa()` share `Game.aviso()` (blinking screen-fixed text).
+
 **Record** is kept in `localStorage` (`Settings.claveRecord`, wrapped in try/catch). `Settings.setRecord()` saves it, and `actualizar_marcadores()` in `functions.js` updates it whenever the score goes past it.
 
 **Touch controls** (`src/components/controlTactil.js`, only when "Mobile controls" is chosen in PreGame): a floating joystick built on browser pointer events on `#app`, so touches on the black bands outside the canvas count too (`touch-action: none` in `public/style.css` keeps the phone from scrolling). Dragging past a small dead zone holds one of 4 directions, and lifting the finger releases it. It exposes `cursores` with the same shape as `createCursorKeys()`, read through `Game.joystickCursors`. In mobile mode, walking into a block pushes it (no action button). `al_tocar()` in `functions.js` is the same idea for "tap to continue" screens (Boot).
