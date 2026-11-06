@@ -185,7 +185,7 @@ export class Game extends Scene
     this.timeline3Jewels.play();
   }
 
-  // Nivel superado eliminando a los 12 enemigos (sin el bonus de las joyas)
+  // Nivel superado eliminando a todos los enemigos (sin el bonus de las joyas)
   nivel_superado_enemigos()
   {
     Settings.setNivelSuperado(true);

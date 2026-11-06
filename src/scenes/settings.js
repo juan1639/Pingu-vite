@@ -98,7 +98,8 @@ export class Settings
     // Enemigos: salen de bloques "huevo" elegidos al azar al empezar cada nivel
     static enemigos =
     {
-        total: 12,              // huevos por nivel
+        // Huevos (enemigos totales) por nivel, uno por loop; los loops siguientes usan el ultimo
+        totalPorLoop: [8, 10, 12],
         maxALaVez: 4,
         velPxl: 2,              // la mitad que el jugador; tiene que dividir 48
         // ms jugados en el mismo nivel hasta que van mas rapido, uno por loop (cada loop, menos margen)
@@ -289,6 +290,12 @@ export class Settings
     static getLoop()
     {
         return Math.floor((Settings.nivel - 1) / Settings.getNumEscenarios()) + 1;
+    }
+
+    static getTotalEnemigos()
+    {
+        const totales = Settings.enemigos.totalPorLoop;
+        return totales[Math.min(Settings.getLoop(), totales.length) - 1];
     }
 
     static getTiempoPrisa()

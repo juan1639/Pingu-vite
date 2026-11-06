@@ -51,7 +51,7 @@ export class Enemigos
             this.tiene_salida(b, ocupadas)
         );
 
-        this.huevos = Phaser.Utils.Array.Shuffle(candidatos).slice(0, cfg.total);
+        this.huevos = Phaser.Utils.Array.Shuffle(candidatos).slice(0, Settings.getTotalEnemigos());
 
         this.huevos.forEach(huevo =>
         {
