@@ -10,7 +10,7 @@ Pingu: a Pengo-style maze/block-pushing game built with Phaser 3 + Vite (started
 
 - `npm run dev`: dev server with hot reload on http://localhost:8080 (`vite/config.dev.mjs`)
 - `npm run build`: production build into `dist/` (`vite/config.prod.mjs`, terser, Phaser split into its own chunk, `base: './'`)
-- `npm run deploy`: builds, then publishes `dist/` to the `gh-pages` branch
+- Publishing: every push to `main` runs `.github/workflows/deploy.yml` (GitHub Actions: `npm ci`, `npm run build`, upload `dist/` to GitHub Pages). There is no `gh-pages` branch or deploy script anymore.
 
 There are no tests and no linter.
 
@@ -40,4 +40,4 @@ There are no tests and no linter.
 
 Assets live in `public/assets/` and are loaded by key in `Preloader.js`.
 
-**Versions**: `phaser` is pinned to `~3.90.0` (a bare `npm install phaser` would pull Phaser 4). Vite stays on 5.x by the user's choice. Its remaining `npm audit` warnings only affect the dev server, not the published game.
+**Versions**: `phaser` is pinned to `~3.90.0` (a bare `npm install phaser` would pull Phaser 4). Vite stays on 5.x by the user's choice. Its remaining `npm audit` warnings (2) only affect the dev server, not the published game.

@@ -49,7 +49,8 @@ El juego se abre en http://localhost:8080 y se recarga solo al cambiar el códig
 | `npm install` | Instala las dependencias |
 | `npm run dev` | Servidor de desarrollo con recarga automática |
 | `npm run build` | Versión final del juego en la carpeta `dist/` |
-| `npm run deploy` | Genera `dist/` y la publica en GitHub Pages (rama `gh-pages`) |
+
+**Publicar:** cada `git push` a `main` compila el juego y lo publica en GitHub Pages automáticamente (`.github/workflows/deploy.yml`). El progreso se ve en la pestaña *Actions* del repositorio.
 
 ## Estructura
 
